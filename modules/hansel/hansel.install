@@ -1,0 +1,114 @@
+<?php
+// $Id: hansel.install,v 1.1 2010/04/20 20:06:35 mauritsl Exp $
+
+/**
+ * @file
+ * Hansel installation file
+ */
+
+/**
+ * Implements hook_install().
+ */
+function hansel_install() {
+  drupal_install_schema('hansel');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function hansel_uninstall() {
+  drupal_uninstall_schema('hansel');
+}
+
+/**
+ * Implements hook_schema().
+ */
+function hansel_schema() {
+  $schema = array();
+  
+  $schema['hansel_rule'] = array(
+    'fields' => array(
+      'rid' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'pid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+      ),
+      'name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+      'crumb_action' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+      ),
+      'crumb_action_arguments' => array(
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('rid')
+  );
+  
+  $schema['hansel_rule_action_goto'] = array(
+    'fields' => array(
+      'rid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'destination' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('rid')
+  );
+  
+  $schema['hansel_rule_action_leave'] = array(
+    'fields' => array(
+      'rid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'restore_original' => array(
+        'type' => 'int',
+        'size' => 'small',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('rid')
+  );
+  
+  $schema['hansel_rule_action_switch'] = array(
+    'fields' => array(
+      'rid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'handler' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ),
+      'arguments' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('rid')
+  );
+  
+  return $schema;
+}
+

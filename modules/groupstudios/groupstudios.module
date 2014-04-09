@@ -1,0 +1,177 @@
+<?php
+// $Id$
+
+//function _artspan_load_civi_api() {
+//  civicrm_initialize(true);
+//  global $civicrm_root;
+//  $civi_api = "$civicrm_root/api/v2";
+//  include_once "$civi_api/UFGroup.php";
+//  include_once "$civi_api/Contact.php";
+//  include_once "$civi_api/Location.php";
+//  include_once "$civi_api/Participant.php";
+//}
+
+//function _artspan_get_civi_contact($user, $options = array()) {
+//  _artspan_load_civi_api();
+//
+//  if($user != FALSE) {
+//    $civi_uid = civicrm_uf_match_id_get($user);
+//    $options['contact_id'] = $civi_uid;
+//  }
+//  $civi_user = civicrm_contact_get($options);
+//
+//  $options = array('contact_id' => $options['contact_id'], 'version' => '3.0');
+//  $civi_location = civicrm_location_get($options);
+//
+//  return array_merge($civi_user[$options['contact_id']], $civi_location);
+//}
+
+
+function groupstudios_menu() {
+  $items = array();
+
+  $items['admin/content/bulk/groupstudios-w1'] = array(
+    'title' => 'Bulk Update Group Studio Addresses',
+    'access arguments' => array('perform bulk update'),
+    'page callback' => 'groupstudios_update_address',
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/content/bulk/groupstudios-w2'] = array(
+    'title' => 'Bulk Update Group Studio Addresses',
+    'access arguments' => array('perform bulk update'),
+    'page callback' => 'groupstudios_update_address_wk2',
+    'type' => MENU_LOCAL_TASK,
+  );
+  $items['admin/content/bulk/tiff-download'] = array(
+    'title' => 'Bulk Download of TIFF files',
+    'access arguments' => array('perform bulk update'),
+    'page callback' => 'groupstudios_bulk_tiff_download',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+function groupstudios_perm() {
+  return array('perform bulk update');
+}
+
+function groupstudios_update_address() {
+
+  civicrm_initialize(true);
+  global $civicrm_root;
+  $civi_api = "$civicrm_root/api/v2";
+  include_once "$civi_api/UFGroup.php";
+  include_once "$civi_api/Contact.php";
+  include_once "$civi_api/Location.php";
+  include_once "$civi_api/Participant.php";
+
+  $res = db_query("select id, entity_id, publishable_artist_name_10, w1_group_studio_83 from civicrm_value_sf_open_studios_artist_info_4 where w1_group_studio_83 is not null");
+  while($group = db_fetch_object($res)) {
+    $options['contact_id'] = $group->w1_group_studio_83;
+    $studio = civicrm_contact_get($options);
+
+   //$update_sql = db_query("select group_site_name_24,open_studios_address_25,w1_os_sup_1_90,w1_os_sup_2_91,os_city_71,os_state_72,os_zip_28 from civicrm_value_sf_open_studios_artist_info_4 where entity_id = %d", $group->entity_id);
+   $update_sql = db_query("select * from civicrm_value_sf_open_studios_artist_info_4 where entity_id = %d", $group->entity_id);
+   while($update = db_fetch_object($update_sql)) {
+     //print_r($update);
+     print '<br />Updating: ' . $group->publishable_artist_name_10 . ' (' . $group->id  . ') - ' . $group->entity_id . '<br />';
+     print 'Update Site Name|' . $update->group_site_name_24 . '| -> |' . $studio[$group->w1_group_studio_83]['display_name'] . '|<br />';
+     print 'Update Address|' . $update->open_studios_address_25 . '| -> |' . $studio[$group->w1_group_studio_83]['street_address'] . '|<br />';
+     print 'Update Sup|' . $update->w1_os_sup_1_90 . '| -> |' . $studio[$group->w1_group_studio_83]['supplemental_address_1'] . '|<br />';
+     print 'Update Sup|' . $update->w1_os_sup_2_91 . '| -> |' . $studio[$group->w1_group_studio_83]['supplemental_address_2'] . '|<br />';
+     print 'Update City|' . $update->os_city_71 . '| -> |' . $studio[$group->w1_group_studio_83]['city'] . '|<br />';
+     print 'Update State|' . $update->os_state_72 . '| -> |' . $studio[$group->w1_group_studio_83]['state_province_id'] . '|<br />';
+     print 'Update Zip|' . $update->os_zip_28 . '| -> |' . $studio[$group->w1_group_studio_83]['postal_code'] . '|<br />';
+
+    db_query("UPDATE civicrm_value_sf_open_studios_artist_info_4 SET group_site_name_24='%s',
+        open_studios_address_25='%s', w1_os_sup_1_90='%s',
+        w1_os_sup_2_91='%s', os_city_71='%s',
+        os_state_72='%s', os_zip_28='%s' 
+        WHERE entity_id=%d", $studio[$group->w1_group_studio_83]['display_name'], $studio[$group->w1_group_studio_83]['street_address'],
+        $studio[$group->w1_group_studio_83]['supplemental_address_1'], $studio[$group->w1_group_studio_83]['supplemental_address_2'],
+         $studio[$group->w1_group_studio_83]['city'], $studio[$group->w1_group_studio_83]['state_province_id'],
+         $studio[$group->w1_group_studio_83]['postal_code'], $group->entity_id);
+
+
+//    db_query("UPDATE civicrm_value_sf_open_studios_artist_info_4 SET group_site_name_24='%s',
+//        open_studios_address_25='%s', w2_os_sup_1_90='%s',
+//        w2_os_sup_2_91='%s', os_city_71='%s',
+//        os_state_72='%s', os_zip_28='%s' 
+//        WHERE entity_id=%d", $studio[$group->w2_group_studio_84]['display_name'], $studio[$group->w2_group_studio_84]['street_address'],
+//        $studio[$group->w2_group_studio_84]['supplemental_address_1'], $studio[$group->w2_group_studio_84]['supplemental_address_2'],
+//         $studio[$group->w2_group_studio_84]['city'], $studio[$group->w2_group_studio_84]['state_province_id'],
+//          $studio[$group->w2_group_studio_84]['postal_code'], $group->entity_id);
+//
+
+   }
+
+  }
+
+}
+
+function groupstudios_update_address_wk2() {
+
+  civicrm_initialize(true);
+  global $civicrm_root;
+  $civi_api = "$civicrm_root/api/v2";
+  include_once "$civi_api/UFGroup.php";
+  include_once "$civi_api/Contact.php";
+  include_once "$civi_api/Location.php";
+  include_once "$civi_api/Participant.php";
+
+  $res = db_query("select id, entity_id, publishable_artist_name_10, w2_group_studio_84 from civicrm_value_sf_open_studios_artist_info_4 where w2_group_studio_84 is not null");
+  while($group = db_fetch_object($res)) {
+    $options['contact_id'] = $group->w2_group_studio_84;
+    $studio = civicrm_contact_get($options);
+
+   //$update_sql = db_query("select group_site_name_24,open_studios_address_25,w1_os_sup_1_90,w1_os_sup_2_91,os_city_71,os_state_72,os_zip_28 from civicrm_value_sf_open_studios_artist_info_4 where entity_id = %d", $group->entity_id);
+   $update_sql = db_query("select * from civicrm_value_sf_open_studios_artist_info_4 where entity_id = %d", $group->entity_id);
+   while($update = db_fetch_object($update_sql)) {
+     print '<br />Updating: ' . $group->publishable_artist_name_10 . ' (' . $group->id  . ') - ' . $group->entity_id . '<br />';
+     print 'Update |' . $update->os_w2_group_site_name_75 . '| -> |' . $studio[$group->w2_group_studio_84]['display_name'] . '|<br />';
+     print 'Update |' . $update->w2_open_studios_address_81 . '| -> |' . $studio[$group->w2_group_studio_84]['street_address'] . '|<br />';
+     print 'Update |' . $update->w2_os_sup_1_92 . '| -> |' . $studio[$group->w2_group_studio_84]['supplemental_address_1'] . '|<br />';
+     print 'Update |' . $update->w2_os_sup_2_93 . '| -> |' . $studio[$group->w2_group_studio_84]['supplemental_address_2'] . '|<br />';
+     print 'Update |' . $update->w2_os_city_77 . '| -> |' . $studio[$group->w2_group_studio_84]['city'] . '|<br />';
+     print 'Update |' . $update->w2_os_state_78 . '| -> |' . $studio[$group->w2_group_studio_84]['state_province_id'] . '|<br />';
+     print 'Update |' . $update->w2_os_zip_82 . '| -> |' . $studio[$group->w2_group_studio_84]['postal_code'] . '|<br />';
+
+    db_query("UPDATE civicrm_value_sf_open_studios_artist_info_4 SET os_w2_group_site_name_75='%s',
+        w2_open_studios_address_81='%s', w2_os_sup_1_92='%s',
+        w2_os_sup_2_93='%s', w2_os_city_77='%s',
+        w2_os_state_78='%s', w2_os_zip_82='%s' 
+        WHERE entity_id=%d", $studio[$group->w2_group_studio_84]['display_name'], $studio[$group->w2_group_studio_84]['street_address'],
+        $studio[$group->w2_group_studio_84]['supplemental_address_1'], $studio[$group->w2_group_studio_84]['supplemental_address_2'],
+        $studio[$group->w2_group_studio_84]['city'], $studio[$group->w2_group_studio_84]['state_province_id'],
+        $studio[$group->w2_group_studio_84]['postal_code'], $group->entity_id);
+
+   }
+
+  }
+
+}
+
+function groupstudios_bulk_tiff_download() {
+
+  $res = db_query("SELECT users.uid AS uid, civicrm_contact.first_name AS civicrm_contact_first_name, civicrm_contact.id AS civicrm_contact_id, civicrm_contact.last_name AS civicrm_contact_last_name, node_users_node_data_field_content_title.field_content_title_value AS node_users_node_data_field_content_title_field_content_title_value, node_users.nid AS node_users_nid, node_users.type AS node_users_type, node_users.vid AS node_users_vid, civicrm_participant.fee_level AS civicrm_participant_fee_level, civicrm_value_sf_open_studios_artist_info_4.guide_tiff_16 AS civicrm_value_sf_open_studios_artist_info_4_guide_tiff_16, civicrm_value_sf_open_studios_artist_info_4.entity_id AS civicrm_value_sf_open_studios_artist_info_4_entity_id, civicrm_value_sf_open_studios_artist_info_4.guide_tiff_2_56 AS civicrm_value_sf_open_studios_artist_info_4_guide_tiff_2_56, civicrm_event_civicrm_participant.id AS civicrm_event_civicrm_participant_id, civicrm_contact.sort_name AS civicrm_contact_sort_name FROM users users  LEFT JOIN node node_users ON users.uid = node_users.uid AND node_users.type = 'artist' LEFT JOIN civicrm_uf_match civicrm_uf_match ON users.uid = civicrm_uf_match.uf_id LEFT JOIN civicrm_participant civicrm_participant ON civicrm_uf_match.contact_id = civicrm_participant.contact_id LEFT JOIN civicrm_event civicrm_event_civicrm_participant ON civicrm_participant.event_id = civicrm_event_civicrm_participant.id LEFT JOIN civicrm_contact civicrm_contact_civicrm_participant ON civicrm_participant.contact_id = civicrm_contact_civicrm_participant.id LEFT JOIN users_roles users_roles_value_0 ON users.uid = users_roles_value_0.uid AND users_roles_value_0.rid = 3 LEFT JOIN civicrm_contact civicrm_contact ON civicrm_uf_match.contact_id = civicrm_contact.id LEFT JOIN content_field_content_title node_users_node_data_field_content_title ON node_users.vid = node_users_node_data_field_content_title.vid LEFT JOIN civicrm_value_sf_open_studios_artist_info_4 civicrm_value_sf_open_studios_artist_info_4 ON civicrm_participant.id = civicrm_value_sf_open_studios_artist_info_4.entity_id WHERE (users_roles_value_0.rid = 3) AND (civicrm_participant.register_date >= '1969-08-03 16:00:00') AND (UPPER(civicrm_contact.display_name) LIKE UPPER('z%')) AND (civicrm_event_civicrm_participant.id = 44) ORDER BY civicrm_contact_sort_name ASC");
+
+  while($tiff = db_fetch_object($res)) {
+  if ($tiff->civicrm_value_sf_open_studios_artist_info_4_guide_tiff_16 > 0) {
+    $file1 = 'http://www.artspan.org/civicrm/file?reset=1&id=' . $tiff->civicrm_value_sf_open_studios_artist_info_4_guide_tiff_16 . '&eid=' . $tiff->civicrm_value_sf_open_studios_artist_info_4_entity_id;
+    $newfile1 =  strtolower($tiff->civicrm_contact_first_name) . "_" . strtolower($tiff->civicrm_contact_last_name) . "_1.tiff";
+    print $file1 . "->" . $newfile1 . "<br />";
+    copy($file1, '/tmp/2012tiffs/' . $newfile1);
+  }
+  if ($tiff->civicrm_value_sf_open_studios_artist_info_4_guide_tiff_2_56 > 0) {
+    $file2 = 'http://www.artspan.org/civicrm/file?reset=1&id=' . $tiff->civicrm_value_sf_open_studios_artist_info_4_guide_tiff_2_56 . '&eid=' . $tiff->civicrm_value_sf_open_studios_artist_info_4_entity_id;
+    $newfile2 =  strtolower($tiff->civicrm_contact_first_name) . "_" . strtolower($tiff->civicrm_contact_last_name) . "_2.tiff";
+    print $file2 . "->" . $newfile2 . "<br />";
+    copy($file2, '/tmp/2012tiffs/' . $newfile2);
+  }
+
+  }
+
+}
+
+?>

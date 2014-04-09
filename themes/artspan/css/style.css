@@ -1,0 +1,1181 @@
+/* @override 
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/style.css?S
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/style.css?0
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/style.css?B
+*/
+
+/* Font styles. */
+/* line 2, ../sass/style.sass */
+body {
+  margin: 0;
+  /* Setting up font size, leading and font family
+   * http://www.markboulton.co.uk/journal/comments/five-simple-steps-to-better-typography */
+  font: 13px/1.5em "Helvetica Neue", helvetica, Arial, sans-serif;
+}
+
+/* Links */
+/* line 10, ../sass/style.sass */
+a:link, a:visited {
+  color: #9088d4;
+  text-decoration: none;
+}
+
+/* line 15, ../sass/style.sass */
+a:hover, a:active {text-decoration: underline;}
+
+/* Titles. */
+/* line 21, ../sass/style.sass */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.5em;
+	color: #666;
+	font-weight: 300; 
+  /* font-family: "Puritan", helvetica, sans-serif; */
+  /*font-family: "PT Sans", helvetica, sans-serif;  */
+}
+
+a h1, a h2, a h3, a h4, a h5, a h6 {color: #9088d4;}
+
+/* line 24, ../sass/style.sass */
+h1 {
+  font-size: 40px;
+  font-weight: 300;  
+  padding: 0 0 0.5em;
+  margin: 0;
+}
+
+h1:after {
+  display: block;
+  height: 20px;
+  content: '';
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+}
+
+/* line 30, ../sass/style.sass */
+h2 {font-size: 26px;}
+#content-inner h2, #content-inner h3, #content-inner h4 {margin-top: 1em;}
+#content-inner h2:first-child, #content-inner h3:first-child {margin-top: 0;}
+
+/* line 35, ../sass/style.sass */
+h3 {font-size: 20px;}
+.profile h3 {border: 0;}
+
+/* line 39, ../sass/style.sass */
+h4 {font-size: 18px;}
+
+/* line 43, ../sass/style.sass */
+h5 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+/* line 48, ../sass/style.sass */
+h6 {
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* Paragraph styles. */
+/* line 53, ../sass/style.sass */
+p {
+	margin: 1em 0 0;
+  color: #3f3f3f;
+  font-size: 14px;
+  line-height: 1.5em;
+}
+
+h1 + p, h2 + p, h3 + p, h4 + p, .content > p {margin: 0;}
+
+.node-type-page .node-inner .content p { margin-bottom: 15px; }
+
+/* List styles. */
+/* line 57, ../sass/style.sass */
+ul, ol {
+  margin-left: 0;
+  padding-left: 2em;
+  line-height: 1.5em;
+}
+
+/* Table styles. */
+/* line 62, ../sass/style.sass */
+table {
+  width: 99%;
+}
+
+/* line 67, ../sass/style.sass */
+tr.even td,
+tr.odd td {
+  padding: 10px 5px;
+}
+
+/* line 70, ../sass/style.sass */
+tr.odd {
+  background-color: white;
+}
+
+/* Code. */
+/* line 74, ../sass/style.sass */
+pre, code, tt {
+  font: 1em "andale mono", "lucida console", monospace;
+  line-height: 1.5;
+}
+
+/* line 78, ../sass/style.sass */
+pre {
+  background-color: #efefef;
+  display: block;
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid #aaaaaa;
+}
+
+/* List styles. */
+/* line 86, ../sass/style.sass */
+ul {
+  list-style-type: disc;
+}
+/* line 88, ../sass/style.sass */
+ul ul {
+  list-style-type: circle;
+}
+/* line 90, ../sass/style.sass */
+ul ul ul {
+  list-style-type: square;
+}
+/* line 92, ../sass/style.sass */
+ul ul ul ul {
+  list-style-type: circle;
+}
+
+/* line 95, ../sass/style.sass */
+ol {
+  list-style-type: decimal;
+}
+/* line 97, ../sass/style.sass */
+ol ol {
+  list-style-type: lower-alpha;
+}
+/* line 99, ../sass/style.sass */
+ol ol ol {
+  list-style-type: decimal;
+}
+
+/* Abbreviation. */
+/* line 103, ../sass/style.sass */
+abbr {
+  border-bottom: 1px dotted #666666;
+  cursor: help;
+  white-space: nowrap;
+}
+
+/* UI improvments. */
+/* line 109, ../sass/style.sass */
+#edit-title {
+  font-size: 24px;
+  width: 98%;
+}
+
+/* line 113, ../sass/style.sass */
+#system-themes-form img {
+  width: 100px;
+}
+
+/* line 116, ../sass/style.sass */
+.form-item .description {
+  font-style: italic;
+  line-height: 1.2em;
+  font-size: 1em;
+  margin-top: 5px;
+  color: #777777;
+}
+
+.editview-field .form-item .description {
+  display: block !important;
+}
+
+/* line 123, ../sass/style.sass */
+#edit-delete {
+  color: #cc0000;
+}
+
+/* Console, style from slate theme. */
+/* line 127, ../sass/style.sass */
+div.messages {
+  padding: 9px;
+  margin: 1em 0;
+  color: #003366;
+  background: #bbddff;
+  border: 1px solid #aaccee;
+}
+
+/* line 134, ../sass/style.sass */
+div.warning {
+  color: #884400;
+  background: #ffee66;
+  border-color: #eedd55;
+}
+
+/* line 139, ../sass/style.sass */
+div.error {
+  color: white;
+  background: #ee6633;
+  border-color: #dd5522;
+}
+
+/* line 144, ../sass/style.sass */
+div.status {
+  color: #336600;
+  background: #ccff88;
+  border-color: #bbee77;
+}
+
+/* Region Colors. */
+/* line 150, ../sass/style.sass */
+#header-wrapper {
+  padding-top: 15px;
+  background: url(../images/color-bar.gif) repeat-x center top;
+}
+
+#header {
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+}
+
+
+#content-inner {
+  margin-top: 6px;
+}
+#content-inner .contact_area ul { padding: 0; margin: 0; }
+#content-inner .contact_area ul li { list-style-type: none; }
+
+#content-inner .sfos_area .weekend_2 {
+  margin-top: 10px;
+  display: block;
+}
+
+#content-inner .studio_area {
+  margin-top: 20px;
+} 
+
+#content-inner #content-area .profile .social_area { margin: 10px 0 0 0; }
+
+/* line 153, ../sass/style.sass */
+#sidebar-first {
+  background: #e7edff;
+}
+
+/* line 156, ../sass/style.sass */
+#sidebar-second {
+	background: #efefef url(../images/stripes.png) repeat 0 0;
+}
+
+/* line 159, ../sass/style.sass */
+#navigation {
+}
+
+#navigation #primary li a {
+  font-size: 20px;
+  color: black;
+}
+
+#navigation #primary li a:hover {
+  text-decoration: none;
+  background: #676865;
+  color: white;
+}
+
+#navigation #primary li a .name {
+  display: block;
+  text-indent: -3000px;
+  background: url('../images/nav-headings.png') no-repeat;
+  height: 24px;
+  width: 157px;
+}
+
+#navigation #primary li.artists a .name {
+  background-position: 0 0;
+}
+
+#navigation #primary li.artists a:hover .name {
+  background-position: -156px 0;
+}
+
+#navigation #primary li.events a .name {
+  background-position: 0 -27px;
+}
+
+#navigation #primary li.events a:hover .name {
+  background-position: -156px -27px;
+}
+
+#navigation #primary li.artspan a .name {
+  background-position: 0 -54px;
+}
+
+#navigation #primary li.artspan a:hover .name {
+  background-position: -156px -54px;
+}
+
+#navigation #primary li.get-involved a .name {
+  background-position: 0 -80px;
+}
+
+#navigation #primary li.get-involved a:hover .name {
+  background-position: -156px -80px;
+}
+
+#navigation #primary li.sf-open-studios a .name {
+  background-position: 0 -106px;
+}
+
+#navigation #primary li.sf-open-studios a:hover .name {
+  background-position: -156px -106px;
+}
+
+#navigation #primary li a .description {
+  font-size: 12px;
+  line-height: 1.3em;
+}
+
+/* header and footer */
+#header-region {
+  background-color: white;
+}
+
+#footer a {
+  color: black;
+}
+
+/* Menus */
+
+.block-menu_block h3 {
+  background: white;
+  color: #827eb1;
+  font-size: 30px;
+  border-bottom: 5px solid white;
+  padding-top: 15px;
+}
+
+.block-menu_block h3:after {
+  display: block;
+  height: 20px;
+  content: '';
+  background: #efefef url(../images/stripes-blue.png) repeat 0 0;
+}
+
+.block-menu_block ul.menu,
+.block-menu_block ul.menu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.block-menu_block ul.menu li {
+  border-bottom: 3px solid white;
+}
+
+.block-menu_block ul.menu li.expanded {
+  border: none;
+}
+
+.block-menu_block ul.menu li a,
+.block-menu_block ul.menu li.expanded li a {
+  display: block;
+  background-color: #dfdfdf;
+  color: #616161;
+  border-right: 5px solid #827eb1;
+}
+
+.block-menu_block ul.menu li a {
+  padding: 4px 15px;
+  font-size: 17px;
+}
+
+.block-menu_block ul.menu li a:hover,
+.block-menu_block ul.menu li.active a,
+.block-menu_block ul.menu li.expanded li a:hover,
+.block-menu_block ul.menu li.expanded li.active a {
+  border-right-color: #bac7e6;
+  color: white;
+  background-color: #7d7d7d;
+  text-decoration: none;
+}
+
+.block-menu_block li.expanded ul.menu {
+  border-top: 3px solid white;
+}
+
+.block-menu_block ul.menu li.expanded li a {
+  padding: 4px 15px 4px 25px;
+  font-size: 15px;
+}
+
+.block-menu_block ul.menu li.expanded li a:before {
+  content: "\00BB  ";
+  font-size: 17px;
+}
+
+/* Block stuff */
+
+#sf-open-banner {
+  padding-bottom: 300px;
+  padding-top: 8px;
+  text-align: center;
+}
+
+/* User Links */
+
+.user_links a,
+#header-region a.popup-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 12px;
+  color: #9088d4;
+  cursor: pointer;
+}
+
+#header-region a.popup-title:hover {
+  text-decoration: underline;
+}
+
+.popup-body #user-login-form label {
+  text-align: left;
+  font-size: 11px;
+  line-height: 12px;
+}
+
+.popup-body #user-login-form .item-list {
+  margin-top: 10px;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.popup-body #user-login-form ul,
+.popup-body #user-login-form li {
+  list-style-type: none;
+  margin: 0;
+}
+
+.popup-body #user-login-form li {
+  margin-bottom: 5px;
+}
+
+/* Breadcrumbs */
+
+.breadcrumb {
+  font-size: 11px;
+  color: #999;
+  font-weight: bold;
+}
+
+.breadcrumb a {
+  color: #999;
+  font-weight: normal;
+}
+
+.breadcrumb a:last-child { font-weight: bold; }
+
+/* Footer */
+
+#footer {
+  color: #999;
+  font-size: 11px;
+}
+
+#footer a {
+  color: #999;
+}
+
+/* User edit page */
+
+#user-edit-heading {
+  padding: 5px 0 20px 0;
+  height: 70px;
+}
+
+#user-edit-heading:after {
+  display: block;
+  margin-top: 50px;
+  height: 20px;
+  content: '';
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+}
+
+#user-edit-heading h1 {
+  float: left;
+  margin: 0 20px 0 0;
+  padding: 0;
+  max-height: 50px;
+  max-width: 840px;
+  overflow: hidden;
+}
+
+#user-edit-heading h1:after {
+  display: none;
+}
+
+#user-submit-buttons {
+  float: left;
+  margin: 10px 0 10px 0px;
+}
+
+#user-submit-buttons .form-submit {
+	margin-top: 5px;
+  height: 27px;
+  padding: 0 5px 2px;
+  -webkit-appearance: square-button;
+	cursor: pointer;
+	float: left;
+	color: white;
+  display: block;
+  font-weight: bold;
+	border: 0;
+}
+#user-edit-heading .form-submit,
+.buttons_copy .form-submit {
+	background: #7E82AF;
+  text-shadow: -1px -1px 1px #4A4A78;
+}
+#user-edit-heading .form-submit:hover,
+.buttons_copy .form-submit:hover {
+	background: #8d91c3;
+}
+
+.buttons_copy {
+  margin-top: 10px;
+  clear: both;
+}
+
+#user-submit-buttons #edit-delete,
+#user-submit-buttons .form-submit.form-delete {
+	background: #b60909;
+  text-shadow: -1px -1px 1px #890404;
+	margin-left: 5px;
+}
+
+#user-edit-heading #edit-delete:hover
+#user-edit-heading .form-submit.form-delete:hover {
+	background: #cc0a0a;
+}
+
+#user-submit-buttons .addnew {
+	background: #cf8;
+  text-shadow: -1px -1px 1px #be7;
+	margin-left: 5px;
+	border: 0 none;
+	color: #333;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-weight: bold;
+	height: 27px;
+	margin-top: 5px;
+	padding: 0 5px 2px;
+}
+
+#user-edit-heading .addnew:hover {
+	background: #be7;
+}
+
+.profile_image .form-file {
+	cursor: pointer;
+}
+
+#user-profile-form #account-stuff {
+  width: 960px;
+}
+
+/* user profile page */
+#taxonomy-options {
+  width: 300px;
+  float: right;
+}
+
+/* forms */
+#user-profile-form #account-stuff fieldset {
+	width: 419px;
+	margin-left: 30px;
+	float: left;
+	border: 1px solid #ccc;
+	padding: 0 20px;
+}
+
+#user-profile-form #account-stuff .civi-profiles {
+  float: left;
+  width: 460px;
+}
+
+#user-profile-form #account-stuff .civi-profiles fieldset {
+  margin-left: 0;
+}
+#user-profile-form #account-stuff fieldset:first-child {margin-left: 0;}
+
+legend {font-size: 16px; font-weight: bold;}
+
+select, input.form-text {
+	border: 1px solid #CCCCCC;
+	height: 19px;
+	vertical-align: middle;
+	padding: 3px;
+}
+
+label {font-weight: bold;}
+
+textarea {padding: 5px;}
+
+/* civicrm overwrites */
+
+div#crm-container {padding: 15px 0;}
+
+/* #crm-container .crm-section .label, .crm-section .label {width: auto;} */
+#crm-container label {
+    /*clear: both; */
+    font-weight: bold;
+    text-align: left;
+}
+#crm-container .crm-marker {color: #ff0000;}
+#editrow-gender .edit-value label {
+	padding-left: 5px;
+	font-weight: normal;
+}
+
+/*#crm-container .crm-section .content, .crm-section .content {
+    clear: both;
+    margin-left: -4px;
+}
+*/
+#crm-container input[type="text"], 
+#crm-container input[type="password"],
+.resizable-textarea textarea {border: 1px solid #ccc;}
+
+select,
+#edit-timezone-name,
+#edit-field-primary-medium-value,
+#edit-field-ref-thumbnail-art-nid-nid {
+	border: 1px solid #ccc; 
+	height: 25px; 
+	padding: 3px;
+}
+select#custom_6 {height:120px;}
+
+/* homepage */
+.node-type-home_page .main-area {background: #efefef url(../images/stripes.png) repeat 0 0;}
+
+.node-type-home_page .main-area td a {background: black;}
+
+.node-type-home_page .main-area .view img {
+  border: 3px solid white;
+  opacity: 0.75;
+  -webkit-transition-duration: 0.5s;
+  -webkit-transition-property: opacity;
+}
+
+.node-type-home_page .main-area .view a:hover img {opacity: 1;}
+
+.node-type-home_page .block-area h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.node-type-home_page .block-area h3:after {
+  display: block;
+  height: 15px;
+  content: '';
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+}
+
+/* view all artists, edit artist profile */
+.view-artists .filter {clear: left;}
+
+.view-artists .filter * {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline;
+}
+
+.view-artists .filter .title {display: inline;}
+
+.view-artists .alpha_list li {padding: 0 5px;}
+
+.view-artists .views-exposed-widgets, #taxonomy-options {
+  width: 240px;
+  float: right;
+  margin-top: 10px;
+  border: 3px solid #ccc;
+  background: #f4f6fa;
+}
+#taxonomy-options {margin-top: 0; padding-bottom: 10px;}
+
+.view-artists .view-content, .view-participants .view-content {
+  width: 714px;
+  margin-top: 10px;
+}
+
+.view-artists .views-exposed-widget, #taxonomy-options .selections {
+  float: none;
+  padding:  5px 15px 5px 15px;
+  clear: both;
+}
+#taxonomy-options .selections {padding: 5px 15px;}
+
+.view-artists .views-exposed-widget:after, #taxonomy-options .selections:after {
+  content: " ";
+  height: 5px;
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+  display: block;
+  margin-top: -10px;
+}
+#taxonomy-options .primary-mediums-selections:after {background: none;}
+
+.view-artists .views-exposed-widget.submit-area:after,
+.view-artists #exposed-widget-edit-keys:after {display: none;}
+
+.view-artists .views-exposed-widget label {color: #333;}
+
+.view-artists #exposed-widget-edit-keys label {
+  color: #666;
+  font-weight: normal;
+}
+
+.view-artists #exposed-widget-edit-keys label .search {
+  display: block;
+  text-transform: uppercase;
+  font-size: 16px;
+  height: 17px;
+  margin-top: -10px;
+  overflow: hidden;
+}
+
+.view-artists #exposed-widget-edit-keys label .directory {
+  display: block;
+  font-size: 24px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.view-artists #edit-keys {
+  border: 3px solid #ccc !important;
+  background-color: #7383ba;
+  color: #a5b0d5;
+  padding: 5px;
+  width: 193px;
+  font-weight: bold;
+	height: 15px;
+}
+
+.view-artists .form-checkboxes .form-item, #taxonomy-options .form-checkboxes .form-item {
+  float: left;
+  width: 105px;
+  font-size: 10px;
+}
+
+.view-artists #exposed-widget-edit-field-sf-open-studios-value .form-checkboxes .form-item { clear: both; width: auto; float: none; }
+
+
+
+
+/* view all artists for event, edit artist profile */
+.view-participants .filter {clear: left;}
+
+.view-participants .filter * {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline;
+}
+
+.view-participants .filter .title {display: inline;}
+
+.view-participants .alpha_list li {padding: 0 5px;}
+
+.view-participants .views-exposed-widgets {
+  width: 240px;
+  float: right;
+  margin-top: 10px;
+  border: 3px solid #ccc;
+  background: #f4f6fa;
+}
+
+.view-participants .view-content, .view-participants .view-content {
+  width: 714px;
+  margin-top: 10px;
+}
+
+.view-participants .views-exposed-widget {
+  float: none;
+  padding:  5px 15px 5px 15px;
+  clear: both;
+}
+
+.view-participants .views-exposed-widget:after {
+  content: " ";
+  height: 5px;
+  background: #efefef url(../images/stripes.png) repeat 0 0;
+  display: block;
+  margin-top: -10px;
+}
+
+.view-participants .views-exposed-widget.submit-area:after,
+.view-participants #exposed-widget-edit-keys:after {display: none;}
+
+.view-participants .views-exposed-widget label {color: #333;}
+
+.view-participants #exposed-widget-edit-keys label {
+  color: #666;
+  font-weight: normal;
+}
+
+.view-participants #exposed-widget-edit-keys label .search {
+  display: block;
+  text-transform: uppercase;
+  font-size: 16px;
+  height: 17px;
+  margin-top: -10px;
+  overflow: hidden;
+}
+
+.view-participants #exposed-widget-edit-keys label .directory {
+  display: block;
+  font-size: 24px;
+  margin-top: -10px;
+  margin-bottom: -10px;
+}
+
+.view-participants #edit-keys {
+  border: 3px solid #ccc !important;
+  background-color: #7383ba;
+  color: #a5b0d5;
+  padding: 5px;
+  width: 193px;
+  font-weight: bold;
+	height: 15px;
+}
+
+.view-participants .form-checkboxes .form-item {
+  float: left;
+  width: 105px;
+  font-size: 10px;
+}
+
+.view-participants #exposed-widget-edit-field-sf-open-studios-value .form-checkboxes .form-item { clear: both; width: auto; float: none; }
+
+
+
+
+
+
+
+
+#taxonomy-options .form-item {margin-top: 0; margin-bottom: 0;}
+.primary-mediums-selections label {font-size: 11px;}
+.primary-mediums-selections select {width: 200px;}
+
+#other-options {
+	width: 694px;
+	padding-right: 20px;
+	float: left;
+}
+#other-options .form-item {margin-top: 0;}
+.filefield-element {margin: 0;}
+#other-options .profile_image, 
+#other-options .save_button {clear: both;}
+
+#other-options fieldset  { padding: 0; border: 0; }
+#other-options fieldset legend { font-size: 13px; }
+
+#other-options .floatregion {
+  width: 224px;
+  float: left;
+  margin-left: 10px;
+}
+
+#other-options .floatregion.contact {margin-left: 0;}
+
+#other-options .floatregion input,
+#other-options .floatregion select {max-width: 200px;}
+
+#other-options fieldset.studio_information {
+  clear: both;
+  border: 1px solid #ccc;
+  padding: 0 20px;
+}
+
+/* add artwork page - watch your step while editing this part */
+
+.field_1, .field_2 {float: left;}
+.field_1 {width: 300px;}
+.field_2 {width: 355px;}
+.field_2 label {display: block;}
+.field_2 .form-item,
+.field_2 .by {float: left;}
+.by {padding: 16px 7px 0;}
+.field_3 {clear: both;}
+
+.editview-field.field_0 { margin-bottom: 5px; border-bottom: 1px dashed #e3e3e3; }
+.editview-field.field_3 { margin-top: 5px; padding-top: 5px; border-top: 1px dashed #e3e3e3; }
+
+#cboxTitle {
+  position: absolute;
+  bottom: 30px;
+  text-align: left;
+  display: block;
+  width: 99%;
+  /*background-color: rgba(0,0,0,0.7);*/
+  background-color: #000000 !important;
+  color: white;
+  padding: 2px 60px 5px 10px !important;
+  font-size: 15px;
+}
+#cboxTitle {margin: 0px;}
+#cboxTitle p {
+  color: white;
+  font-size: 13px;
+}
+#cboxLoadedContent {overflow: hidden !important;}
+
+/* civicrm overrides */
+#crm-container .crm-section .crm-event-register-form-block .label,
+.crm-section .label,
+.paid_event-section .label {
+  float: left;
+  width: 160px !important;
+  text-align: left !important;
+  font-size: 100%;
+  font-weight: bold;
+}
+
+#user-profile-form .crm-section .label,
+#node-form .crm-section .label {float: none;}
+
+#user-profile-form .crm-section .label:after,
+#node-form .crm-section .label:after {content: ":";}
+
+#user-profile-form .crm-section .edit-value,
+#node-form .crm-section .edit-value {line-height: 0;}
+
+#user-profile-form .crm-section .edit-value label,
+#node-form .crm-section .edit-value label {
+	line-height: 1em;
+	float: left;
+	padding-top: 2px;
+}
+
+#user-profile-form .crm-section .edit-value input,
+#user-profile-form .crm-section .edit-value select,
+#node-form .crm-section .edit-value input,
+#node-form .crm-section .edit-value select {
+  display: block;
+  margin: 0;
+}
+
+#user-profile-form .crm-section .form-radio,
+#node-form .crm-section .form-radio {
+  width: 20px;
+  height: 20px;
+  float: left;
+  clear: both;
+}
+
+#crm-container fieldset legend {
+  padding: 4px 4px 4px 0;
+  font-size: 150%;
+}
+#crm-container .form-layout td.label, #crm-container form table.report .label, #crm-container form table label, #crm-container form table.report label {
+  color: #000;
+  font-size: 100%;
+  font-weight: bold;
+  text-align: left;
+}
+#crm-container .form-layout-compressed td, #crm-container .form-layout-compressed th {width: 140px;}
+#crm-container .description {margin-left: 160px;}
+#crm-container .crm-section .content, .crm-section .content {margin: 0px;}
+#crm-container .paid_event-section .content {margin-left: 160px;}
+
+/* imagefield */
+.filefield-element div.widget-preview {border: none;}
+
+/* News */
+.page-artspan-news .views-row {margin-bottom: 1.5em;}
+
+#Register fieldset { border: 1px solid #CCCCCC; padding: 4px 15px; }
+#Register fieldset#group_site_no_area { border: 0; padding: 0; }
+
+#Register #form2_registration fieldset fieldset { border: 0; padding: 0;  }
+#Register .crm-section.custom_30-section { display: none; }
+
+#Register #url-1-website_type_id { display: none; }
+
+.weekend_block { width: 300px; float: left; padding-right: 20px;}
+.weekend_2, #weekend_2 { width: 300px; float: left; display: none; }
+
+.weekend_loc_block { width: 300px; float: left; padding-right: 20px;}
+.weekend_2_loc { width: 300px; float: left; display: none; }
+
+#crm-container { color: #3F3F3F; }
+#crm-container #Register fieldset legend { font-size: 16px; }
+
+#crm-container .paid_event-section .content { margin: 0; }
+#crm-container .crm-section .label, #crm-container #details .label { float: none; width: auto !important; margin: 0 0 5px 3px; }
+#crm-container .crm-section.email-section .label, #crm-container #details .label { margin: 10px 0 5px 0; }
+
+#crm-container .crm-button.crm-button-next { padding: 3px 5px 0px; }
+.form-radio { margin: 0 5px 0 0; }
+
+#crm-container table.membership { margin: 10px 0; border-color: #CCCCCC; }
+#crm-container table.membership tbody td { border: 1px solid #CCCCCC; padding: 7px; }
+#crm-container table.membership tbody th { border-bottom: 1px solid #CCCCCC; color: #3F3F3F; }
+
+#crm-container #weekend_information { border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC; padding: 10px 0; margin: 15px 0 20px 0; }
+#crm-container #weekend_information p { font-size: 12px; }
+#crm-container #weekend_information .studio_weekend { font-size: 16px; font-weight: bold; }
+
+.node table.membership { margin: 10px 0; border-color: #CCCCCC; }
+.node table.membership td { border: 1px solid #CCCCCC; padding: 7px; }
+.node table.membership tbody { border: none !important; }
+
+#crm-container .uploaded_artwork {
+  padding-bottom: 10px;
+}
+.front .col_2 p { margin: 0px 0px 10px 0px; }
+.event-left { width: 600px; float: left; padding-right: 60px;}
+.event-left img.imagefield-field_image { float: left; padding: 0px 20px 20px 0px;}
+.event-right { width: 260px; float: left;
+  background: #e3e3e3;
+  padding: 20px;
+}
+.back-events { float: right; padding-top: 24px; }
+.calendar-calendar ul.links { display: none; }
+.date-nav div.date-prev { width: auto !important; line-height: 52px;}
+.date-nav div.date-heading { width: auto !important; }
+.date-nav div.date-heading h3 { font-size: 36px; }
+.date-nav div.date-next { width: auto !important; float: left; line-height: 52px;}
+.calendar-calendar .date-nav { background: #FFFFFF !important; border: none !important; }
+#block-views--exp-calendar-calendar_1 { padding: 20px;}
+#block-views--exp-calendar-calendar_1 .form-submit { display: none; } 
+.event-list { float: right; padding-top: 24px; }
+.calendar-calendar td .inner .calendar, .calendar-calendar td .inner .calendar a {
+  padding: 0px !important;
+}
+.calendar-calendar td.empty {
+  background: #eeeeee;
+}
+.eventcal-list {
+  padding-bottom: 20px;
+}
+#location-options {margin: 0px 0; padding: 20px 0;
+  float: right; width: 360px; background: #eeeeee;}
+#location-options fieldset { border: none; }
+
+#event-options {
+	width: 450px;
+	padding-right: 20px;
+	float: left;
+}
+#event-options .form-item {margin-top: 0;}
+.filefield-element {margin: 0;}
+#event-options .profile_image, 
+#event-options .save_button {clear: both;}
+
+#event-options fieldset  { padding: 0; border: 0; }
+#event-options fieldset legend { font-size: 13px; }
+
+#event-options .floatregion {
+  width: 224px;
+  float: left;
+  margin-left: 10px;
+}
+
+#event-options .floatregion.contact {margin-left: 0;}
+
+#event-options .floatregion input,
+#event-options .floatregion select {max-width: 200px;}
+
+#event-options fieldset.studio_information {
+  clear: both;
+  border: 1px solid #ccc;
+  padding: 0 20px;
+}
+.clr { clear: both; }
+.date-display-single { font-weight: bold; color: #3F3F3F;}
+.view-display-id-block_1 { color: #3F3F3F; font-size: 14px;
+line-height: 1.5em; }
+#reg-btn { width: 200px; height: 50px;
+  padding: 0px 0px 50px 30px;
+  float: right;}
+#reg-btn a {
+  background-image:url(../images/btn_artspan_register.png);
+  display: block;
+  width: 200px; height: 50px;
+  text-indent: -9999px;
+  }
+#reg-btn a:hover { background-position:0px -50px; }
+.os-login {width: 600px; padding-bottom: 20px;}
+.osreg-block { width: 100%; }
+
+#reg-btn-user { width: 200px; height: 50px;
+  padding: 0px 20px 50px 30px;
+  float: left;
+  }
+#reg-btn-user a {
+  background-image:url(../images/btn_artspan_register.png);
+  display: block;
+  width: 200px; height: 50px;
+  text-indent: -9999px;
+  }
+#reg-btn-user a:hover { background-position:0px -50px; }
+.view-id-eventlist.view-display-id-block_2 { margin: 1em 0 0;
+  color: #3F3F3F; font-size: 14px; line-height: 1.5em; 
+  }
+.view-id-eventlist.view-display-id-block_2 .views-field-field-teaser-value {
+ font-style: italic; }
+
+.view-id-eventlist.view-display-id-block_2 .views-field-field-date-value .date-display-single {
+ font-weight: normal; 
+ font-style: normal;
+}
+.messages a:link, .messages a:visited { color: #fff; text-decoration: underline; }
+.view-civicrm-events ul { margin: 0; padding: 0; }
+.view-civicrm-events ul li { margin: 0; padding: 0; list-style: none; }
+.event-list-date { font-style: italic; }
+
+#crm-container #first_name.big { width: 12em; }
+#crm-container #middle_name.big { width: 12em; }
+#crm-container #last_name.big { width: 12em; }
+.crm-event-register-form-block .first_name-section { width: 175px; float: left; }
+.crm-event-register-form-block .middle_name-section { width: 175px; float: left; }
+.crm-event-register-form-block .last_name-section { width: 300px; float: left; }
+.crm-event-register-form-block .phone-1-1-section { width: 175px; float: left; clear: both;}
+.crm-event-register-form-block .phone-2-1-section { width: 175px; float: left; }
+.crm-event-register-form-block .phone-2-2-section { width: 175px; float: left; }
+.crm-event-register-form-block .phone-7-1-section { width: 100%; float: left; clear: both;}
+.crm-event-register-form-block .custom_46-section { width: 160px; float: left; }
+.crm-event-register-form-block .custom_21-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .custom_29-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .custom_69-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .url-1-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .street_address-1-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .supplemental_address_1-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .city-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .state_province-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .postal_code-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .custom_89-section { display: none; }
+#account-stuff .message { display: none; }
+.filter-header { padding: 10px; }
+.ui-icon-print { display: none; }
+#node-11773 fieldset.webform-component-fieldset { border: none !important; }
+#edit-submitted-civicrm-1-contact-1-fieldset-fieldset-civicrm-1-contact-1-contact-first-name-wrapper { 
+  width: 200px; float: left; }
+
+#crm-container .crm-event-confirm-form-block .label, #crm-container .crm-event-thankyou-form-block .label {
+  float: left;
+  margin-right: 10px;
+}
+#crm-container .crm-event-confirm-form-block  .crm-section, #crm-container .crm-event-thankyou-form-block .crm-section {
+margin-bottom: 2px;
+}
+.view-eventlist .views-row {
+padding: 0 0 10px 0;
+}
+.main-header {
+padding: 0 0 14px 0;
+}

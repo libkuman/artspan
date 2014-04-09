@@ -1,0 +1,15 @@
+; $Id: blockreference.info,v 1.1.4.6 2010/12/10 14:03:42 danielb Exp $
+name = Block reference
+description = Defines a field type for referencing a block from a node.
+dependencies[] = content
+dependencies[] = text
+dependencies[] = optionwidgets
+dependencies[] = block
+package = CCK
+core = 6.x
+; Information added by drupal.org packaging script on 2010-12-10
+version = "6.x-1.17"
+core = "6.x"
+project = "blockreference"
+datestamp = "1291989973"
+

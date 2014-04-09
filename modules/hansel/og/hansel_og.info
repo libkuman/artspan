@@ -1,0 +1,14 @@
+; $Id: hansel_og.info,v 1.1 2011/02/08 16:44:33 mauritsl Exp $
+name = Hansel OG
+description = Organic Groups related switches and actions
+package = Hansel
+core = 6.x
+dependencies[] = hansel
+dependencies[] = og
+
+; Information added by drupal.org packaging script on 2011-02-24
+version = "6.x-1.2"
+core = "6.x"
+project = "hansel"
+datestamp = "1298538300"
+

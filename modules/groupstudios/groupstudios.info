@@ -1,0 +1,5 @@
+name = "Artspan Group Studio Update"
+description = "Update participants with the group studio address."
+core = 6.x
+php = 5.1
+

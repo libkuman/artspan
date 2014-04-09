@@ -1,0 +1,555 @@
+{*
+ +--------------------------------------------------------------------+
+ | CiviCRM version 4.1                                                |
+ +--------------------------------------------------------------------+
+ | Copyright CiviCRM LLC (c) 2004-2011                                |
+ +--------------------------------------------------------------------+
+ | This file is a part of CiviCRM.                                    |
+ |                                                                    |
+ | CiviCRM is free software; you can copy, modify, and distribute it  |
+ | under the terms of the GNU Affero General Public License           |
+ | Version 3, 19 November 2007 and the CiviCRM Licensing Exception.   |
+ |                                                                    |
+ | CiviCRM is distributed in the hope that it will be useful, but     |
+ | WITHOUT ANY WARRANTY; without even the implied warranty of         |
+ | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.               |
+ | See the GNU Affero General Public License for more details.        |
+ |                                                                    |
+ | You should have received a copy of the GNU Affero General Public   |
+ | License and the CiviCRM Licensing Exception along                  |
+ | with this program; if not, contact CiviCRM LLC                     |
+ | at info[AT]civicrm[DOT]org. If you have questions about the        |
+ | GNU Affero General Public License or the licensing of CiviCRM,     |
+ | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
+ +--------------------------------------------------------------------+
+*}
+<script type="text/javascript" src="/sites/all/themes/artspan/js/jquery.scrollTo-1.4.1-min.js"></script> 
+<script type="text/javascript" src="/sites/all/themes/artspan/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/sites/all/themes/artspan/js/register.js"></script>
+{/literal}
+<h1>Register for SF Open Studios</h1>
+{if $action & 1024}
+    {include file="CRM/Event/Form/Registration/PreviewHeader.tpl"}
+{/if}
+
+{include file="CRM/common/TrackingFields.tpl"}
+
+{capture assign='reqMark'}<span class="marker"  title="{ts}This field is required.{/ts}">*</span>{/capture}
+<div class="crm-block crm-event-register-form-block">
+
+{* moved to tpl since need to show only for primary participant page *}
+{if $requireApprovalMsg || $waitlistMsg}
+  <div id = "id-waitlist-approval-msg" class="messages status">
+    	{if $requireApprovalMsg}
+	    <div id="id-req-approval-msg">{$requireApprovalMsg}</div>
+	{/if}
+        {if $waitlistMsg}
+	    <div id="id-waitlist-msg">{$waitlistMsg}</div>
+	{/if} 
+  </div>
+{/if}
+
+{if $contact_id}
+<div class="messages status">
+    {ts 1=$display_name}Welcome %1{/ts}. (<a href="{crmURL p='civicrm/event/register' q="cid=0&reset=1&id=`$event.id`"}" title="{ts}Click here to register a different person for this event.{/ts}">{ts 1=$display_name}Not %1, or want to register a different person{/ts}</a>?)</div>
+{/if}
+
+<div id="form1_registration">
+{if $smarty.now < 1303948800}
+
+{if $event.intro_text}
+    <div id="intro_text" class="crm-section intro_text-section">
+        <p>{$event.intro_text}</p>
+    </div>
+{/if}
+{else}
+{if $pcpSupporterText}
+    <div class="crm-section pcpSupporterText-section">
+        <div class="content">{$pcpSupporterText}</div>
+    </div>
+{/if}
+
+{/if}
+<a name="form_top"></a>
+{if $form.additional_participants.html}
+    <div class="crm-section additional_participants-section" id="noOfparticipants">
+        <div class="label">{$form.additional_participants.label}</div>
+        <div class="content">
+            {$form.additional_participants.html} &nbsp; ({ts}including yourself{/ts})<br />
+            <span class="description">{ts}Fill in your registration information on this page. If you are registering additional people, you will be able to enter their registration information after you complete this page and click &quot;Continue&quot;.{/ts}</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+{/if}
+
+<fieldset>
+<legend>Registration Options</legend>
+
+{if $priceSet}
+    <fieldset id="priceset" class="crm-group priceset-group"><legend>{$event.fee_label}</legend>
+        {include file="CRM/Price/Form/PriceSet.tpl" extends="Event"}
+	{include file="CRM/Price/Form/ParticipantCount.tpl"}
+    </fieldset>
+    {if $form.is_pay_later}
+        <div class="crm-section pay_later-section">
+	        <div class="label">&nbsp;</div>
+            <div class="content">{$form.is_pay_later.html}&nbsp;{$form.is_pay_later.label}</div>
+            <div class="clear"></div>
+        </div>
+    {/if}
+
+{else}
+    {if $paidEvent}
+        <div class="crm-section paid_event-section">
+    	    <div class="label">{$event.fee_label} <span class="marker">*</span></div>
+    		<div class="content">{$form.amount.html}</div>
+            <div class="clear"></div>
+     	</div>
+        {if $form.is_pay_later}
+            <div class="crm-section pay_later-section">
+    	        <div class="label">&nbsp;</div>
+                <div class="content">{$form.is_pay_later.html}&nbsp;{$form.is_pay_later.label}</div>
+                <div class="clear"></div>
+            </div>
+        {/if}
+    {/if}
+{/if}
+</fieldset>
+
+{if $pcp && $is_honor_roll }
+    <fieldset class="crm-group pcp-group">
+        <div class="crm-section pcp-section">
+            <div class="crm-section display_in_roll-section">
+                <div class="content">
+                    {$form.pcp_display_in_roll.html} &nbsp;
+                    {$form.pcp_display_in_roll.label}
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="nameID" class="crm-section is_anonymous-section">
+                <div class="content">
+                    {$form.pcp_is_anonymous.html}
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="nickID" class="crm-section pcp_roll_nickname-section">
+                <div class="label">{$form.pcp_roll_nickname.label}</div>
+                <div class="content">{$form.pcp_roll_nickname.html}
+                <div class="description">{ts}Enter the name you want listed with this contribution. You can use a nick name like 'The Jones Family' or 'Sarah and Sam'.{/ts}</div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="personalNoteID" class="crm-section pcp_personal_note-section">
+                <div class="label">{$form.pcp_personal_note.label}</div>
+                <div class="content">
+                    {$form.pcp_personal_note.html}
+                    <div class="description">{ts}Enter a message to accompany this contribution.{/ts}</div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </fieldset>
+{/if}
+
+<fieldset class="crm-group crm_user-group">
+<legend>Account Information</legend>
+
+{* User account registration option. Displays if enabled for one of the profiles on this page. *}
+{include file="CRM/common/CMSUser.tpl"}
+
+{assign var=n value=email-$bltID}
+    <div class="crm-section email-section">
+        <div class="label">{$form.$n.label}</div>
+        <div class="content">{$form.$n.html}</div>
+        <div class="clear"></div>
+    </div>
+
+</fieldset>
+<div class="crm-button crm-button-next go-to-form-2">Next >></div>
+</div>
+
+<div id="form2_registration" style="display: none;">
+{include file="CRM/UF/Form/Block.tpl" fields=$customPre} 
+
+
+      <fieldset><legend>Studio Information</legend>
+
+      <div class="crm-section">
+        <div class="label"><label for="studio_artist_name">Artist Name</label></div>
+        <div class="content">
+          <input maxlength="64" size="30" name="studio_artist_name" type="text" value="{$studio_artist_name}" id="studio_artist_name" class="form-text big">
+        </div>
+        <div class="clear"></div>
+      </div>
+
+
+      <div id="weekend_information">
+        <div class="studio_weekend">2012 SF Open Studios Weekend Dates:</div>
+        <p>
+          <b>Weekend 1:</b> October 13 &amp; 14<br />
+          Fort Mason, Marina, Pacific Heights, Russian Hill, North Beach, Duboce, Hayes Valley, Haight, Upper Market, Ocean Beach, Sunset, Richmond, Diamond Heights, Buena Vista, Twin Peaks, West Portal, Glen Park, Excelsior
+        </p>
+        <p>
+          <b>Weekend 2:</b> October 20 &amp; 21<br />
+          SOMA, Tenderloin, Potrero Hill, Dogpatch, Bayview
+        </p>
+        <p>
+          <b>Weekend 3:</b> October 27 &amp; 28<br />
+          Mission, Noe Valley, Bernal Heights, Castro
+        </p>
+        <p>
+          <b>Weekend 4:</b> November 3 &amp; 4<br />
+          Hunters Point Shipyard, Islais Creek Studios
+        </p>
+    </div>
+
+    <div id="weekend_1" class="weekend_block">
+      <div class="crm-section">
+        <div class="label"><label for="studio_weekend_no">Weekend/Location</label> <span class="marker">*</span></div>
+        <div class="content">
+          {html_options name=studio_weekend_no options=$weekends selected=$studio_weekend_selected}
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="crm-section">
+        <div class="label"><label for="group_site">Is this studio part of a group site?</label> <span class="marker">*</span></div>
+        <div class="content">
+          <label class="option"><input type="radio" id="group_site_no" name="group_site" value="no" {if not $group_site_yes}checked="checked"{/if} class="form-radio"> No</label>
+          <label class="option"><input type="radio" id="group_site_yes" name="group_site" value="yes" {if $group_site_yes}checked="checked"{/if} class="form-radio"> Yes</label>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <fieldset id="group_site_no_area" class="group_site_no">
+        <div class="crm-section">
+          <div class="label"><label for="studio_address">Studio Address</label> <span class="marker">*</span></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_address" type="text" value="{$studio_address}" id="studio_address" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_city">Studio City</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_city" type="text" value="{$studio_city}" id="studio_city" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_state">State</label></div>
+          <div class="content">
+            {html_options name=studio_state options=$states selected=$state_selected}
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_zip">Zip Code</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_zip" type="text" value="{$studio_zip}" id="studio_zip" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+
+      </fieldset>
+
+      <fieldset id="group_site_yes_area" class="group_site_yes">
+        <div class="crm-section">
+          <div class="label"><label for="studio_group_location">Group Location Reference</label> <span class="marker">*</span></div>
+          <div class="content">
+            {html_options name=studio_group_location options=$studios selected=$studio_selected class="required"}
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_bldg_no">Bldg. #</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_bldg_no" type="text" value="{$studio_bldg_no}" id="studio_bldg_no" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_no">Studio #</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_no" type="text" value="{$studio_no}" id="studio_no" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+      </fieldset>
+
+    </div>
+
+    <div id="weekend_2" class="weekend_block">
+      <div class="crm-section">
+        <div class="label"><label for="studio_weekend_no_2">Weekend/Location</label> <span class="marker">*</span></div>
+        <div class="content">
+          {html_options name=studio_weekend_no_2 options=$weekends selected=$studio_weekend_selected}
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <div class="crm-section">
+        <div class="label"><label for="group_site_2">Is this studio part of a group site?</label> <span class="marker">*</span></div>
+        <div class="content">
+          <label class="option"><input type="radio" id="group_site_2_no" name="group_site_2" value="no" {if not $group_site_yes}checked="checked"{/if} class="form-radio"> No</label>
+          <label class="option"><input type="radio" id="group_site_2_yes" name="group_site_2" value="yes" {if $group_site_yes}checked="checked"{/if} class="form-radio"> Yes</label>
+        </div>
+        <div class="clear"></div>
+      </div>
+
+      <fieldset id="group_site_no_area_2" class="group_site_no">
+        <div class="crm-section">
+          <div class="label"><label for="studio_address_2">Studio Address</label> <span class="marker">*</span></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_address_2" type="text" value="{$studio_address}" id="studio_address_2" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_city_2">Studio City</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_city_2" type="text" value="{$studio_city}" id="studio_city_2" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_state_2">State</label></div>
+          <div class="content">
+            {html_options name=studio_state_2 options=$states selected=$state_selected}
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_zip_2">Zip Code</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_zip_2" type="text" value="{$studio_zip}" id="studio_zip_2" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+
+      </fieldset>
+
+      <fieldset id="group_site_yes_area_2" class="group_site_yes">
+        <div class="crm-section">
+          <div class="label"><label for="studio_group_location_2">Group Location Reference</label> <span class="marker">*</span></div>
+          <div class="content">
+            {html_options name=studio_group_location_2 options=$studios selected=$studio_selected class="required"}
+          </div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_bldg_no_2">Bldg. #</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_bldg_no_2" type="text" value="{$studio_bldg_no}" id="studio_bldg_no_2" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+        <div class="crm-section">
+          <div class="label"><label for="studio_no_2">Studio #</label></div>
+          <div class="content"><input maxlength="64" size="30" name="studio_no_2" type="text" value="{$studio_no}" id="studio_no_2" class="form-text big"></div>
+          <div class="clear"></div>
+        </div>
+      </fieldset>
+
+
+    </div>
+
+    <div class="clear"></div>
+
+
+      </fieldset>
+
+
+
+{include file="CRM/UF/Form/Block.tpl" fields=$customPost}   
+
+      <div class="crm-button crm-button-next go-to-form-1"><< Previous</div>
+      <div class="crm-button crm-button-next go-to-form-3">Next >></div>
+</div>
+
+<div id="form3_registration" style="display: none;">
+      {literal}
+      <script>
+      (function($) {
+      
+  var fixGroupSites = function() {
+    var weekend = $(this).parents('.weekend_block');
+    var radios = weekend.find('input[name=group_site]:checked, input[name=group_site_2]:checked');
+    var no = weekend.find('.group_site_no');
+    var yes = weekend.find('.group_site_yes');
+    if(radios.val() === 'yes') {
+      yes.show();
+      no.hide();
+    }
+    else {
+      yes.hide();
+      no.show();
+    }
+  }
+      
+  $('input[name=group_site], input[name=group_site_2]').each(fixGroupSites).change(fixGroupSites);
+      
+      })(cj);
+      </script>
+      {/literal}
+
+{if $paidEvent}   
+    {include file='CRM/Core/BillingBlock.tpl'} 
+{/if}        
+
+{if $isCaptcha}
+    {include file='CRM/common/ReCAPTCHA.tpl'}
+{/if}
+
+<div id="paypalExpress">
+{* Put PayPal Express button after customPost block since it's the submit button in this case. *}
+{if $paymentProcessor.payment_processor_type EQ 'PayPal_Express' and $buildExpressPayBlock}
+    {assign var=expressButtonName value='_qf_Register_upload_express'}
+    <fieldset class="crm-group payPalExpress-group"><legend>{ts}Checkout with PayPal{/ts}</legend>
+    <div class="description">{ts}Click the PayPal button to continue.{/ts}</div>
+	<div>{$form.$expressButtonName.html} <span style="font-size:11px; font-family: Arial, Verdana;">Checkout securely.  Pay without sharing your financial information. </span>
+    </div>
+    </fieldset>
+{/if}
+</div>
+
+<div class="crm-button crm-button-next go-to-form-2"><< Previous</div>
+<div id="crm-submit-buttons" class="crm-submit-buttons">
+    {include file="CRM/common/formButtons.tpl" location="bottom"}
+</div>
+</div>
+
+</div>
+
+{if $event.footer_text}
+    <div id="footer_text" class="crm-section event_footer_text-section">
+        <p>{$event.footer_text}</p>
+    </div>
+{/if}
+
+{literal} 
+<script type="text/javascript">
+    {/literal}{if $pcp && $is_honor_roll }pcpAnonymous();{/if}{literal}
+
+    function allowParticipant( ) { 		
+	{/literal}{if $allowGroupOnWaitlist}{literal}
+	    var additionalParticipants = cj('#additional_participants').val();
+	    var pricesetParticipantCount = 0;
+	    {/literal}{if $priceSet}{literal}
+	      pricesetParticipantCount = pPartiCount;
+	    {/literal}{/if}{literal}
+	
+	    allowGroupOnWaitlist( additionalParticipants, pricesetParticipantCount );
+	{/literal}{/if}{literal}
+    }
+
+    {/literal}{if ($form.is_pay_later or $bypassPayment) and $paymentProcessor.payment_processor_type EQ 'PayPal_Express'}
+    {literal} 
+       showHidePayPalExpressOption( );
+    {/literal}{/if}{literal}
+
+    function showHidePayPalExpressOption( )
+    {
+	var payLaterElement = {/literal}{if $form.is_pay_later}true{else}false{/if}{literal};
+	if ( ( cj("#bypass_payment").val( ) == 1 ) ||
+	     ( payLaterElement && document.getElementsByName('is_pay_later')[0].checked ) ) {
+		show("crm-submit-buttons");
+		hide("paypalExpress");
+	} else {
+		show("paypalExpress");
+		hide("crm-submit-buttons");
+	}
+    }
+
+    {/literal}{if ($form.is_pay_later or $bypassPayment) and $showHidePaymentInformation}{literal} 
+       showHidePaymentInfo( );
+    {/literal} {/if}{literal}
+
+    function showHidePaymentInfo( )
+    {	
+	var payLater = {/literal}{if $form.is_pay_later}true{else}false{/if}{literal};
+
+	if ( ( cj("#bypass_payment").val( ) == 1 ) ||
+	     ( payLater && document.getElementsByName('is_pay_later')[0].checked ) ) {
+	     hide( 'payment_information' );		
+	} else {
+             show( 'payment_information' );
+	}
+    }
+    
+    {/literal}{if $allowGroupOnWaitlist}{literal}
+       allowGroupOnWaitlist( 0, 0 );
+    {/literal}{/if}{literal}
+    
+    function allowGroupOnWaitlist( additionalParticipants, pricesetParticipantCount )
+    {	
+      {/literal}{if $isAdditionalParticipants}{literal}
+      if ( !additionalParticipants ) {
+      	additionalParticipants = cj('#additional_participants').val();
+      }
+      {/literal}{else}{literal}
+        additionalParticipants = 0;
+      {/literal}{/if}{literal}
+
+      additionalParticipants = parseInt( additionalParticipants );
+      if ( ! additionalParticipants ) {
+      	 additionalParticipants = 0;
+      }     
+
+      var availableRegistrations = {/literal}'{$availableRegistrations}'{literal};
+      var totalParticipants = parseInt( additionalParticipants ) + 1;
+      
+      if ( pricesetParticipantCount ) {
+      	// add priceset count if any 
+      	totalParticipants += parseInt(pricesetParticipantCount) - 1;
+      }
+      var isrequireApproval = {/literal}'{$requireApprovalMsg}'{literal};
+ 
+      if ( totalParticipants > availableRegistrations ) {
+         cj( "#id-waitlist-msg" ).show( );
+         cj( "#id-waitlist-approval-msg" ).show( );
+
+         //set the value for hidden bypass payment. 
+         cj( "#bypass_payment").val( 1 );
+
+         //hide pay later.
+         {/literal}{if $form.is_pay_later}{literal} 
+	    cj("#is-pay-later").hide( );
+         {/literal} {/if}{literal}
+ 
+      }	else {
+         if ( isrequireApproval ) {
+            cj( "#id-waitlist-approval-msg" ).show( );
+            cj( "#id-waitlist-msg" ).hide( );
+         } else {
+            cj( "#id-waitlist-approval-msg" ).hide( );
+         }
+         //reset value since user don't want or not eligible for waitlist 
+         cj( "#bypass_payment").val( 0 );
+
+         //need to show paylater if exists.
+         {/literal}{if $form.is_pay_later}{literal} 
+	    cj("#is-pay-later").show( );
+         {/literal} {/if}{literal}
+      }
+
+      //now call showhide payment info.
+      {/literal}
+      {if ($form.is_pay_later or $bypassPayment) and $paymentProcessor.payment_processor_type EQ 'PayPal_Express'}{literal} 
+         showHidePayPalExpressOption( );
+      {/literal}{/if}
+      {literal}
+  
+      {/literal}{if ($form.is_pay_later or $bypassPayment) and $showHidePaymentInformation}{literal} 
+         showHidePaymentInfo( );
+      {/literal}{/if}{literal}
+    }
+    
+    {/literal}{if $pcp && $is_honor_roll }{literal}
+    function pcpAnonymous( ) {
+        // clear nickname field if anonymous is true
+        if ( document.getElementsByName("pcp_is_anonymous")[1].checked ) { 
+            document.getElementById('pcp_roll_nickname').value = '';
+        }
+        if ( ! document.getElementsByName("pcp_display_in_roll")[0].checked ) { 
+            hide('nickID', 'block');
+            hide('nameID', 'block');
+    	hide('personalNoteID', 'block');
+        } else {
+            if ( document.getElementsByName("pcp_is_anonymous")[0].checked ) {
+                show('nameID', 'block');
+                show('nickID', 'block');
+    	        show('personalNoteID', 'block');
+            } else {
+                show('nameID', 'block');
+                hide('nickID', 'block');
+    	    hide('personalNoteID', 'block');
+            }
+        }
+    }
+    {/literal}{/if}{literal}
+
+</script>
+{/literal} 

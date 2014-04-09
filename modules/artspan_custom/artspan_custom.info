@@ -1,0 +1,5 @@
+name = "Artspan Module"
+description = "Various functions and helpers for the artspan web site."
+core = 6.x
+php = 5.1
+

@@ -1,0 +1,429 @@
+$(document).ready(function(){
+  var twoWeekends = false;
+  var groupStudio1 = false;
+  var groupStudio2 = false;
+  var numTiffUploads = 0;
+        
+  $('.credit_card_type-section label').append(' <span class="marker">*</span>');
+  $('.credit_card_number-section label').append(' <span class="marker">*</span>');
+  $('.cvv2-section label').append(' <span class="marker">*</span>');
+  $('.credit_card_exp_date-section label').append(' <span class="marker">*</span>');
+  $('.billing_first_name-section label').append(' <span class="marker">*</span>');
+  $('.billing_last_name-section label').append(' <span class="marker">*</span>');
+  $('.billing_street_address-5-section label').append(' <span class="marker">*</span>');
+  $('.billing_city-5-section label').append(' <span class="marker">*</span>');
+  $('.billing_postal_code-5-section label').append(' <span class="marker">*</span>');
+  $('.custom_16-section label').append(' <span class="marker">*</span>');
+  $('.custom_14-section label').append(' <span class="marker">*</span>');
+  $('.custom_58-section label').append(' <span class="marker">*</span>');
+  $('.custom_60-section label').append(' <span class="marker">*</span>');
+  $('.custom_56-section label').append(' <span class="marker">*</span>');
+  $('.custom_57-section label').append(' <span class="marker">*</span>');
+  $('.custom_59-section label').append(' <span class="marker">*</span>');
+  $('.custom_61-section label').append(' <span class="marker">*</span>');
+  $('#url-1-website_type_id').val(6);
+
+  $('.custom_83-section label').append(' <span class="marker">*</span>');
+
+  $('.custom_84-section label').append(' <span class="marker">*</span>');
+  
+  $('.custom_25-section label').append(' <span class="marker">*</span>');
+  $('.custom_71-section label').append(' <span class="marker">*</span>');
+  $('.custom_72-section label').append(' <span class="marker">*</span>');
+  $('.custom_28-section label').append(' <span class="marker">*</span>');
+  
+  $('.custom_81-section label').append(' <span class="marker">*</span>');
+  $('.custom_77-section label').append(' <span class="marker">*</span>');
+  $('.custom_78-section label').append(' <span class="marker">*</span>');
+  $('.custom_82-section label').append(' <span class="marker">*</span>');
+
+  $('.custom_86-section label').append(' <span class="marker">*</span>');
+  $('.custom_76-section .label').append(' <span class="marker">*</span>');
+  
+  // remove broken js events (... hack ...)
+  $(".paid_event-section input[type='radio']").attr('onClick', '');
+
+  // Differences based on type of registration
+  (function() {
+    var handleMultipleWeekends = function() {
+      var clicked_id = $(".paid_event-section input[type='radio']:checked").attr('id');
+      var label = $("label[for=" + clicked_id + "]").text();
+      var guide_section = $('.custom_16-section').parents('fieldset').not('.crm_user-group');
+      var label_wkend_1 = $('#weekend_1 label[for=studio_weekend_no]');
+      var label_wkend_2 = $('#weekend_2 label[for=studio_weekend_no_2]');
+
+      if (label.search(/2 weekends/i) >= 0) {
+        //This will run for 2 weekends
+        $('#weekend_2, .weekend_2, .weekend_2_loc').show();
+        label_wkend_1.text('First Participating Weekend/Location');
+        label_wkend_2.text('Second Participating Weekend/Location');
+        $('.custom_85-section label').prepend('<h4>Your First Weekend</h4>');
+        $('.custom_86-section label').prepend('<h4>Your Second Weekend</h4>');
+        $('.custom_16-section label').prepend('<h4>Your First Weekend</h4>');
+        $('.custom_56-section label').prepend('<h4>Your Second Weekend</h4>');
+        twoWeekends = true;
+      } else {
+        //This will run for 1 weekend
+        $('#weekend_2, .weekend_2, .weekend_2_loc').hide(); 
+        label_wkend_1.text('Participating Weekend/Location');
+        $('.custom_85-section label h4').remove();
+        $('.custom_86-section label h4').remove();
+        $('.custom_16-section label h4').remove();
+        $('.custom_56-section label h4').remove();
+        twoWeekends = false;
+      }
+
+      if (label.search(/premier/i) >= 0) {
+        guide_section.show();
+        if(label.search(/2 weekends/i) >= 0 && label.search(/combo/i) < 0) {
+          guide_section.find('.weekend_2').show();
+          label_wkend_1.text('First Premier Weekend/Location');
+          label_wkend_2.text('Second Premier Weekend/Location');
+          numTiffUploads = 2;
+        }
+        else {
+          guide_section.find('.weekend_2').hide();
+          label_wkend_1.text('Premier Weekend/Location');
+          label_wkend_2.text('Participating Weekend/Location');
+          numTiffUploads = 1;
+        }
+      }
+      else {
+        guide_section.hide();
+        numTiffUploads = 0;
+      }
+
+    };
+    $('.paid_event-section input').click(handleMultipleWeekends);
+    handleMultipleWeekends();
+    
+  })();
+
+  (function() {
+    var handleGroupSite1 = function() {
+          groupStudio1 = true; 
+          if ( $('[name=custom_70]:checked').val() == 0) {
+          $('.custom_83-section').hide(); 
+          $('.custom_73-section').hide(); 
+          $('.custom_74-section').hide(); 
+          } else if ( $('[name=custom_70]:checked').val() == 1) {
+          $('.custom_24-section').hide(); 
+          $('.custom_25-section').hide(); 
+          $('.custom_71-section').hide(); 
+          $('.custom_72-section').hide(); 
+          $('.custom_28-section').hide(); 
+          } else {
+          $('.custom_83-section').hide(); 
+          $('.custom_73-section').hide(); 
+          $('.custom_74-section').hide(); 
+          $('.custom_24-section').hide(); 
+          $('.custom_25-section').hide(); 
+          $('.custom_71-section').hide(); 
+          $('.custom_72-section').hide(); 
+          $('.custom_28-section').hide(); 
+
+          }
+      $("input:radio[name='custom_70']").click(function(){
+        if ($(this).val() == '1') {
+          $('.custom_25-section').hide(); 
+          $('.custom_71-section').hide(); 
+          $('.custom_72-section').hide(); 
+          $('.custom_28-section').hide(); 
+
+          $('#custom_25').val('');
+          $('#custom_71').val('');
+          $('#custom_72').val('');
+          $('#custom_28').val('');
+
+          $('.custom_83-section').show(); 
+          $('.custom_73-section').show(); 
+          $('.custom_74-section').show(); 
+        } else if ($(this).val() == '0') { 
+          $('.custom_83-section').hide(); 
+          $('.custom_73-section').hide(); 
+          $('.custom_74-section').hide(); 
+          $('#custom_83').val('');
+          $('#custom_73').val('');
+          $('#custom_74').val('');
+
+          $('.custom_25-section').show(); 
+          $('.custom_71-section').show(); 
+          $('.custom_72-section').show(); 
+          $('.custom_28-section').show(); 
+        } else {
+          $('.custom_24-section').hide(); 
+          $('.custom_73-section').hide(); 
+          $('.custom_74-section').hide(); 
+          $('.custom_25-section').hide(); 
+          $('.custom_71-section').hide(); 
+          $('.custom_72-section').hide(); 
+          $('.custom_28-section').hide(); 
+        }
+      });
+    };
+    
+
+    $('.custom_70-section input').click(handleGroupSite1);
+    handleGroupSite1();
+  })();
+
+
+  (function() {
+    var handleGroupSite2 = function() {
+          groupStudio2 = true; 
+          $('.custom_81-section').hide(); 
+          $('.custom_77-section').hide(); 
+          $('.custom_78-section').hide(); 
+          $('.custom_82-section').hide(); 
+          $('.custom_84-section').hide(); 
+          $('.custom_79-section').hide(); 
+          $('.custom_80-section').hide(); 
+          $('.custom_84-section').hide(); 
+      $("input:radio[name='custom_76']").click(function(){
+        if ($(this).val() == '1') {
+          $('.custom_81-section').hide(); 
+          $('.custom_77-section').hide(); 
+          $('.custom_78-section').hide(); 
+          $('.custom_82-section').hide(); 
+          $('.custom_84-section').show(); 
+          $('.custom_79-section').show(); 
+          $('.custom_80-section').show(); 
+        } else if ($(this).val() == '0') { 
+          $('.custom_84-section').hide(); 
+          $('.custom_79-section').hide(); 
+          $('.custom_80-section').hide(); 
+          $('.custom_81-section').show(); 
+          $('.custom_77-section').show(); 
+          $('.custom_78-section').show(); 
+          $('.custom_82-section').show(); 
+        }
+      });
+    };
+
+    $('.custom_76-section input').click(handleGroupSite2);
+    handleGroupSite2();
+  })();
+
+  // Studios
+  (function() {
+    var location_section = $('.custom_85-section').parents('fieldset').not('.crm_user-group');
+    var children = location_section.children().not('legend, .custom_10-section, .custom_21-section');
+    var half = children.size() / 2;
+
+    $("#selectbox option:not(option:first, option:last)").remove();
+
+
+    location_section.append('<div class="weekend_loc_block premier weekend_1_loc"></div>');
+    location_section.append('<div class="weekend_loc_block premier weekend_2_loc"></div>');
+
+    location_section.children().not('legend, , .custom_10-section, .custom_21-section, .weekend_loc_block').each( function(i) {
+      if(i < half) {
+        $(this).appendTo($('.weekend_1_loc'));
+      }
+      else {
+        $(this).appendTo($('.weekend_2_loc'));
+      }
+    });
+  })();
+
+
+  // Guide artwork
+  (function() {
+    var guide_section = $('.custom_16-section').parents('fieldset').not('.crm_user-group');
+    var children = guide_section.children().not('legend');
+    var half = children.size() / 2;
+
+    guide_section.append('<div class="weekend_block premier weekend_1"></div>');
+    guide_section.append('<div class="weekend_block premier weekend_2"></div>');
+
+    guide_section.children().not('legend, .weekend_block').each( function(i) {
+      if(i < half) {
+        $(this).appendTo($('.weekend_1'));
+      }
+      else {
+        $(this).appendTo($('.weekend_2'));
+      }
+    });
+  })();
+
+
+
+
+
+
+
+  // Validation & next/prev buttons.
+  (function() {
+
+    var validate = function (element, message, f, element_section) {
+      var jElement = $(element);
+      var test;
+
+      if(message === undefined) {
+        message = 'This is a required field.';
+      }
+      if(typeof f !== 'function') {
+        f = function() {
+          return ($(this).val() !== '');
+        }
+      }
+
+      if(!jElement.data('validator')) {
+        test = function() {
+          var section = element_section || jElement.parents('.crm-section');
+          if(f.apply(element)) {
+            section.data('error', false);
+            section.find('label').removeClass('crm-error');
+            section.find('.crm-error').remove();
+            return true;
+          }
+          else if(!section.data('error')) {
+            section.find('label').addClass('crm-error');
+            jElement.after('<div class="crm-error">' + message + '</div>');
+            section.data('error', true);
+          }
+          return false;
+        }
+        jElement.change(test);
+        jElement.data('validator', test);
+      }
+      else {
+        test = jElement.data('validator');
+      }
+
+      return test();
+    }
+
+    var groupValidate = function(group) {
+      var allPassed = true;
+      var element;
+      for(i in group) {
+        element = group[i];
+        if(!validate(element.ref, element.message, element.validator, element.section)) {
+          allPassed = false;
+        }
+      }
+      return allPassed;
+    }
+
+    var phoneValidator = function() {
+      var reg = /^(1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/;
+      return reg.test($(this).val());
+    }
+
+    
+    var emailValidator = function() {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      return reg.test($(this).val());
+    }
+
+    $('.form-submit').click( function() {
+      // Make sure required values are set
+      var selectWeekendValidator = function() {
+        return ($(this).val());
+      }
+//      var groupLocationValidator = function() {
+//        return ($(this).val() != 0);
+//      }
+      var tiffValidator = function() {
+        return ($(this).val().match(/tiff?$/));
+      }
+
+
+      if ($("#phone-7-1").val()) {
+      var allGroup = groupValidate([
+        {
+          ref: $("#phone-7-1"),
+          validator: phoneValidator,
+          message: "Please enter a valid phone number. Do not include any letters."
+        }
+      ]);
+      } else {
+        var allGroup = true;
+      }
+
+
+      //groupOptions1 = [{ ref: $('#custom_83') }, { ref: $('#custom_73') }, { ref: $('#custom_74') } ];
+      if ( $('[name=custom_70]:checked').val() == 1) {
+        groupOptions1 = [{ ref: $('#custom_83') } ];
+      } else if ($('[name=custom_70]:checked').val() == 0) {
+        groupOptions1 = [{ ref: $('#custom_25') }, { ref: $('#custom_71') }, { ref: $('#custom_72') }, { ref: $('#custom_28') } ];
+      }
+      var firstGroupSite = groupValidate(groupOptions1);
+
+
+      //groupOptions2 = [{ ref: $('#custom_84') }, { ref: $('#custom_79') }, { ref: $('#custom_80') } ];
+      if (twoWeekends) {
+        if ( $('[name=custom_76]:checked').val() == 1) {
+          groupOptions2 = [{ ref: $('#custom_84') } ];
+        } else {
+          groupOptions2 = [{ ref: $('#custom_81') }, { ref: $('#custom_77') }, { ref: $('#custom_78') }, { ref: $('#custom_82') } ];
+        }
+        var secondGroupSite = groupValidate(groupOptions2);
+      } else {
+        var secondGroupSite =  true;
+      }
+
+
+      var secondWeekend = (!twoWeekends || groupValidate([
+        {
+          ref: $("select[name=custom_86]"),
+          validator: selectWeekendValidator,
+          message: "Please select a location."
+        }
+      ]));
+//
+//      var secondGroupSite = (!twoWeekends || $('[name=group_site_2]:checked').val() === 'no' || groupValidate([
+//        {
+//          ref: $("[name=studio_group_location_2]"),
+//          validator: groupLocationValidator,
+//          message: "Please select a group location."
+//        }
+//      ]));
+//
+//      var secondNonGroupSite = (!twoWeekends || $('[name=group_site_2]:checked').val() === 'yes' || groupValidate([
+//        { ref: $('#studio_address_2') },
+//        { ref: $('#studio_city_2') },
+//        { ref: $('#studio_zip_2') }
+//      ]));
+//
+      var firstArtwork = (numTiffUploads < 1 || groupValidate([
+        {
+          ref: $('#custom_16'),
+          validator: tiffValidator,
+          message: "Please upload a .tif or .tiff file. If you need assistance contact ArtSpan at info@artspan.org."
+        },
+        { ref: $('#custom_14') },
+        { ref: $('#custom_58') },
+        { ref: $('#custom_60') }
+      ]));
+
+      var secondArtwork = (numTiffUploads < 2 || groupValidate([
+        {
+          ref: $('#custom_56'),
+          validator: tiffValidator,
+          message: "Please upload a .tif or .tiff file.  If you need assistance contact ArtSpan at info@artspan.org."
+        },
+        { ref: $('#custom_57') },
+        { ref: $('#custom_59') },
+        { ref: $('#custom_61') }
+      ]));
+
+      //if(allGroup && firstGroupSite && firstNonGroupSite && secondWeekend && secondGroupSite && secondNonGroupSite
+      if(allGroup && secondWeekend && firstGroupSite && secondGroupSite && firstArtwork && secondArtwork) {
+        return true;
+      }
+      else {
+        $.scrollTo('.crm-error', "slow");
+        //$.scrollTo('#errors', "slow");
+      }
+      return false;
+    });
+  })();
+
+  // Disable nonselectable options in select list.
+  (function() {
+    $('select[name^=custom_85] option.[label^=Weekend]').attr('disabled', 'true');
+    $('select[name^=custom_86] option.[label^=Weekend]').attr('disabled', 'true');
+  })();
+});

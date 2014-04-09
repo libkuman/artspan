@@ -1,0 +1,12 @@
+name = Advanced Mail Reroute
+description = Reroute E-mails based on their mail keys.
+package = Mail
+core = 7.x
+version = "7.x-1.x-dev"
+
+; Information added by drupal.org packaging script on 2011-04-18
+version = "6.x-1.3"
+core = "6.x"
+project = "advanced_mail_reroute"
+datestamp = "1303089114"
+

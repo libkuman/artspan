@@ -1,0 +1,13 @@
+; $Id: custom_username_validation.info,v 1.3 2010/07/19 10:12:42 schneck Exp $
+name = Custom Username Validation
+description = "Allows to validate the username by a regular expression on registration"
+version = "6.x-1.4"
+core = 6.x
+project = "custom_username_validation"
+
+; Information added by drupal.org packaging script on 2010-07-19
+version = "6.x-1.5"
+core = "6.x"
+project = "custom_username_validation"
+datestamp = "1279534806"
+

@@ -1,0 +1,565 @@
+/* @override 
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/layout.css?S
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/layout.css?B
+	http://artspan.m7sandbox.com/sites/all/themes/artspan/css/layout.css?l
+*/
+
+/* Layout
+ * ------
+ * Using a negative margin technique, adapted from ZEN. The page is loaded by this order:
+ *
+ * 1. Header
+ * 2. Content
+ * 3. Navigation menus
+ * 4. Sidebar Left
+ * 5. Sideabr Right */
+/* remove 'auto' and the width to switch to a fluid width */
+/* line 16, ../sass/layout.sass */
+
+#page {
+  width: 960px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+#header-wrapper {
+  min-width: 980px;
+}
+
+#header #logo-title {
+  width: 960px;
+  height: 90px;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+#header #header-region-wrapper {
+  width: 960px;
+  margin: 0 auto;
+  padding-top: 5px;
+  height: 20px;
+  text-align: right;
+}
+
+#header #header-region .block,
+#header #header-region .block * {
+  display: inline;
+	float: right;
+}
+
+#header #header-region .block .edit {
+  display: none;
+}
+
+.user_links {
+  display: inline;
+}
+
+.user_links a {
+  padding: 0 5px;
+}
+
+#header #logo {
+  margin: 0;
+  padding: 18px 0 15px;
+  display: block;
+}
+#content {
+  float: left;
+  width: 100%;
+  margin-right: -100%;
+  padding: 0;
+}
+.sidebar {
+  float: left;
+  position: relative;
+  top: 6px;
+}
+#sidebar-second {
+  float: right;
+  width: 240px;
+}
+.page-events #sidebar-second {margin:62px 0 0 !important;}
+
+#footer {
+  float: none;
+  clear: both;
+}
+
+/* Layout Helpers */
+/* line 38, ../sass/layout.sass */
+#header,
+#footer,
+.mission,
+.breadcrumb,
+.node {
+  clear: both;
+}
+
+/* Sidebars width
+ * --------------
+ * Changing the width of the sidebars is dead easy, just change the
+ * values below corresponding to the sidebar you want to modify.
+ * Make sure you keep negative values as negative values.
+ * For example, if I want to increase the width of the left sidebar
+ * to 300px, I would have to change each '190' to '300'. */
+/* line 56, ../sass/layout.sass */
+.two-sidebars .center,
+.sidebar-left .center {
+  margin-left: 190px;
+}
+
+/* line 60, ../sass/layout.sass */
+#sidebar-first {
+  width: 190px;
+  margin-right: -190px;
+}
+
+/* line 66, ../sass/layout.sass */
+.two-sidebars .center,
+.sidebar-right .center {
+  margin-right: 240px;
+  border-right: 15px solid white;
+}
+
+/* line 70, ../sass/layout.sass */
+
+/* Columns Inner
+ * -------------
+ * You can change the padding inside the columns without changing the
+ * width of them by just usinbg the INNER div of each column */
+/* line 77, ../sass/layout.sass */
+.inner {
+  padding: 0;
+}
+
+/* Navigation styles
+ * -----------------
+ * The navigation is loaded after the content, so we need to make space
+ * for it, equal to its height, so if you change the height of the navigation,
+ * remember to adapt the margin top of the content and sidebars. */
+/* line 85, ../sass/layout.sass */
+#navigation {
+  position: absolute;
+  top: 15px;
+  margin-left: 0;
+  margin-right: -100%;
+  padding: 0;
+  margin-left: 250px;
+}
+
+#navigation ul#primary {
+  border-right: 3px solid white;
+  height: 90px;
+}
+
+#navigation #primary li {
+  display: block;
+  float: left;
+  height: 90px;
+  padding: 0;
+  border-left: 3px solid white;
+}
+
+#navigation #primary li.artists {
+  width: 120px;
+}
+
+#navigation #primary li.events {
+  width: 105px;
+}
+
+#navigation #primary li.artspan {
+  width: 130px;
+}
+
+#navigation #primary li.get-involved {
+  width: 155px;
+}
+
+#navigation #primary li.sf-open-studios {
+  width: 182px;
+}
+
+#navigation #primary li a {
+  height: 72px;
+  display: block;
+  padding-top: 18px;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
+#navigation #primary li .description {
+  display: block;
+  padding-top: 5px;
+}
+
+/* breadcrumb */
+
+.breadcrumb {
+  position: absolute;
+  top: 105px;
+  padding-top: 6px;
+  padding-bottom: 0;
+  height: 20px;
+  width: 550px;
+}
+
+/* footer */
+
+#footer {
+  border-top: 3px solid #7d7d7d;
+  padding-top: 5px;
+  margin-top: 10px;
+}
+
+/* line 95, ../sass/layout.sass */
+.with-navigation #content,
+.with-navigation .sidebar {
+  margin-top: 5px;
+}
+
+/* content */
+
+#content-header h1 {
+  margin-top: -20px;
+  padding: 0;
+}
+
+/* headers */
+
+.header-area h1 {
+  padding-bottom: 0;
+  float: left;
+}
+
+.header-area h1:after {
+  display: none;
+}
+
+.header-area .sf-open-studios {
+  float: left;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 44px;
+  margin-left: 30px;
+  border-left: 1px dotted #ccc;
+  background: url(../images/star.gif) no-repeat 7px 4px;
+  height: 23px;
+  color: #666795;
+  font-size: 17px;
+}
+
+.header-area .header-links {
+  clear: both;
+  height: 20px;
+  overflow: hidden;
+  background: #000 url(../images/stripes.png) repeat 0 0;
+  margin-bottom: 20px;
+}
+
+.header-area .backlink {
+  float: right;
+  padding-left: 11px;
+  background: transparent url(../images/back_edge.png) no-repeat left top;
+}
+
+.header-area .backlink a {
+  background: #7e82af url(../images/back_background.png) repeat-x;
+  color: white;
+  height: 20px;
+  display: block;
+  padding: 0 10px 0 5px;
+  text-shadow: -1px -1px 0px #4a4a78;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+/* homepage */
+
+.node-type-home_page .main-area {
+  min-height: 282px;
+  padding-top: 5px;
+}
+
+.node-type-home_page .main-area .view {
+  width: 565px;
+  overflow: hidden;
+  float: left;
+  margin-right: 6px;
+}
+
+.node-type-home_page .main-area td a {
+  display: block;
+  width: 136px;
+  height: 136px;
+  margin: 0 0 5px 5px;
+}
+
+.node-type-home_page .main-area .view img {
+  display: block;
+  width: 130px;
+  height: 130px;
+}
+
+.node-type-home_page .block-area {
+  clear: both;
+  margin-top: 30px;
+}
+
+.node-type-home_page .block-area .column {
+  width: 320px;
+  float: left;
+}
+
+.node-type-home_page .block-area .col_1 .block-inner {
+  margin: 0 10px 0 0;
+}
+
+.node-type-home_page .block-area .col_2 .block-inner {
+  margin: 0 5px 0 5px;
+}
+
+.node-type-home_page .block-area .col_3 .block-inner {
+  margin: 0 0 0 10px;
+}
+
+.node-type-home_page .block-area #sf-open-banner {
+  padding: 0;
+}
+
+/* profile page */
+
+.page-user .profile {
+  margin: 0;
+  width: 218px;
+  padding-right: 20px;
+  float: left;
+}
+
+.page-user .profile * {
+  overflow: hidden;
+}
+
+
+.page-user .avatar {
+  margin-bottom: 15px;
+}
+
+.page-user .contact_area,
+.page-user .statement_area,
+.page-user .sfos_area {
+  margin-bottom: 15px;
+  width: 200px;
+}
+
+.page-user .sfos_area > div {
+  margin-top: 10px;
+  float: none;
+  width: 200px;
+}
+
+.page-user .sfos_area h3 + div {
+  margin-top: 0;
+}
+
+.page-user .artwork {
+  float: left;
+  width: 722px;
+}
+
+/* gallery pages */
+
+.gallery .view-content ul,
+.gallery .view-content li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery .view-content li {
+  float: left;
+  width: 220px;
+  height: 220px;
+  overflow: visible;
+  margin-right: 18px;
+  margin-bottom: 18px;
+}
+
+.gallery .views-field-field-image-fid * {
+  display: block;
+}
+
+.gallery .views-field-field-image-fid a {
+  background: #000 url(../images/stripes.png) repeat 0 0;
+  height: 220px;
+  width: 220px;
+}
+
+.gallery .views-field-field-image-fid img {
+  width: 220px;
+  height: 220px;
+}
+
+.gallery .views-field-field-content-title-value {
+  position: relative;
+  top: -40px;
+  display: block;
+  color: white;
+  padding: 10px 10px 5px 10px;
+  height: 25px;
+  font-size: 13px;
+  background-color: black;
+}
+
+.rgba .gallery .views-field-field-content-title-value {
+  background-color: rgba(0,0,0,0.7);
+}
+
+.gallery .views-field-edit-node a {
+  position: relative;
+  top: -254px;
+  left: 6px;
+  background-color: rgba(0,0,0,0.7);
+  padding: 3px 5px;
+  color: white;
+}
+
+.gallery .views-field-edit-node a:hover {
+  background-color: black;
+}
+
+/*.gallery .views-field-field-sf-open-studios-value { */
+.gallery .views-field-i-m-attending-89 {
+  display: block;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  height: 90px;
+  width: 93px;
+  background: url(../images/sfos-tag.gif) no-repeat;
+  text-indent: -10000px;
+}
+
+
+/* gallery pages */
+
+.gallery .view-content ul,
+.gallery .view-content li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gallery .view-content li {
+  float: left;
+  width: 220px;
+  height: 220px;
+  margin-right: 18px;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.gallery .views-field-colorbox * {
+  display: block;
+}
+
+.gallery .views-field-colorbox a {
+  background: #000 url(../images/stripes.png) repeat 0 0;
+  height: 220px;
+  width: 220px;
+  overflow: hidden;
+}
+
+.gallery .views-field-colorbox img {
+  width: 220px;
+  height: 220px;
+}
+
+.gallery .views-field-edit-node a {
+  position: relative;
+  top: -254px;
+  left: 6px;
+  background-color: rgba(0,0,0,0.7);
+  padding: 3px 5px;
+  color: white;
+}
+
+.gallery .views-field-edit-node a:hover {
+  background-color: black;
+}
+
+
+.gallery .views-field-field-image-fid * {
+  display: block;
+}
+
+.gallery .views-field-field-image-fid a {
+  background: #000 url(../images/stripes.png) repeat 0 0;
+  height: 220px;
+  width: 220px;
+  overflow: hidden;
+}
+
+.gallery .views-field-field-image-fid img {
+  width: 220px;
+  height: 220px;
+}
+
+.gallery .views-field-field-content-title-value a {
+  display: block;
+  color: white;
+}
+
+.gallery .views-field-edit-node a {
+  position: relative;
+  top: -254px;
+  left: 6px;
+  background-color: rgba(0,0,0,0.7);
+  padding: 3px 5px;
+  color: white;
+}
+
+.gallery .views-field-edit-node a:hover {
+  background-color: black;
+}
+
+/* colorbox stuff */
+
+#colorbox #cboxTitle {
+  font-size: 12px;
+  line-height: 19px;
+  margin: 0;
+}
+
+#exposed-widget-edit-keys label {
+  display: block;
+  text-indent: -1000%;
+  height: 46px;
+  width: 171px;
+  background: url(../images/search-artist-directory.gif) no-repeat left top;
+  margin: 10px 0 5px 0;
+}
+
+/* event registration */
+
+#crm-container .crm-event-register-form-block .form-layout-compressed th,
+#crm-container .crm-event-register-form-block .form-layout-compressed td {
+  width: auto;
+}
+#crm-container .crm-event-register-form-block .description {
+  margin-left: 0;
+}
+
+.crm-event-register-form-block fieldset fieldset#group_site_no_area,
+.crm-event-register-form-block fieldset fieldset#group_site_yes_area {
+  border-top: 0;
+}
+
+.editview-field .description {
+  display: block;
+  clear: both;
+  color: #666;
+  font-size: 12px;
+}
