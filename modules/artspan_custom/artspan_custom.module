@@ -1,4 +1,19 @@
 <?php
+
+//MUST BE SET TO THE NEXT YEARS OPENSTUDIOS EVENT ID
+
+//2014 EVENT
+//define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 214);
+
+//2013 EVENT
+define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 69);
+
+define ('ARTSPAN_FIRST_CHOICE_WEEKEND_CF', 'custom_94');
+define ('ARTSPAN_SECOND_CHOICE_WEEKEND_CF', 'custom_96');
+
+
+
+
 // Load the Civi API
 function _artspan_load_civi_api() {
   civicrm_initialize(true);
@@ -13,25 +28,64 @@ function _artspan_load_civi_api() {
 // Get a Civi Contact
 function _artspan_get_civi_contact($user, $options = array()) {
   civicrm_initialize(true);
+  $contact_array = array();
   if($user != FALSE) {
     $params = array(
 		    'version' => 3,
 		    'sequential' => 1,
-		    'uf_id' => $user->uid,
+		    'uf_id' => $user,
 		    );
     $result = civicrm_api('UFMatch', 'get', $params);
-    dsm($result);
+    if ($result && $result['values'] && $result['values'][0]) {
+      $contact_id = $result['values'][0]['contact_id'];
+      if ($contact_id) {
+	$params = array(
+			'version' => 3,
+			'sequential' => 1,
+			'contact_id' => $contact_id,
+			);
+	$result = civicrm_api('Contact', 'get', $params);
+	if ($result && $result['values'] && $result['values'][0]) {
+	  $contact_array = $result['values'][0];
+	}
+      }
+    }
   }
-
-  //$contact_id = 
-
-
-  //$civi_user = civicrm_contact_get($options);
-  //$options = array('contact_id' => $options['contact_id'], 'version' => '3.0');
-  //$civi_location = civicrm_location_get($options); 
-  //return array_merge($civi_user[$options['contact_id']], $civi_location);
   
   return $contact_array;
+}
+
+
+function _artspan_get_civi_contact_for_contact_id($contact_id) {
+  $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'contact_id' => $contact_id,
+		  );
+  $result = civicrm_api('Contact', 'get', $params);
+
+  if ($result && !$result['is_error'] && $result['values'] && 
+      $result['values'][0]) {
+    return $result['values'][0];
+  }
+  drupal_set_message("Error Code: #4558 -- No Contact for $contact_id", ERROR);
+  return FALSE;
+}
+
+function _artspan_get_group_studio_site_contact($name) {
+ $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'organization_name' => $name,
+		  'contact_sub_type' => 'Group_Studio_Site',
+		  );
+  $result = civicrm_api('Contact', 'get', $params);
+  if ($result && !$result['is_error'] && $result['values'] && 
+      $result['values'][0]) {
+    return $result['values'][0];
+  }
+  drupal_set_message("Error Code: #4559 -- No Contact for $name", ERROR);
+  return FALSE;
 }
 
 // Get a Civi Contact's Location info off their Event Registration
@@ -125,26 +179,21 @@ function _artspan_load_civi_group_studios() {
   return civicrm_contact_get($params);
 }
 
-// Checks to see if the user is an event participant margot@rd **SFOS-UPDATE** change event id
+// Checks to see if the user is an event participant margot@rd 
 function _artspan_get_openstudios_information($contact_id) {
-  dsm(debug_backtrace());
-  return;
-  _artspan_load_civi_api();
+  civicrm_initialize();
   $params = array(
-    'contact_id' => $contact_id,
-    'event_title' => 'SF Open Studios - 2013'
-    );
-  $results =& civicrm_participant_search($params);
-  if(count($results) > 0) {
-    foreach($results as $result) {
-    	if ($result['event_id'] == 69) {
-      	//if(strstr($result['participant_fee_level'], 'Artist') || strstr($result['participant_fee_level'], 'Combo')) {
-      	return $result;
-      	//}
-    	}
-    }
+		  'version' => 3,
+		  'sequential' => 1,
+		  'contact_id' => $contact_id,
+		  'event_id' => ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID,
+		  );
+  $result = civicrm_api('Participant', 'get', $params);  
+  if ($result && !$result['is_error'] && $result['values'] && 
+      $result['values'][0]) {
+    return $result['values'][0];
   }
-  return false;
+  return FALSE;
 }
 
 // Get the states from the Civi list based on USA country Id
@@ -221,36 +270,6 @@ function _artspan_openstudios_register($user, $event, $values) {
     else {
       $response =& civicrm_location_add($params);
     }
-
-    /* removed by margot when moved to alternate location 
-    // Save .tiffs to a custom directory
-    $tiff_dest = '/web/artspan.org/www/sites/default/files/openstudios_tiffs/';
-
-    $firstname = urlencode($results['first_name']);
-    $lastname = urlencode($results['last_name']);
-    $parent = array_pop(taxonomy_get_parents(intval($results['studio_weekend_no'])));
-    
-    if(isset($parent) && isset($results['custom_16']['name'])) {
-      $weekend_no = array_pop(explode(" ", trim(array_shift(explode("-", $parent->name)))));
-      $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $weekend_no . '.tiff';
-      while (file_exists($filename)) {
-        $next_number = (is_int($next_number)) ? $next_number + 1 : 0;
-        $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $weekend_no . '_' . $next_number . '.tiff';
-      }
-      copy($results['custom_16']['name'], $filename);
-    }
-
-    $parent_2 = array_pop(taxonomy_get_parents(intval($results['studio_weekend_no_2'])));
-    if(isset($parent_2) && isset($results['custom_56']['name'])) {
-      $weekend_no_2 = array_pop(explode(" ", trim(array_shift(explode("-", $parent_2->name)))));
-      $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $weekend_no_2 . '.tiff';
-      $next_number = -1;
-      while (file_exists($filename)) {
-        $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $weekend_no_2 . '_' . ++$next_number . '.tiff';
-      }
-      copy($results['custom_56']['name'], $filename);
-    }
-    */
   }
 }
 
@@ -583,7 +602,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
     $lastname = urlencode($form_data['last_name']);
 		// save weekend one's tiff
     if(isset($form_data['custom_16']['name'])) {
-      $neighborhood = urlencode($form_data['custom_94']);
+      $neighborhood = urlencode($form_data[ARTSPAN_FIRST_CHOICE_WEEKEND_CF]);
       $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_w1.tif';
       while (file_exists($filename)) {
         $next_number = (is_int($next_number)) ? $next_number + 1 : 0;
@@ -593,7 +612,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
    	}
 		// save weekend two's tiff
 		if(isset($form_data['custom_56']['name'])) {
-      $neighborhood = urlencode($form_data['custom_96']);
+      $neighborhood = urlencode($form_data[ARTSPAN_SECOND_CHOICE_WEEKEND_CF]);
       $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_w2.tif';
       while (file_exists($filename)) {
         $next_number = (is_int($next_number)) ? $next_number + 1 : 0;
