@@ -210,18 +210,21 @@ function _artspan_load_state_options($country_id=1228, $field='name') {
 }
 
 function _artspan_sync_artist_role($user, $civi_contact) {
+  civicrm_initialize();
   $is_artist = FALSE;
   foreach($user->roles as $role) {
     if($role == 'artist') $is_artist = TRUE;
   }
-  if($is_artist != ($civi_contact['contact_sub_type'] == 'Artist')) {
-    _artspan_load_civi_api();
+  if($is_artist != ($civi_contact['contact_sub_type'][0] == 'Artist')) {
+
     $params = array(
-      'contact_id' => $civi_contact['contact_id'],
-      'contact_type' => 'Individual',
-      'contact_sub_type' => $is_artist ? 'Artist' : ''
-    );
-    $result = civicrm_contact_update($params);
+		    'version' => 3,
+		    'sequential' => 1,
+		    'contact_id' => $civi_contact['contact_id'],
+		    'contact_type' => 'Individual',
+		    'contact_sub_type' => 'Artist',
+		    );
+    $result = civicrm_api('Contact', 'create', $params);
   }
 }
 
@@ -406,7 +409,6 @@ function artspan_custom_form_artist_node_form_alter(&$form) {
     '#size' => 60
   );
 
-
   $group_studios = array(0=>'- Select A Studio -');
   foreach(_artspan_load_civi_group_studios() as $studio) {
     $group_studios[$studio['contact_id']] = $studio['display_name'];
@@ -414,82 +416,6 @@ function artspan_custom_form_artist_node_form_alter(&$form) {
   $states = _artspan_load_state_options();
   drupal_add_js(drupal_get_path('module', 'artspan_custom') . '/studio.js');
   $group_studio = isset($civi_user['address']['shared']) && $civi_user['address']['shared']->contact_sub_type == 'Group_Studio_Site';
-
-  /*$form['studio'] = array(
-    '#type' => 'fieldset',
-    '#title' => 'Studio Information',
-    '#attributes' => array(
-      'class' => 'studio_information'
-      ),
-    'name' => array(
-      '#type' => 'textfield',
-      '#title' => 'Title',
-      '#name' => 'studio_title',
-      '#default_value' => $civi_user['custom_45']
-      ),
-    'groupsite_question' => array(
-      '#type' => 'radios',
-      '#title' => 'Is your studio part of a group site?',
-      '#options' => array('No', 'Yes'),
-      '#default_value' => $group_studio ? 1 : 0,
-      ),
-    'groupsite_no' => array(
-      '#type' => 'fieldset',
-      '#attributes' => array(
-        'class' => 'groupsite groupsite_no'
-        ),
-      'address' => array(
-        '#type' => 'textfield',
-        '#title' => 'Studio Address',
-        '#name' => 'studio_address',
-        '#default_value' => $group_studio ? '' : $civi_user['address']['street_address']
-        ),
-      'city' => array(
-        '#type' => 'textfield',
-        '#title' => 'Studio City',
-        '#name' => 'studio_city',
-        '#default_value' => ($group_studio || !$civi_user['address']['city']) ? 'San Francisco' : $civi_user['address']['city']
-        ),
-      'state' => array(
-        '#type' => 'select',
-        '#title' => 'State',
-        '#name' => 'state',
-        '#options' => $states,
-        '#default_value' => ($group_studio || !$civi_user['address']['state_province_id']) ? array_search('California', $states) : $civi_user['address']['state_province_id']
-        ),
-      'zip' => array(
-        '#type' => 'textfield',
-        '#title' => 'Zip Code',
-        '#name' => 'zip',
-        '#default_value' => $group_studio ? '' : $civi_user['address']['postal_code']
-        ),
-      ),
-    'groupsite_yes' => array(
-      '#type' => 'fieldset',
-      '#attributes' => array(
-        'class' => 'groupsite groupsite_yes'
-        ),
-      'location' => array(
-        '#type' => 'select',
-        '#title' => 'Group Location Reference',
-        '#name' => 'group_location_reference',
-        '#options' => $group_studios,
-        '#default_value' => $group_studio && array_key_exists($civi_user['address']['shared']->id, $group_studios) ? $civi_user['address']['shared']->id : 0
-        ),
-      'building_no' => array(
-        '#type' => 'textfield',
-        '#title' => 'Bldg. #',
-        '#name' => 'building_no',
-        '#default_value' => $group_studio ? $civi_user['custom_3'] : ''
-        ),
-      'studio_no' => array(
-        '#type' => 'textfield',
-        '#title' => 'Studio #',
-        '#name' => 'studio_no',
-        '#default_value' => $group_studio ? $civi_user['custom_4'] : ''
-        )
-      )
-    );*/
 
   $form['#validate'] = array('_artspan_artist_profile_validate');
   $form['#submit'] = array('_artspan_artist_profile_submit');
@@ -584,20 +510,17 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $profile_node->field_sf_open_studios_wk2 = array(array('value' => $term->tid));
     }
 
-    //$profile_node->field_content_title[0]['value'] = trim($form_data['studio_artist_name']);
-    $profile_node->field_content_title[0]['value'] = trim($form_data['custom_10']);
-    /*
- 		if ($primary_medium = taxonomy_get_term_by_name($form_data['custom_21'])) {
-    	$tid = key($primary_medium );
- 			$profile_node->field_primary_medium['value'] = array('tid' => $tid);
-		} */
-		
-		// Then save the Node out with the new data - margot@rd
+    $profile_node->field_content_title[0]['value'] = 
+      trim($form_data['custom_10']);
+
+    // Then save the Node out with the new data - margot@rd
     node_save($profile_node);
     _node_index_node($profile_node);
     
     // Save .tiffs to a custom directory
-    $tiff_dest = '/web/artspan.org/www/sites/default/files/openstudios_tiffs_2013/';
+    $tiff_dest = 
+      '/web/artspan.org/www/sites/default/files/openstudios_tiffs_2013/';
+
     $firstname = urlencode($form_data['first_name']);
     $lastname = urlencode($form_data['last_name']);
 		// save weekend one's tiff
@@ -856,30 +779,40 @@ function artspan_custom_form_user_profile_form_alter(&$form) {
   /* Now, we want to add the civicrm personal information profile to this form. Fun! */
   $curr_user = $form['_account']['#value'];
   $civi_user = _artspan_get_civi_contact($curr_user->uid);
-
+  
   $form['_civi_contact'] = array(
     '#type' => 'value',
     '#value' => $civi_user
   );
 
-  $form['personal'] = array(
-    '#type' => 'fieldset',
-    '#title' => 'Personal Information',
-    '#weight' => -20,
-    'profile' => array(
-      '#value' => civicrm_uf_profile_html_get($civi_user['contact_id'], 'Personal Information')
-    )
-  );
-
-  $form['demographics'] = array(
-    '#type' => 'fieldset',
-    '#title' => 'Demographic Information (Optional)',
-    '#weight' => -19,
-    'profile' => array(
-      '#value' => civicrm_uf_profile_html_get($civi_user['contact_id'], 'Demographics (Optional)')
-    )
-  );
+  $form['personal'] = 
+    array(
+	  '#type' => 'fieldset',
+	  '#title' => 'Personal Information',
+	  '#weight' => -20,
+	  'profile' => 
+	  array('#value' => 
+		CRM_Core_BAO_UFGroup::getEditHTML($civi_user['contact_id'], 
+						  'Personal Information')
+		)
+	  );
+  
+  $form['demographics'] = 
+    array(
+	  '#type' => 'fieldset',
+	  '#title' => 'Demographic Information (Optional)',
+	  '#weight' => -19,
+	  'profile' => 
+	  array('#value' => 
+		CRM_Core_BAO_UFGroup::getEditHTML($civi_user['contact_id'], 
+						  'Demographics (Optional)')
+		)
+	  );
+  
 }
+
+
+
 
 function artspan_custom_user($op, &$edit, $account, $category = NULL) {
   if($op == 'after_update' && $category == 'account') {
