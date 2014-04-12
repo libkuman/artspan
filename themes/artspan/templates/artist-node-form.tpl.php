@@ -64,6 +64,8 @@ $form['buttons']['preview']['#access'] = FALSE;
   <div class="studio_information">
     <?php print drupal_render($form['studio']); ?>
   </div>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/><br/>
   <div class="rest_of_form">
     <?php print drupal_render($form); ?>
   </div>

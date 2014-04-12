@@ -18,13 +18,13 @@
         if ($node->nid == 8545) {
           print '<div id="reg-btn">';
           global $user;
-          //if (in_array('content administrator', array_values($user->roles))) {
+	  $register_link = "civicrm/event/register?id=".
+	    ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID."&amp;reset=1";
           if ($user->uid) {
-            print '<a href="/civicrm/event/register?id=69&amp;reset=1" target="_self">Register For Open Studios</a>';
+            print '<a href="/'.$register_link.'" target="_self">Register For Open Studios</a>';
           } else {
-            print '<a href="/user/login?destination=civicrm/event/register?id=69&amp;reset=1" target="_self">Login to Register For Open Studios</a>';
+            print '<a href="/user/login?destination='.$register_link.'" target="_self">Login to Register For Open Studios</a>';
           }
-          //}
           print '</div>';
         }
       ?>
@@ -36,15 +36,18 @@
     </div>
     <div id="reg-btn">
       <?php 
-        //if (in_array('content administrator', array_values($user->roles))) {
         if ($node->nid == 8545) {
+	  $register_link = "civicrm/event/register?id=".
+	    ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID."&amp;reset=1";
           if ($user->uid) {
-            print '<a href="/civicrm/event/register?id=69&amp;reset=1" target="_self">Register For Open Studios</a>';
-          } else {
-            print '<a href="/user/login?destination=civicrm/event/register?id=69&amp;reset=1" target="_self">Login to Register For Open Studios</a>';
+            print '<a href="/'.$register_link.
+	      '" target="_self">Register For Open Studios</a>';
+          } 
+	  else {
+            print '<a href="/user/login?destination='.$register_link.
+	    '" target="_self">Login to Register For Open Studios</a>';
           }
         }
-        //} 
       ?>
     </div>
 

@@ -3,10 +3,10 @@
 //MUST BE SET TO THE NEXT YEARS OPENSTUDIOS EVENT ID
 
 //2014 EVENT
-//define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 214);
+define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 214);
 
 //2013 EVENT
-define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 69);
+//define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 69);
 
 define ('ARTSPAN_FIRST_CHOICE_WEEKEND_CF', 'custom_94');
 define ('ARTSPAN_SECOND_CHOICE_WEEKEND_CF', 'custom_96');
@@ -88,6 +88,26 @@ function _artspan_get_group_studio_site_contact($name) {
   return FALSE;
 }
 
+
+function _artspan_load_civi_group_studios() {
+ $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'sort' => 'organization_name',
+		  'contact_type' => 'Organization',
+		  'contact_sub_type' => 'Group_Studio_Site',
+		  'rowCount' => 200,
+		  );
+  $result = civicrm_api('Contact', 'get', $params);
+  if ($result && !$result['is_error'] && $result['values'] && 
+      $result['values'][0]) {
+    return $result['values'];
+  }
+  return FALSE;
+}
+
+
+
 // Get a Civi Contact's Location info off their Event Registration
 function _artspan_get_civi_contact_public_location_info($user, $options = array()) {
   _artspan_load_civi_api();
@@ -166,17 +186,6 @@ function _artspan_get_artist_websites($contact_id) {
     $sites[] = $website;
   }
   return $sites;
-}
-
-function _artspan_load_civi_group_studios() {
-  _artspan_load_civi_api();
-  $params = array(
-      'sort' => 'organization_name',
-      'contact_type' => 'Organization',
-      'contact_sub_type' => 'Group_Studio_Site',
-      'rowCount' => 100
-      );
-  return civicrm_contact_get($params);
 }
 
 // Checks to see if the user is an event participant margot@rd 
@@ -422,36 +431,6 @@ function artspan_custom_form_artist_node_form_alter(&$form) {
   $form['buttons']['submit']['#submit'][] = '_artspan_artist_profile_redirect';
 }
 
-function artspan_custom_civicrm_buildForm( $formName, &$form ) {
-  if($formName == 'CRM_Event_Form_Registration_Register') {
-    civicrm_initialize();
-    require_once 'api/v2/Event.php';
-    $params = array('id' => $form->_eventId);
-    $event = civicrm_event_get( $params );
-    if($event['event_type_id'] == 2) {
-      //$form->add('text', 'studio_artist_name', 'Artist Name', true, true);
-      $form->add('select', 'studio_weekend_no', 'Weekend/Location 1', true);
-      $form->add('select', 'studio_weekend_no_2', 'Weekend/Location 2', true);
-      $form->add('text', 'group_site', 'Is this studio part of a group site?', true);
-      $form->add('text', 'studio_address', '', true);
-      $form->add('text', 'studio_city', '', true);
-      $form->add('text', 'studio_state', '', true);
-      $form->add('text', 'studio_zip', '', true);
-      $form->add('select', 'studio_group_location', '', true);
-      $form->add('text', 'studio_no', '', true);
-      $form->add('text', 'studio_bldg_no', '', true);
-      $form->add('text', 'group_site_2', 'Is this studio part of a group site?', true);
-      $form->add('text', 'studio_address_2', '', true);
-      $form->add('text', 'studio_city_2', '', true);
-      $form->add('text', 'studio_state_2', '', true);
-      $form->add('text', 'studio_zip_2', '', true);
-      $form->add('select', 'studio_group_location_2', '', true);
-      $form->add('text', 'studio_no_2', '', true);
-      $form->add('text', 'studio_bldg_no_2', '', true);
-    }
-  }
-}
-
 // Runs after the Civic Registration takes place - margot@rd
 function artspan_custom_civicrm_postProcess( $formName, &$form ) {
   if ($formName == 'CRM_Event_Form_Registration_Confirm') {
@@ -463,12 +442,13 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
     $user_roles[3] = 'artist';
     user_save($user, array('roles' => $user_roles));
     
-		// load all the form values into into $form_data - margot@rd
+    // load all the form values into into $form_data - margot@rd
     foreach($form->_values['params'] as $key => $form_values) {
       if (is_numeric($key)) $form_data = $form_values;
     }
 
-		// Add civi event info to the artist profile node or make a new one for them - margot@rd
+    // Add civi event info to the artist profile node or make a new one 
+    //for them - margot@rd
     $profile_node = node_load(array('uid' => $user->uid, 'type' => 'artist'), NULL, true);
 
     if (!is_object($profile_node)) {
@@ -560,17 +540,17 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
 
       $groupsite = db_fetch_object($result);      
       // Get the civi participant record - margot@rd
-			$params = array(
-    		'contact_id' => $contact['contact_id'],
-   			'event_title' => 'SF Open Studios - 2013'
-   		 );
-  		$participant =& civicrm_participant_search($params);
+      $params = array(
+		      'contact_id' => $contact['contact_id'],
+		      'event_title' => 'SF Open Studios - 2013'
+		      );
+      $participant =& civicrm_participant_search($params);
   		
-			foreach ($participant as $part) {
-				$participant_id = $part['participant_id'];
-			}
+      foreach ($participant as $part) {
+	$participant_id = $part['participant_id'];
+      }
 
-			// we need this participant id so that we can use it to update the participant record
+      // we need this participant id so that we can use it to update the participant record
       $contact_params['custom_25'] = $groupsite->street_address;
       $contact_params['custom_71'] = $groupsite->city;
       $contact_params['custom_24'] = $form_data['custom_83']; 
@@ -583,7 +563,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $contact_params['id'] = $participant_id;
       
       // Ok now that we have what we need lets actually use the api to update (arrg create?) the participant - margot@rd
-			$response =& civicrm_api('participant','create', $contact_params);
+      $response =& civicrm_api('participant','create', $contact_params);
     } 
 
      // Is a group site set for weekend 2?
@@ -597,17 +577,17 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
         $groupsite = db_fetch_object($result);
                
         // Get the civi participant record - margot@rd
-			$params = array(
-    		'contact_id' => $contact['contact_id'],
+	$params = array(
+			'contact_id' => $contact['contact_id'],
    			'event_title' => 'SF Open Studios - 2013'
-   		 );
-  		$participant =& civicrm_participant_search($params);
-
-			foreach ($participant as $part) {
-				$participant_id = $part['participant_id'];
-			}
+			);
+	$participant =& civicrm_participant_search($params);
+	
+	foreach ($participant as $part) {
+	  $participant_id = $part['participant_id'];
+	}
 						
-			// we need this participant id so that we can use it to update the participant record
+	// we need this participant id so that we can use it to update the participant record
 			
       $contact_params['custom_81'] = $groupsite->street_address;
       $contact_params['custom_77'] = $groupsite->city;
@@ -620,7 +600,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $contact_params['event_id'] = 69;
       $contact_params['id'] = $participant_id;
 
-			$response =& civicrm_api('participant','create', $contact_params);
+      $response =& civicrm_api('participant','create', $contact_params);
     }
   }
 }
@@ -784,7 +764,8 @@ function artspan_custom_form_user_profile_form_alter(&$form) {
     '#type' => 'value',
     '#value' => $civi_user
   );
-
+  //dsm("hi mom");
+  
   $form['personal'] = 
     array(
 	  '#type' => 'fieldset',

@@ -30,13 +30,17 @@
 <?php
  $prof = content_profile_load('artist', $curr_user->uid);
  if (!isset($prof->field_sf_open_studios[0]['value'])) {
- print '<div class="osreg-block">';
- print '<div id="reg-btn-user">';
- print '<a href="/civicrm/event/register?id=69&amp;reset=1" target="_self">Register For 2013 Open Studios</a>';
- print '</div>';
- //print '<h2>Registration For SF Open Studios Coming Soon.</h2>';
- print '</div>';
- print '<div class="clr"></div>';
+   $register_link = "civicrm/event/register?id=".
+     ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID."&amp;reset=1";
+
+   print '<div class="osreg-block">';
+   print '<div id="reg-btn-user">';
+   print '<a href="/'.$register_link.
+     '" target="_self">Register For 2013 Open Studios</a>';
+   print '</div>';
+   //print '<h2>Registration For SF Open Studios Coming Soon.</h2>';
+   print '</div>';
+   print '<div class="clr"></div>';
  }
 ?>
 <div id="account-stuff">
