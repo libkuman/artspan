@@ -7,26 +7,29 @@ $(document).ready(function(){
   var numTiffUploads = 0;
         
   $('#url-1-website_type_id').val(6);
+  $('.editrow_custom_25-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_71-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_72-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_28-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_81-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_77-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_78-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_82-section label').append(' <span class="marker">*</span>');
 
-  // remove broken js events (... hack ...)
-  $(".paid_event-section input[type='radio']").attr('onClick', '');
 
-  $('input#is_pay_later').trigger('click');
+  //4/13/2014 now making function rely on the cj (civicrm jquery) framework
+  cj(".price-set-row input").click(function (event) {
+    var clicked_id = $(".price_set-section input[type='radio']:checked").attr('id');
+    var label = $("label[for=" + clicked_id + "]").text();
 
-  // Differences based on type of registration
-  (function() {
-    var handleMultipleWeekends = function() {
-      var clicked_id = $(".paid_event-section input[type='radio']:checked").attr('id');
-      var label = $("label[for=" + clicked_id + "]").text();
-      var guide_section = $('.editrow_custom_16-section').parents('fieldset').not('.crm_user-group');
-      var label_wkend_1 = $('#weekend_1 label[for=studio_weekend_no]');
-      var label_wkend_2 = $('#weekend_2 label[for=studio_weekend_no_2]');
-
-      if (label.search(/2 weekends/i) >= 0) {
+    var guide_section = $('.editrow_custom_16-section').parents('fieldset').not('.crm_user-group');
+    var label_wkend_1 = $('#weekend_1 label[for=studio_weekend_no]');
+    var label_wkend_2 = $('#weekend_2 label[for=studio_weekend_no_2]');
+    
+    if (label.search(/2 Weekend/i) >= 0) {
         //This will run for 2 weekends
         $('#weekend_2, .weekend_2, .weekend_2_loc').show();
-        label_wkend_1.text('First Participating Weekend/Location');
-        label_wkend_2.text('Second Participating Weekend/Location');
+
         $('.editrow_custom_94-section label h4').remove();
         $('.editrow_custom_96-section label h4').remove();
         $('.editrow_custom_16-section label h4').remove();
@@ -39,7 +42,6 @@ $(document).ready(function(){
       } else {
         //This will run for 1 weekend
         $('#weekend_2, .weekend_2, .weekend_2_loc').hide(); 
-        label_wkend_1.text('Participating Weekend/Location');
         $('.editrow_custom_94-section label h4').remove();
         $('.editrow_custom_96-section label h4').remove();
         $('.editrow_custom_16-section label h4').remove();
@@ -49,7 +51,7 @@ $(document).ready(function(){
 
       if ((label.search(/premier/i) >= 0)){
         guide_section.show();
-        if(label.search(/2 weekends/i) >= 0 && label.search(/1 Premier and 1 Participating/i) < 0) {
+        if(label.search(/2 weekends/i) >= 0 && label.search(/Combo/i) < 0) {
           guide_section.find('.weekend_2').show();
           label_wkend_1.text('First Premier Weekend/Location');
           label_wkend_2.text('Second Premier Weekend/Location');
@@ -67,17 +69,15 @@ $(document).ready(function(){
         numTiffUploads = 0;
       }
 
-    };
-    $('.paid_event-section input').click(handleMultipleWeekends);
-    handleMultipleWeekends();
-    
-  })();
+  });
+
 
   (function() {
     var handleGroupSite1 = function() {
           groupStudio1 = true; 
           if ( $('[name=custom_70]:checked').val() == 0) {
           $('.editrow_custom_83-section').hide(); 
+          $('.helprow-custom_83-section').hide(); 
           $('.editrow_custom_73-section').hide(); 
           $('.editrow_custom_74-section').hide(); 
           } else if ( $('[name=custom_70]:checked').val() == 1) {
@@ -88,6 +88,7 @@ $(document).ready(function(){
           $('.editrow_custom_28-section').hide(); 
           } else {
           $('.editrow_custom_83-section').hide(); 
+          $('.helprow-custom_83-section').hide(); 
           $('.editrow_custom_73-section').hide(); 
           $('.editrow_custom_74-section').hide(); 
           $('.editrow_custom_24-section').hide(); 
@@ -110,10 +111,14 @@ $(document).ready(function(){
           $('#custom_28').val('');
 
           $('.editrow_custom_83-section').show(); 
+          $('.helprow-custom_83-section').show(); 
+
           $('.editrow_custom_73-section').show(); 
           $('.editrow_custom_74-section').show(); 
         } else if ($(this).val() == '0') { 
           $('.editrow_custom_83-section').hide(); 
+	  $('.helprow-custom_83-section').hide(); 
+
           $('.editrow_custom_73-section').hide(); 
           $('.editrow_custom_74-section').hide(); 
           $('#custom_83').val('');
@@ -153,6 +158,7 @@ $(document).ready(function(){
           $('.editrow_custom_79-section').hide(); 
           $('.editrow_custom_80-section').hide(); 
           $('.editrow_custom_84-section').hide(); 
+
       $("input:radio[name='custom_76']").click(function(){
         if ($(this).val() == '1') {
           $('.editrow_custom_81-section').hide(); 
