@@ -6,43 +6,8 @@ $(document).ready(function(){
   var groupStudio2 = false;
   var numTiffUploads = 0;
         
-  $('.credit_card_type-section label').append(' <span class="marker">*</span>');
-  $('.credit_card_number-section label').append(' <span class="marker">*</span>');
-  $('.cvv2-section label').append(' <span class="marker">*</span>');
-  $('.credit_card_exp_date-section label').append(' <span class="marker">*</span>');
-  $('.billing_first_name-section label').append(' <span class="marker">*</span>');
-  $('.billing_last_name-section label').append(' <span class="marker">*</span>');
-  $('.billing_street_address-5-section label').append(' <span class="marker">*</span>');
-  $('.billing_city-5-section label').append(' <span class="marker">*</span>');
-  $('.billing_postal_code-5-section label').append(' <span class="marker">*</span>');
-  $('.custom_16-section label').append(' <span class="marker">*</span>');
-  $('.custom_14-section label').append(' <span class="marker">*</span>');
-  $('.custom_58-section label').append(' <span class="marker">*</span>');
-  $('.custom_60-section label').append(' <span class="marker">*</span>');
-  $('.custom_56-section label').append(' <span class="marker">*</span>');
-  $('.custom_57-section label').append(' <span class="marker">*</span>');
-  $('.custom_59-section label').append(' <span class="marker">*</span>');
-  $('.custom_61-section label').append(' <span class="marker">*</span>');
   $('#url-1-website_type_id').val(6);
 
-  $('.custom_83-section label').append(' <span class="marker">*</span>');
-
-  $('.custom_84-section label').append(' <span class="marker">*</span>');
-  
-  $('.custom_25-section label').append(' <span class="marker">*</span>');
-  $('.custom_71-section label').append(' <span class="marker">*</span>');
-  $('.custom_72-section label').append(' <span class="marker">*</span>');
-  $('.custom_28-section label').append(' <span class="marker">*</span>');
-  
-  $('.custom_81-section label').append(' <span class="marker">*</span>');
-  $('.custom_77-section label').append(' <span class="marker">*</span>');
-  $('.custom_78-section label').append(' <span class="marker">*</span>');
-  $('.custom_82-section label').append(' <span class="marker">*</span>');
-
-  $('.custom_96-section label').append(' <span class="marker">*</span>');
-  $('.custom_76-section .label').append(' <span class="marker">*</span>');
-  
-  $('.billingNameInfo-section').append('<br /><input type="checkbox" value="same" id="same"> <label>Use my home address information</label>');
   // remove broken js events (... hack ...)
   $(".paid_event-section input[type='radio']").attr('onClick', '');
 
@@ -53,7 +18,7 @@ $(document).ready(function(){
     var handleMultipleWeekends = function() {
       var clicked_id = $(".paid_event-section input[type='radio']:checked").attr('id');
       var label = $("label[for=" + clicked_id + "]").text();
-      var guide_section = $('.custom_16-section').parents('fieldset').not('.crm_user-group');
+      var guide_section = $('.editrow_custom_16-section').parents('fieldset').not('.crm_user-group');
       var label_wkend_1 = $('#weekend_1 label[for=studio_weekend_no]');
       var label_wkend_2 = $('#weekend_2 label[for=studio_weekend_no_2]');
 
@@ -62,23 +27,23 @@ $(document).ready(function(){
         $('#weekend_2, .weekend_2, .weekend_2_loc').show();
         label_wkend_1.text('First Participating Weekend/Location');
         label_wkend_2.text('Second Participating Weekend/Location');
-        $('.custom_94-section label h4').remove();
-        $('.custom_96-section label h4').remove();
-        $('.custom_16-section label h4').remove();
-        $('.custom_56-section label h4').remove();
-        $('.custom_94-section label').prepend('<h4>Your First Weekend</h4>');
-        $('.custom_96-section label').prepend('<h4>Your Second Weekend</h4>');
-        $('.custom_16-section label').prepend('<h4>Your First Weekend</h4>');
-        $('.custom_56-section label').prepend('<h4>Your Second Weekend</h4>');
+        $('.editrow_custom_94-section label h4').remove();
+        $('.editrow_custom_96-section label h4').remove();
+        $('.editrow_custom_16-section label h4').remove();
+        $('.editrow_custom_56-section label h4').remove();
+        $('.editrow_custom_94-section label').prepend('<h4>Your First Weekend</h4>');
+        $('.editrow_custom_96-section label').prepend('<h4>Your Second Weekend</h4>');
+        $('.editrow_custom_16-section label').prepend('<h4>Your First Weekend</h4>');
+        $('.editrow_custom_56-section label').prepend('<h4>Your Second Weekend</h4>');
         twoWeekends = true;
       } else {
         //This will run for 1 weekend
         $('#weekend_2, .weekend_2, .weekend_2_loc').hide(); 
         label_wkend_1.text('Participating Weekend/Location');
-        $('.custom_94-section label h4').remove();
-        $('.custom_96-section label h4').remove();
-        $('.custom_16-section label h4').remove();
-        $('.custom_56-section label h4').remove();
+        $('.editrow_custom_94-section label h4').remove();
+        $('.editrow_custom_96-section label h4').remove();
+        $('.editrow_custom_16-section label h4').remove();
+        $('.editrow_custom_56-section label h4').remove();
         twoWeekends = false;
       }
 
@@ -112,67 +77,67 @@ $(document).ready(function(){
     var handleGroupSite1 = function() {
           groupStudio1 = true; 
           if ( $('[name=custom_70]:checked').val() == 0) {
-          $('.custom_83-section').hide(); 
-          $('.custom_73-section').hide(); 
-          $('.custom_74-section').hide(); 
+          $('.editrow_custom_83-section').hide(); 
+          $('.editrow_custom_73-section').hide(); 
+          $('.editrow_custom_74-section').hide(); 
           } else if ( $('[name=custom_70]:checked').val() == 1) {
-          $('.custom_24-section').hide(); 
-          $('.custom_25-section').hide(); 
-          $('.custom_71-section').hide(); 
-          $('.custom_72-section').hide(); 
-          $('.custom_28-section').hide(); 
+          $('.editrow_custom_24-section').hide(); 
+          $('.editrow_custom_25-section').hide(); 
+          $('.editrow_custom_71-section').hide(); 
+          $('.editrow_custom_72-section').hide(); 
+          $('.editrow_custom_28-section').hide(); 
           } else {
-          $('.custom_83-section').hide(); 
-          $('.custom_73-section').hide(); 
-          $('.custom_74-section').hide(); 
-          $('.custom_24-section').hide(); 
-          $('.custom_25-section').hide(); 
-          $('.custom_71-section').hide(); 
-          $('.custom_72-section').hide(); 
-          $('.custom_28-section').hide(); 
+          $('.editrow_custom_83-section').hide(); 
+          $('.editrow_custom_73-section').hide(); 
+          $('.editrow_custom_74-section').hide(); 
+          $('.editrow_custom_24-section').hide(); 
+          $('.editrow_custom_25-section').hide(); 
+          $('.editrow_custom_71-section').hide(); 
+          $('.editrow_custom_72-section').hide(); 
+          $('.editrow_custom_28-section').hide(); 
 
           }
       $("input:radio[name='custom_70']").click(function(){
         if ($(this).val() == '1') {
-          $('.custom_25-section').hide(); 
-          $('.custom_71-section').hide(); 
-          $('.custom_72-section').hide(); 
-          $('.custom_28-section').hide(); 
+          $('.editrow_custom_25-section').hide(); 
+          $('.editrow_custom_71-section').hide(); 
+          $('.editrow_custom_72-section').hide(); 
+          $('.editrow_custom_28-section').hide(); 
 
           $('#custom_25').val('');
           $('#custom_71').val('');
           $('#custom_72').val('');
           $('#custom_28').val('');
 
-          $('.custom_83-section').show(); 
-          $('.custom_73-section').show(); 
-          $('.custom_74-section').show(); 
+          $('.editrow_custom_83-section').show(); 
+          $('.editrow_custom_73-section').show(); 
+          $('.editrow_custom_74-section').show(); 
         } else if ($(this).val() == '0') { 
-          $('.custom_83-section').hide(); 
-          $('.custom_73-section').hide(); 
-          $('.custom_74-section').hide(); 
+          $('.editrow_custom_83-section').hide(); 
+          $('.editrow_custom_73-section').hide(); 
+          $('.editrow_custom_74-section').hide(); 
           $('#custom_83').val('');
           $('#custom_73').val('');
           $('#custom_74').val('');
 
-          $('.custom_25-section').show(); 
-          $('.custom_71-section').show(); 
-          $('.custom_72-section').show(); 
-          $('.custom_28-section').show(); 
+          $('.editrow_custom_25-section').show(); 
+          $('.editrow_custom_71-section').show(); 
+          $('.editrow_custom_72-section').show(); 
+          $('.editrow_custom_28-section').show(); 
         } else {
-          $('.custom_24-section').hide(); 
-          $('.custom_73-section').hide(); 
-          $('.custom_74-section').hide(); 
-          $('.custom_25-section').hide(); 
-          $('.custom_71-section').hide(); 
-          $('.custom_72-section').hide(); 
-          $('.custom_28-section').hide(); 
+          $('.editrow_custom_24-section').hide(); 
+          $('.editrow_custom_73-section').hide(); 
+          $('.editrow_custom_74-section').hide(); 
+          $('.editrow_custom_25-section').hide(); 
+          $('.editrow_custom_71-section').hide(); 
+          $('.editrow_custom_72-section').hide(); 
+          $('.editrow_custom_28-section').hide(); 
         }
       });
     };
     
 
-    $('.custom_70-section input').click(handleGroupSite1);
+    $('.editrow_custom_70-section input').click(handleGroupSite1);
     handleGroupSite1();
   })();
 
@@ -180,44 +145,44 @@ $(document).ready(function(){
   (function() {
     var handleGroupSite2 = function() {
           groupStudio2 = true; 
-          $('.custom_81-section').hide(); 
-          $('.custom_77-section').hide(); 
-          $('.custom_78-section').hide(); 
-          $('.custom_82-section').hide(); 
-          $('.custom_84-section').hide(); 
-          $('.custom_79-section').hide(); 
-          $('.custom_80-section').hide(); 
-          $('.custom_84-section').hide(); 
+          $('.editrow_custom_81-section').hide(); 
+          $('.editrow_custom_77-section').hide(); 
+          $('.editrow_custom_78-section').hide(); 
+          $('.editrow_custom_82-section').hide(); 
+          $('.editrow_custom_84-section').hide(); 
+          $('.editrow_custom_79-section').hide(); 
+          $('.editrow_custom_80-section').hide(); 
+          $('.editrow_custom_84-section').hide(); 
       $("input:radio[name='custom_76']").click(function(){
         if ($(this).val() == '1') {
-          $('.custom_81-section').hide(); 
-          $('.custom_77-section').hide(); 
-          $('.custom_78-section').hide(); 
-          $('.custom_82-section').hide(); 
-          $('.custom_84-section').show(); 
-          $('.custom_79-section').show(); 
-          $('.custom_80-section').show(); 
+          $('.editrow_custom_81-section').hide(); 
+          $('.editrow_custom_77-section').hide(); 
+          $('.editrow_custom_78-section').hide(); 
+          $('.editrow_custom_82-section').hide(); 
+          $('.editrow_custom_84-section').show(); 
+          $('.editrow_custom_79-section').show(); 
+          $('.editrow_custom_80-section').show(); 
         } else if ($(this).val() == '0') { 
-          $('.custom_84-section').hide(); 
-          $('.custom_79-section').hide(); 
-          $('.custom_80-section').hide(); 
-          $('.custom_81-section').show(); 
-          $('.custom_77-section').show(); 
-          $('.custom_78-section').show(); 
-          $('.custom_82-section').show(); 
+          $('.editrow_custom_84-section').hide(); 
+          $('.editrow_custom_79-section').hide(); 
+          $('.editrow_custom_80-section').hide(); 
+          $('.editrow_custom_81-section').show(); 
+          $('.editrow_custom_77-section').show(); 
+          $('.editrow_custom_78-section').show(); 
+          $('.editrow_custom_82-section').show(); 
         }
       });
     };
 
-    $('.custom_76-section input').click(handleGroupSite2);
+    $('.editrow_custom_76-section input').click(handleGroupSite2);
     handleGroupSite2();
   })();
 
   // Studios
   // This code checks weekend location settings **** SFOSUPDATE **** Change this custom field id to reflect the new neighborhood select.
   (function() {
-    var location_section = $('.custom_94-section').parents('fieldset').not('.crm_user-group');
-    var children = location_section.children().not('legend, .custom_10-section, .custom_21-section');
+    var location_section = $('.editrow_custom_94-section').parents('fieldset').not('.crm_user-group');
+    var children = location_section.children().not('legend, .editrow_custom_10-section, .editrow_custom_21-section');
     var half = children.size() / 2;
 
     $("#selectbox option:not(option:first, option:last)").remove();
@@ -226,7 +191,7 @@ $(document).ready(function(){
     location_section.append('<div class="weekend_loc_block premier weekend_1_loc"></div>');
     location_section.append('<div class="weekend_loc_block premier weekend_2_loc"></div>');
 
-    location_section.children().not('legend, , .custom_10-section, .custom_21-section, .weekend_loc_block').each( function(i) {
+    location_section.children().not('legend, , .editrow_custom_10-section, .editrow_custom_21-section, .weekend_loc_block').each( function(i) {
       if(i < half) {
         $(this).appendTo($('.weekend_1_loc'));
       }
@@ -239,7 +204,7 @@ $(document).ready(function(){
 
   // Guide artwork
   (function() {
-    var guide_section = $('.custom_16-section').parents('fieldset').not('.crm_user-group');
+    var guide_section = $('.editrow_custom_16-section').parents('fieldset').not('.crm_user-group');
     var children = guide_section.children().not('legend');
     var half = children.size() / 2;
 

@@ -237,55 +237,6 @@ function _artspan_sync_artist_role($user, $civi_contact) {
   }
 }
 
-function _artspan_openstudios_register($user, $event, $values) {
-  if($event['title'] == 'SF Open Studios - 2013') {
-    $PUBLIC_LOCATION_ID = 7;
-    // Get form results
-    foreach($values as $value) {
-      if(is_array($value)) {
-        $results = $value;
-      }
-    }
-
-    // Is a public/studio location already set?
-    $public = FALSE;
-    $contact = _artspan_get_civi_contact($user);
-    foreach(array_merge($contact['phone'], $contact['email']) as $i) {
-      if($i['location_type_id'] == $PUBLIC_LOCATION_ID) {
-        $public = TRUE;
-      }
-    }
-
-    // Save the user's publishable email and phone
-    $phone_type = ($results['custom_46'] == 'phone-2-2') ? 2 : 1;
-    $params = array(
-      'version' => '3.0',
-      'contact_id' => $contact['contact_id'],
-      'email' => array(
-        array(
-          'email' => $results['custom_29'],
-          'location_type_id' => $PUBLIC_LOCATION_ID
-        )
-      ),
-      'phone' => array(
-        array(
-          'phone' => $results['custom_30'],
-          'location_type_id' => $PUBLIC_LOCATION_ID,
-          'phone_type_id' => $phone_type
-        )
-      )
-    );
-
-    if($public) {
-      $response =& civicrm_location_update($params);
-    }
-    else {
-      $response =& civicrm_location_add($params);
-    }
-  }
-}
-
-
 function artspan_custom_menu() {
   return array (
     'artspan/js/addwebsite' => array (
@@ -431,6 +382,13 @@ function artspan_custom_form_artist_node_form_alter(&$form) {
   $form['buttons']['submit']['#submit'][] = '_artspan_artist_profile_redirect';
 }
 
+
+function artspan_custom_civicrm_buildForm( $formName, &$form ) {
+  //dsm($formName);
+  //dsm($form);
+}
+
+
 // Runs after the Civic Registration takes place - margot@rd
 function artspan_custom_civicrm_postProcess( $formName, &$form ) {
   if ($formName == 'CRM_Event_Form_Registration_Confirm') {
@@ -559,7 +517,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       }
       $contact_params['custom_72'] = 'California';
       $contact_params['version'] = 3;
-      $contact_params['event_id'] = 69;
+      $contact_params['event_id'] = ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID;
       $contact_params['id'] = $participant_id;
       
       // Ok now that we have what we need lets actually use the api to update (arrg create?) the participant - margot@rd
@@ -579,7 +537,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
         // Get the civi participant record - margot@rd
 	$params = array(
 			'contact_id' => $contact['contact_id'],
-   			'event_title' => 'SF Open Studios - 2013'
+   			'event_id' >ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID,
 			);
 	$participant =& civicrm_participant_search($params);
 	
@@ -597,11 +555,13 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       	$contact_params['custom_82'] = $groupsite->postal_code;
       }
       $contact_params['version'] = 3;
-      $contact_params['event_id'] = 69;
+      $contact_params['event_id'] = ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID;
       $contact_params['id'] = $participant_id;
 
       $response =& civicrm_api('participant','create', $contact_params);
-    }
+     }
+     //FIXME
+     //SET PUBLISHIABLE PHONE NUMBER 
   }
 }
 

@@ -24,7 +24,7 @@
  +--------------------------------------------------------------------+
 *}
 {if $showCMS }{*true if is_cms_user field is set *}
-   <fieldset class="crm-group crm_user-group">
+   <div class="crm-group crm_user-group">
       <div class="messages help cms_user_help-section">
    {if !$isCMS}
       {ts}If you would like to create an account on this site, check the box below and enter a Username{/ts}{if $form.cms_pass} {ts}and a password{/ts}.{/if}
@@ -44,7 +44,7 @@
              <div class="content">
                {$form.cms_name.html} <a id="checkavailability" href="#" onClick="return false;">{ts}<strong>Check Availability</strong>{/ts}</a>
                <span id="msgbox" style="display:none"></span><br />
-               <span class="description">{ts}Punctuation is not allowed in a Username with the exception of periods, hyphens and underscores.{/ts}</span>
+               <span class="description">{ts}Your preferred username; punctuation is not allowed except for periods, hyphens, and underscores. Username will be used in your personalized URL for your online artist profile page (Example: http://www.artspan.org/artist/username). Set your Username as your Artist Name, NOT your email address.{/ts}</span>
              </div>
            </div>
 
@@ -68,7 +68,7 @@
          </div>
 
      </div>
-   </fieldset>
+   </div>
 
    {literal}
    <script type="text/javascript">

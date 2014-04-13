@@ -179,3 +179,16 @@ div.block:hover .edit {
 .with-wireframes #navigation {
   height: 50px;
 }
+
+/*ADDED 4/12/2014 BY MARK LIBKUMAN TO PREVENT WONKY DROPDOWNS */
+#crm-container.crm-public input[type="text"],
+#crm-container.crm-public select {
+  font-size: 15px;
+  padding: 1px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+#editrow-custom_89 {
+  display: none;
+}

@@ -1141,24 +1141,30 @@ line-height: 1.5em; }
 #crm-container #first_name.big { width: 12em; }
 #crm-container #middle_name.big { width: 12em; }
 #crm-container #last_name.big { width: 12em; }
-.crm-event-register-form-block .first_name-section { width: 175px; float: left; }
-.crm-event-register-form-block .middle_name-section { width: 175px; float: left; }
-.crm-event-register-form-block .last_name-section { width: 300px; float: left; }
-.crm-event-register-form-block .phone-1-1-section { width: 175px; float: left; clear: both;}
-.crm-event-register-form-block .phone-2-1-section { width: 175px; float: left; }
-.crm-event-register-form-block .phone-2-2-section { width: 175px; float: left; }
-.crm-event-register-form-block .phone-7-1-section { width: 100%; float: left; clear: both;}
-.crm-event-register-form-block .custom_46-section { width: 160px; float: left; }
-.crm-event-register-form-block .custom_21-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .custom_29-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .custom_69-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .url-1-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .street_address-1-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .supplemental_address_1-Primary-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .city-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_first_name-section { width: 175px; float: left; }
+.crm-event-register-form-block .editrow_middle_name-section { width: 175px; float: left; }
+.crm-event-register-form-block .editrow_last_name-section { width: 300px; float: left; }
+.crm-event-register-form-block .editrow_phone-1-1-section { width: 175px; float: left; clear: both;}
+.crm-event-register-form-block .editrow_phone-2-1-section { width: 175px; float: left; }
+.crm-event-register-form-block .editrow_phone-2-2-section { width: 175px; float: left; }
+.crm-event-register-form-block .editrow_phone-7-1-section { width: 100%; float: left; clear: both;}
+.crm-event-register-form-block .helprow-phone-7-1-section { width: 100%; float: left; clear: both;}
+
+
+.crm-event-register-form-block .editrow_custom_46-section { width: 160px; float: left; }
+.crm-event-register-form-block .editrow_custom_21-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_custom_29-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .helprow-custom_29-section { width: 100%; float: left; clear: both; }
+
+.crm-event-register-form-block .editrow_custom_69-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_url-1-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .helprow-url-1-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_street_address-1-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_supplemental_address_1-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_city-Primary-section { width: 100%; float: left; clear: both; }
 .crm-event-register-form-block .state_province-Primary-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .postal_code-Primary-section { width: 100%; float: left; clear: both; }
-.crm-event-register-form-block .custom_89-section { display: none; }
+.crm-event-register-form-block .editrow_postal_code-Primary-section { width: 100%; float: left; clear: both; }
+.crm-event-register-form-block .editrow_custom_89-section { display: none; }
 #account-stuff .message { display: none; }
 .filter-header { padding: 10px; }
 .ui-icon-print { display: none; }
@@ -1178,4 +1184,12 @@ padding: 0 0 10px 0;
 }
 .main-header {
 padding: 0 0 14px 0;
+}
+
+/* ADDED 4/12/2014 BY MARK LIBKUMAN TO COUNTER UNREADABLE CIVI LINKS */
+.crm-container a,
+.crm-container a:link,
+.crm-container a:visited {
+  color: #2786c2;
+  text-decoration: none;
 }

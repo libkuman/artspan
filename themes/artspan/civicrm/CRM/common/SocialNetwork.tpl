@@ -68,11 +68,6 @@
       {/if}
       <br/>
       <div class="clear"></div>
-      <div>
-        <span class="bold">{ts}You can also share the below link in an email or on your website.{/ts}</span>
-        <br/>
-        <a href="{$pageURL}">{$pageURL}</a>
-      </div>
     {else}
       <div class="clear"></div>
     {/if}

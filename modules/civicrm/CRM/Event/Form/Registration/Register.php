@@ -464,6 +464,7 @@ class CRM_Event_Form_Registration_Register extends CRM_Event_Form_Registration {
       ) {
         if (!is_array($this->_values['custom_post_id'])) {
           $profileIDs = array($this->_values['custom_post_id']);
+	  dsm($profileIDs, 'profiles');
         }
         else {
           $profileIDs = $this->_values['custom_post_id'];

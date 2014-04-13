@@ -23,6 +23,18 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
+<script type="text/javascript" src="/sites/all/themes/artspan/js/jquery.scrollTo-1.4.1-min.js"></script>
+
+<script type="text/javascript" src="/sites/all/themes/artspan/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/sites/all/themes/artspan/js/register.js"></script>
+
+<script type="text/javascript">
+  $("#Register").validate();
+</script>
+
+{/literal}
+
+
 {* Callback snippet: Load payment processor *}
 {if $snippet}
   {include file="CRM/Core/BillingBlock.tpl" context="front-end"}
@@ -58,14 +70,9 @@
         {/if}
       </div>
     {/if}
+<h1>Register for SF Open Studios</h1>
+<div id="errors"></div>
 
-    {if $contact_id}
-      <div class="messages status no-popup" id="crm-event-register-different">
-        {ts 1=$display_name}Welcome %1{/ts}. (<a
-          href="{crmURL p='civicrm/event/register' q="cid=0&reset=1&id=`$event.id`"}"
-          title="{ts}Click here to register a different person for this event.{/ts}">{ts 1=$display_name}Not %1, or want to register a different person{/ts}</a>?)
-      </div>
-    {/if}
     {if $event.intro_text}
       <div id="intro_text" class="crm-section intro_text-section">
         <p>{$event.intro_text}</p>
@@ -77,7 +84,7 @@
         <div class="content">{$pcpSupporterText}</div>
       </div>
     {/if}
-
+    <a name="form_top"></a>
     {if $form.additional_participants.html}
       <div class="crm-section additional_participants-section" id="noOfparticipants">
         <div class="label">{$form.additional_participants.label}</div>
@@ -90,6 +97,9 @@
         <div class="clear"></div>
       </div>
     {/if}
+
+<fieldset>
+<legend>Registration Options</legend>
 
     {if $priceSet}
       {if ! $quickConfig}<fieldset id="priceset" class="crm-group priceset-group">
@@ -133,9 +143,17 @@
         </div>
       </fieldset>
     {/if}
-
+    </fieldset>
     {* User account registration option. Displays if enabled for one of the profiles on this page. *}
-    {include file="CRM/common/CMSUser.tpl"}
+    {if !$contact_id || $contact_id == NULL}
+      <fieldset class="crm-group crm_user-group">
+        <legend>Account Information</legend>
+
+        {* User account registration option. Displays if enabled for one of the profiles on this page. *}
+        {include file="CRM/common/CMSUser.tpl"}  
+      </fieldset>
+    {/if}
+
 
     {include file="CRM/UF/Form/Block.tpl" fields=$customPre}
 
@@ -159,6 +177,7 @@
     {include file="CRM/common/paymentBlock.tpl"}
 
     {include file="CRM/UF/Form/Block.tpl" fields=$customPost}
+
 
     {if $isCaptcha}
       {include file='CRM/common/ReCAPTCHA.tpl'}
