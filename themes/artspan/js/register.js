@@ -19,6 +19,9 @@ $(document).ready(function(){
 
   //4/13/2014 now making function rely on the cj (civicrm jquery) framework
   cj(".price-set-row input").click(function (event) {
+    handleMultipleWeekends();
+  });
+  function handleMultipleWeekends() {
     var clicked_id = $(".price_set-section input[type='radio']:checked").attr('id');
     var label = $("label[for=" + clicked_id + "]").text();
 
@@ -69,8 +72,8 @@ $(document).ready(function(){
         numTiffUploads = 0;
       }
 
-  });
-
+  }
+  handleMultipleWeekends();
 
   (function() {
     var handleGroupSite1 = function() {
@@ -86,6 +89,7 @@ $(document).ready(function(){
           $('.editrow_custom_71-section').hide(); 
           $('.editrow_custom_72-section').hide(); 
           $('.editrow_custom_28-section').hide(); 
+	  $('.helprow-custom_84-section').hide(); 
           } else {
           $('.editrow_custom_83-section').hide(); 
           $('.helprow-custom_83-section').hide(); 
@@ -96,6 +100,7 @@ $(document).ready(function(){
           $('.editrow_custom_71-section').hide(); 
           $('.editrow_custom_72-section').hide(); 
           $('.editrow_custom_28-section').hide(); 
+          $('.helprow-custom_84-section').hide(); 
 
           }
       $("input:radio[name='custom_70']").click(function(){
@@ -137,6 +142,7 @@ $(document).ready(function(){
           $('.editrow_custom_71-section').hide(); 
           $('.editrow_custom_72-section').hide(); 
           $('.editrow_custom_28-section').hide(); 
+	  $('.helprow-custom_83-section').hide(); 
         }
       });
     };
@@ -168,14 +174,16 @@ $(document).ready(function(){
           $('.editrow_custom_84-section').show(); 
           $('.editrow_custom_79-section').show(); 
           $('.editrow_custom_80-section').show(); 
+	  $('.helprow-custom_84-section').show(); 
         } else if ($(this).val() == '0') { 
           $('.editrow_custom_84-section').hide(); 
           $('.editrow_custom_79-section').hide(); 
-          $('.editrow_custom_80-section').hide(); 
+          $('.editrow_custom_80-section').hide();
+	  $('.helprow-custom_84-section').hide();  
           $('.editrow_custom_81-section').show(); 
           $('.editrow_custom_77-section').show(); 
           $('.editrow_custom_78-section').show(); 
-          $('.editrow_custom_82-section').show(); 
+          $('.editrow_custom_82-section').show();
         }
       });
     };
@@ -189,7 +197,7 @@ $(document).ready(function(){
   (function() {
     var location_section = $('.editrow_custom_94-section').parents('fieldset').not('.crm_user-group');
     var children = location_section.children().not('legend, .editrow_custom_10-section, .editrow_custom_21-section');
-    var half = children.size() / 2;
+    var half = (children.size() / 2) - 1;
 
     $("#selectbox option:not(option:first, option:last)").remove();
 
@@ -197,7 +205,8 @@ $(document).ready(function(){
     location_section.append('<div class="weekend_loc_block premier weekend_1_loc"></div>');
     location_section.append('<div class="weekend_loc_block premier weekend_2_loc"></div>');
 
-    location_section.children().not('legend, , .editrow_custom_10-section, .editrow_custom_21-section, .weekend_loc_block').each( function(i) {
+    location_section.children().not('legend, , .editrow_custom_10-section, .editrow_custom_21-section, .weekend_loc_block, .helprow-custom_21-section, , .helprow-custom_10-section').each( function(i) {
+
       if(i < half) {
         $(this).appendTo($('.weekend_1_loc'));
       }
