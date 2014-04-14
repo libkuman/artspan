@@ -15,6 +15,12 @@ $(document).ready(function(){
   $('.editrow_custom_77-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_78-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_82-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_58-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_60-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_56-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_57-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_59-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_61-section label').append(' <span class="marker">*</span>');
 
 
   //4/13/2014 now making function rely on the cj (civicrm jquery) framework

@@ -11,20 +11,6 @@ define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 214);
 define ('ARTSPAN_FIRST_CHOICE_WEEKEND_CF', 'custom_94');
 define ('ARTSPAN_SECOND_CHOICE_WEEKEND_CF', 'custom_96');
 
-
-
-
-// Load the Civi API
-function _artspan_load_civi_api() {
-  civicrm_initialize(true);
-  global $civicrm_root;
-  $civi_api = "$civicrm_root/api/v2";
-  include_once "$civi_api/UFGroup.php";
-  include_once "$civi_api/Contact.php";
-  include_once "$civi_api/Location.php";
-  include_once "$civi_api/Participant.php";
-}
-
 // Get a Civi Contact
 function _artspan_get_civi_contact($user, $options = array()) {
   civicrm_initialize(true);
@@ -110,7 +96,6 @@ function _artspan_load_civi_group_studios() {
 
 // Get a Civi Contact's Location info off their Event Registration
 function _artspan_get_civi_contact_public_location_info($user, $options = array()) {
-  _artspan_load_civi_api();
   $PUBLIC_LOCATION_ID = 7;
   $STUDIO_LOCATION_ID = 6;
   $STUDIO_LOCATION_ID_OS1 = 8;
@@ -394,6 +379,22 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
   if ($formName == 'CRM_Event_Form_Registration_Confirm') {
     global $user;
     $form_data = array();
+
+    // Get the civi participant record - margot@rd
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'event_id' => ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID,
+		    'contact_id' => $contact['contact_id'],
+		    );
+    $result = civicrm_api('Participant', 'get', $params);
+    if ($result && !$result['is_error'] && $result['values'] && 
+	$result['values'][0]) {
+      $participant = $result['values'][0];
+      $participant_id = $participant['participant_id'];
+    }
+
+
     
     // Here they add the artist role to the drupal profile - margot@rd
     $user_roles = $user->roles;
@@ -497,16 +498,6 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $result = db_query($query);
 
       $groupsite = db_fetch_object($result);      
-      // Get the civi participant record - margot@rd
-      $params = array(
-		      'contact_id' => $contact['contact_id'],
-		      'event_title' => 'SF Open Studios - 2013'
-		      );
-      $participant =& civicrm_participant_search($params);
-  		
-      foreach ($participant as $part) {
-	$participant_id = $part['participant_id'];
-      }
 
       // we need this participant id so that we can use it to update the participant record
       $contact_params['custom_25'] = $groupsite->street_address;
@@ -521,7 +512,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $contact_params['id'] = $participant_id;
       
       // Ok now that we have what we need lets actually use the api to update (arrg create?) the participant - margot@rd
-      $response =& civicrm_api('participant','create', $contact_params);
+      $response = civicrm_api('Participant', 'create', $params);
     } 
 
      // Is a group site set for weekend 2?
@@ -534,18 +525,6 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
         $result = db_query($query);
         $groupsite = db_fetch_object($result);
                
-        // Get the civi participant record - margot@rd
-	$params = array(
-			'contact_id' => $contact['contact_id'],
-   			'event_id' >ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID,
-			);
-	$participant =& civicrm_participant_search($params);
-	
-	foreach ($participant as $part) {
-	  $participant_id = $part['participant_id'];
-	}
-						
-	// we need this participant id so that we can use it to update the participant record
 			
       $contact_params['custom_81'] = $groupsite->street_address;
       $contact_params['custom_77'] = $groupsite->city;
@@ -558,7 +537,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $contact_params['event_id'] = ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID;
       $contact_params['id'] = $participant_id;
 
-      $response =& civicrm_api('participant','create', $contact_params);
+      $response = civicrm_api('Participant', 'create', $params);
      }
      //FIXME
      //SET PUBLISHIABLE PHONE NUMBER 
@@ -768,7 +747,6 @@ function artspan_custom_form_editview_node_form_new_alter(&$form) {
   $form['field_artist'][0]['#default_value']['uid'] = arg(1);
 }
 
-// What the hell does this function actually do?  It seems to be resonsible for removing the feilds that should be in the civi record
 function artspan_custom_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
   // If we're on the edit artwork page, make sure node's artist and uid are set.
   if($op == 'presave' && $node->type == 'artwork' && arg(0) == 'user' && arg(3) == 'artwork') {
@@ -787,104 +765,6 @@ function artspan_custom_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       $query = "UPDATE content_type_artist SET field_ref_thumbnail_art_nid = '{$node->nid}' WHERE nid='{$profile->nid}';";
       $result = db_query($query);
     }
-  }
-
-  if(($op == 'update' || $op == 'insert') && $node->type == 'artist') {
-
-    function get_name($id) {
-      $term = taxonomy_get_term($id);
-      return $term->name;
-    }
-
-    function get_weekend_no($id) {
-      $parents = taxonomy_get_parents($id);
-      foreach($parents as $getparent) {
-        $parent = $getparent;
-      }
-      return $parent->name;
-    }
-
-    _artspan_load_civi_api();
-    $civi_uid = civicrm_uf_match_id_get($node->uid);
-    $params = array(
-      'contact_id' => $civi_uid,
-      'event_title' => 'SF Open Studios - 2011'
-      );
-
-    $participant = civicrm_participant_search($params);
-
-    if(count($participant) > 0) {
-      $keys = array_keys($participant);
-      $id = $keys[0];
-      $participant = $participant[$id];
-      $mediums = chr(1);
-      foreach($node->field_mediums_list as $tid) {
-        switch($tid['value']) {
-          case 1:
-            $mediums .= "book-arts" . chr(1);
-            break;
-          case 2:
-            $mediums .= "ceramics" . chr(1);
-            break;
-          case 3:
-            $mediums .= "drawing" . chr(1);
-            break;
-          case 4:
-            $mediums .= "fiber" . chr(1);
-            break;
-          case 5:
-            $mediums .= "glass" . chr(1);
-            break;
-          case 6:
-            $mediums .= "installation" . chr(1);
-            break;
-          case 7:
-            $mediums .= "mixed-media" . chr(1);
-            break;
-          case 8:
-            $mediums .= "painting" . chr(1);
-            break;
-          case 9:
-            $mediums .= "photography" . chr(1);
-            break;
-          case 10:
-            $mediums .= "printmaking" . chr(1);
-            break;
-          case 11:
-            $mediums .= "sculpture" . chr(1);
-            break;
-          case 12:
-            $mediums .= "wearable" . chr(1);
-            break;
-        }
-      }
-      if($mediums == chr(1)) {
-        $mediums = NULL;
-      }
-      $params = array(
-        'id' => $id,
-        'custom_10' => $node->field_content_title[0]['value'],
-        //'custom_21' => $mediums,
-        'custom_62' => get_name($node->field_primary_medium[0]['value']),
-        'custom_63' => get_weekend_no($node->field_sf_open_studios_wk1[0]['value']),
-        'custom_64' => get_weekend_no($node->field_sf_open_studios_wk2[0]['value']),
-        'custom_65' => get_name($node->field_sf_open_studios_wk1[0]['value']),
-        'custom_66' => get_name($node->field_sf_open_studios_wk2[0]['value'])
-      );
-
-      $query = "UPDATE civicrm_value_sf_open_studios_artist_info_4 SET " .
-        "publishable_artist_name_10 = '" . db_escape_string($node->field_content_title[0]['value']) . "', " .
-        //"guide_mediums_21 = '" . $mediums . "', " .
-        "guide_primary_medium_62 = '" . db_escape_string(get_name($node->field_primary_medium[0]['value'])) . "', " .
-        "first_os_weekend___63 = '" . db_escape_string(get_weekend_no($node->field_sf_open_studios_wk1[0]['value'])) . "', " .
-        "second_os_weekend___64 = '" . db_escape_string(get_weekend_no($node->field_sf_open_studios_wk2[0]['value'])) . "', " .
-        "first_os_neighborhood_65 = '" . db_escape_string(get_name($node->field_sf_open_studios_wk1[0]['value'])) . "', " .
-        "second_os_neighborhood_66 = '" . db_escape_string(get_name($node->field_sf_open_studios_wk2[0]['value'])) . "' " .
-        "WHERE entity_id = '" . $id . "';";
-
-      //db_query($query);
-    }
-
   }
 }
 

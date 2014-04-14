@@ -1,32 +1,6 @@
 <?php
 // $Id$
 
-//function _artspan_load_civi_api() {
-//  civicrm_initialize(true);
-//  global $civicrm_root;
-//  $civi_api = "$civicrm_root/api/v2";
-//  include_once "$civi_api/UFGroup.php";
-//  include_once "$civi_api/Contact.php";
-//  include_once "$civi_api/Location.php";
-//  include_once "$civi_api/Participant.php";
-//}
-
-//function _artspan_get_civi_contact($user, $options = array()) {
-//  _artspan_load_civi_api();
-//
-//  if($user != FALSE) {
-//    $civi_uid = civicrm_uf_match_id_get($user);
-//    $options['contact_id'] = $civi_uid;
-//  }
-//  $civi_user = civicrm_contact_get($options);
-//
-//  $options = array('contact_id' => $options['contact_id'], 'version' => '3.0');
-//  $civi_location = civicrm_location_get($options);
-//
-//  return array_merge($civi_user[$options['contact_id']], $civi_location);
-//}
-
-
 function groupstudios_menu() {
   $items = array();
 
