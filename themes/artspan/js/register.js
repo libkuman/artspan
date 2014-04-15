@@ -21,7 +21,7 @@ $(document).ready(function(){
   $('.editrow_custom_57-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_59-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_61-section label').append(' <span class="marker">*</span>');
-
+$('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
 
   //4/13/2014 now making function rely on the cj (civicrm jquery) framework
   cj(".price-set-row input").click(function (event) {
