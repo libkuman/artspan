@@ -41,6 +41,25 @@ function _artspan_get_civi_contact($user, $options = array()) {
   return $contact_array;
 }
 
+function _artspan_get_user_for_civi_contact($contact_id) {
+  civicrm_initialize(true);
+  $contact_array = array();
+  $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'contact_id' => $contact_id,
+		  );
+  $result = civicrm_api('UFMatch', 'get', $params);
+  if ($result && $result['values'] && $result['values'][0]) {
+    $user_id = $result['values'][0]['uf_id'];
+    if ($user_id) {
+      return user_load($user_id);
+    }
+  }
+
+  return user_load(0);
+}
+
 
 function _artspan_get_civi_contact_for_contact_id($contact_id) {
   $params = array(
@@ -377,25 +396,11 @@ function artspan_custom_civicrm_buildForm( $formName, &$form ) {
 // Runs after the Civic Registration takes place - margot@rd
 function artspan_custom_civicrm_postProcess( $formName, &$form ) {
   if ($formName == 'CRM_Event_Form_Registration_Confirm') {
-    global $user;
-    $form_data = array();
+    $contact_id = $form->_values['participant']['contact_id'];
+    $contact = _artspan_get_civi_contact_for_contact_id($contact_id);
+    $participant_id = $form->_values['participant']['participant_id'];
+    $user = _artspan_get_user_for_civi_contact($contact_id);
 
-    // Get the civi participant record - margot@rd
-    $params = array(
-		    'version' => 3,
-		    'sequential' => 1,
-		    'event_id' => ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID,
-		    'contact_id' => $contact['contact_id'],
-		    );
-    $result = civicrm_api('Participant', 'get', $params);
-    if ($result && !$result['is_error'] && $result['values'] && 
-	$result['values'][0]) {
-      $participant = $result['values'][0];
-      $participant_id = $participant['participant_id'];
-    }
-
-
-    
     // Here they add the artist role to the drupal profile - margot@rd
     $user_roles = $user->roles;
     $user_roles[3] = 'artist';
@@ -484,7 +489,6 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
     }
 
     // Save address and phone of the Group Site to civi contact
-    $contact = _artspan_get_civi_contact_public_location_info($user->uid);
     $STUDIO_LOCATION_ID = 6;
     $STUDIO_LOCATION_ID_OS1 = 8;
     $STUDIO_LOCATION_ID_OS2 = 9;
