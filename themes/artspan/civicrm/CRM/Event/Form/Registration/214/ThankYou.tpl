@@ -32,6 +32,7 @@
 <div class="crm-event-id-{$event.id} crm-block crm-event-thankyou-form-block">
     {* Don't use "normal" thank-you message for Waitlist and Approval Required registrations - since it will probably not make sense for those situations. dgg *}
     {if $event.thankyou_text AND (not $isOnWaitlist AND not $isRequireApproval)}
+        <p><a href="/user/me/edit/artist"><img src="/sites/all/themes/artspan/images/artspan_filloutprofile_button.gif" alt="" class="left" /></a></p>
         <div id="intro_text" class="crm-section event_thankyou_text-section">
             <p>
             {$event.thankyou_text}
@@ -69,6 +70,11 @@
             {if $is_email_confirm}
                 <p>{ts 1=$email}An email with event details has been sent to %1.{/ts}</p>
             {/if}
+ {if $event.is_share}
+            {capture assign=eventUrl}{crmURL p='civicrm/event/info' q="id=`$event.id`&amp;reset=1" a=true fe=1 h=1}{/capture}
+            {include file="CRM/common/SocialNetwork.tpl" url=$eventUrl title=$event.title pageURL=$eventUrl}
+            {/if}
+
         {* PayPal_Standard sets contribution_mode to 'notify'. We don't know if transaction is successful until we receive the IPN (payment notification) *}
         {elseif $contributeMode EQ 'notify' and $paidEvent}
             <p>{ts 1=$paymentProcessor.name}Your registration payment has been submitted to %1 for processing. Please print this page for your records.{/ts}</p>
