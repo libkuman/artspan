@@ -1193,3 +1193,11 @@ padding: 0 0 14px 0;
   color: #2786c2;
   text-decoration: none;
 }
+
+/* ADDED 4/12/2014 BY MARK LIBKUMAN TO HIDE PAY WITH PAYPAL BUTTON */
+.paypal_button_info-section {
+display: none;
+}
+._qf_Register_upload_express-section {
+display: none;
+}
