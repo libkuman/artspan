@@ -36,7 +36,7 @@
    print '<div class="osreg-block">';
    print '<div id="reg-btn-user">';
    print '<a href="/'.$register_link.
-     '" target="_self">Register For 2013 Open Studios</a>';
+     '" target="_self">Register For ' . date('Y') . ' Open Studios</a>';
    print '</div>';
    //print '<h2>Registration For SF Open Studios Coming Soon.</h2>';
    print '</div>';
