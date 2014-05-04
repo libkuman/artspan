@@ -207,6 +207,7 @@ function _artspan_sync_artist_role($user, $civi_contact) {
   foreach($user->roles as $role) {
     if($role == 'artist') $is_artist = TRUE;
   }
+  
   if($is_artist != ($civi_contact['contact_sub_type'][0] == 'Artist')) {
 
     $params = array(
@@ -778,6 +779,9 @@ function artspan_custom_form_user_profile_form_alter(&$form) {
 
 function artspan_custom_user($op, &$edit, $account, $category = NULL) {
   if($op == 'after_update' && $category == 'account') {
+    _artspan_sync_artist_role($account, $account->_civi_contact);
+  }
+  if($op == 'login') {
     _artspan_sync_artist_role($account, $account->_civi_contact);
   }
 }  
