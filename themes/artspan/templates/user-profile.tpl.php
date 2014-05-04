@@ -47,24 +47,28 @@
 
   $artist_sites = array();
   $uniq_artist_sites = array();
-  
-  foreach($websites as $website) {
-    if($website->name == 'Twitter') {
-      $twitter = $website;
-      continue;
-    }
-    else if($website->name == 'Facebook') {
-      $facebook = $website;
-      continue;
-    }
-    else {
-      $artist_sites[] = $website;
+
+  foreach($websites as $type => $type_websites) {
+    foreach($type_websites as $id=>$url) {
+      if($type == 'twitter') {
+	$twitter = $url;
+	continue;
+      }
+      else if($type == 'facebook') {
+	$facebook = $url;
+	continue;
+      }
+      else {
+	$artist_sites[$id] = $url;
+      }
     }
   }
+
   // Check to see if there are no websites, if none set false
   if(count($artist_sites) == 0) {
     $websites = false;
   }
+
 
   // Debug used to print available info to screen margot@rd 
 /*	if ($user->uid == 3720) {
@@ -102,14 +106,15 @@
         <h3>Contact</h3>
         <?php if($websites): ?>
           <ul>
-            <?php $uniq_artist_sites = array();
-              foreach($artist_sites as $site) {
-                 if (isset($unique[$site->id])) {
+            <?php $unique = array();
+              foreach($artist_sites as $id=>$url) {
+                 if (isset($unique[$id])) {
                    continue;
                  } 
-                 $unique[$site->id] = $site;
+                 $unique[$id] = $site;
             ?>
-              <li><a href="<?php print $site->url; ?>" target="_blank"><?php print $site->url; ?></a>
+              <li><a href="<?php print $url; ?>" target="_blank">
+                <?php print $url; ?></a>
             <?php } ?>
           </ul>
         <?php endif; ?>
@@ -229,10 +234,10 @@
     <?php if($twitter || $facebook): ?>
       <div class="social_area">
         <?php if($twitter): ?>
-          <a href="<?php echo $twitter->url; ?>" class="twitter-link" target="_blank"><img src="<?php echo base_path() . path_to_theme(); ?>/images/twitter_profile_button.gif" alt="View this artist's Twitter account"></a>
+          <a href="<?php echo $twitter; ?>" class="twitter-link" target="_blank"><img src="<?php echo base_path() . path_to_theme(); ?>/images/twitter_profile_button.gif" alt="View this artist's Twitter account"></a>
         <?php endif; ?>
         <?php if($facebook): ?>
-          <a href="<?php echo $facebook->url; ?>" class="facebook-link" target="_blank"><img src="<?php echo base_path() . path_to_theme(); ?>/images/facebook_profile_button.gif" alt="View this artist's Facebook account"></a>
+          <a href="<?php echo $facebook; ?>" class="facebook-link" target="_blank"><img src="<?php echo base_path() . path_to_theme(); ?>/images/facebook_profile_button.gif" alt="View this artist's Facebook account"></a>
         <?php endif; ?>
       </div>
     <?php endif; ?>
