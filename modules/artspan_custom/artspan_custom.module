@@ -547,9 +547,7 @@ function _artspan_artist_profile_validate($form, &$form_state) {
 }
 
 function _artspan_artist_profile_redirect($form, &$form_state) {
-  //$form_state['redirect'] = 'user/'.$form['uid']['#value'].'/edit/artwork';
-  //FIXME ONLY HERE FOR TESTING
-  $form_state['redirect'] = 'user/me/edit/artist';
+  $form_state['redirect'] = 'user/'.$form['uid']['#value'].'/edit/artwork';
 }
 
 // updated Civi when the profile is submitted margot@rd
