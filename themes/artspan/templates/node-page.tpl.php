@@ -15,7 +15,8 @@
     <?php endif; ?>
 
       <?php
-        if ($node->nid == 8545) {
+        if ($node->nid == 8545 && 
+	    variable_get('artspan_custom_applications_open')) {
           print '<div id="reg-btn">';
           global $user;
 	  $register_link = "civicrm/event/register?id=".
@@ -36,7 +37,8 @@
     </div>
     <div id="reg-btn">
       <?php 
-        if ($node->nid == 8545) {
+        if ($node->nid == 8545  && 
+	    variable_get('artspan_custom_applications_open')) {
 	  $register_link = "civicrm/event/register?id=".
 	    ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID."&amp;reset=1";
           if ($user->uid) {

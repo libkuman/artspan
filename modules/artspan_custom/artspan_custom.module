@@ -11,8 +11,17 @@ define ('ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID', 214);
 define ('ARTSPAN_FIRST_CHOICE_WEEKEND_CF', 'custom_94');
 define ('ARTSPAN_SECOND_CHOICE_WEEKEND_CF', 'custom_96');
 
+define ('ARTSPAN_PUBLIC_LOCATION_ID', 7);
+define ('ARTSPAN_STUDIO_LOCATION_ID', 6);
+define ('ARTSPAN_STUDIO_LOCATION_ID_OS1', 8);
+define ('ARTSPAN_STUDIO_LOCATION_ID_OS2', 9);
+
+define ('ARTSPAN_WEBSITE_TYPE_HOME', 1);
+define ('ARTSPAN_WEBSITE_TYPE_FACEBOOK', 3);
+define ('ARTSPAN_WEBSITE_TYPE_TWITTER', 4);
+
 // Get a Civi Contact
-function _artspan_get_civi_contact($user, $options = array()) {
+function _artspan_get_civi_contact($user) {
   civicrm_initialize(true);
   $contact_array = array();
   if($user != FALSE) {
@@ -94,86 +103,38 @@ function _artspan_get_group_studio_site_contact($name) {
 }
 
 
-function _artspan_load_civi_group_studios() {
- $params = array(
+// Get a Civi Contact's Location info off their Event Registration
+function _artspan_get_civi_contact_public_location_info($user) {
+  $contact = _artspan_get_civi_contact($user);
+
+  $params = array(
 		  'version' => 3,
 		  'sequential' => 1,
-		  'sort' => 'organization_name',
-		  'contact_type' => 'Organization',
-		  'contact_sub_type' => 'Group_Studio_Site',
-		  'rowCount' => 200,
+		  'contact_id' => $contact['contact_id'],
+		  'location_type_id' => ARTSPAN_PUBLIC_LOCATION_ID,
 		  );
-  $result = civicrm_api('Contact', 'get', $params);
-  if ($result && !$result['is_error'] && $result['values'] && 
-      $result['values'][0]) {
-    return $result['values'];
+  $result = civicrm_api('Email', 'get', $params);
+  if ($result && !$result['is_error'] && $result['values'][0]) {
+    $contact['public_email'] = $result['values'][0]['email'];
+    $contact['public_email_id'] = $result['values'][0]['id'];
   }
-  return FALSE;
-}
-
-
-
-// Get a Civi Contact's Location info off their Event Registration
-function _artspan_get_civi_contact_public_location_info($user, $options = array()) {
-  $PUBLIC_LOCATION_ID = 7;
-  $STUDIO_LOCATION_ID = 6;
-  $STUDIO_LOCATION_ID_OS1 = 8;
-  $STUDIO_LOCATION_ID_OS2 = 9;
-  $contact = _artspan_get_civi_contact($user, $options);
-  
-  foreach($contact['phone'] as $number) {
-    if($number['location_type_id'] == $PUBLIC_LOCATION_ID) {
-      $contact['phone'] = $number['phone'];
-      break;
-    }
+  else {
+    $contact['public_email'] = '';
   }
 
-  if(is_array($contact['phone'])) {
-    $contact['phone'] = NULL;
+  $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'contact_id' => $contact['contact_id'],
+		  'location_type_id' => ARTSPAN_PUBLIC_LOCATION_ID,
+		  );
+  $result = civicrm_api('Phone', 'get', $params);
+  if ($result && !$result['is_error'] && $result['values'][0]) {
+    $contact['public_phone'] = $result['values'][0]['phone'];
+    $contact['public_phone_id'] = $result['values'][0]['id'];
   }
-
-  foreach($contact['email'] as $email) {
-    if($email['location_type_id'] == $PUBLIC_LOCATION_ID) {
-      $contact['email'] = $email['email'];
-      break;
-    }
-  }
-
-  foreach($contact['address'] as $address) {
-    if($address['location_type_id'] == $STUDIO_LOCATION_ID) {
-      $contact['address'] = $address;
-    }
-    if($address['location_type_id'] == $STUDIO_LOCATION_ID_OS1) {
-      $contact['address_os1'] = $address;
-    }
-    if($address['location_type_id'] == $STUDIO_LOCATION_ID_OS2) {
-      $contact['address_os2'] = $address;
-    }
-  }
-
-  if($contact['address'] && $contact['address']['use_shared_address'] == 1) {
-    $master_id = $contact['address']['master_id'];
-    $query = "SELECT c.id, c.display_name, c.contact_sub_type, a.street_address, a.supplemental_address_1, a.city, a.state_province_id, a.postal_code, a.country_id FROM civicrm_address AS a LEFT JOIN civicrm_contact AS c ON a.contact_id = c.id WHERE a.id = $master_id;";
-    $result = db_query($query);
-    $contact['address']['shared'] = db_fetch_object($result);
-  }
-
-  if($contact['address_os1'] && $contact['address_os1']['use_shared_address'] == 1) {
-    $master_id = $contact['address_os1']['master_id'];
-    $query = "SELECT c.id, c.display_name, c.contact_sub_type, a.street_address, a.supplemental_address_1, a.city, a.state_province_id, a.postal_code, a.country_id FROM civicrm_address AS a LEFT JOIN civicrm_contact AS c ON a.contact_id = c.id WHERE a.id = $master_id;";
-    $result = db_query($query);
-    $contact['address_os1']['shared'] = db_fetch_object($result);
-  }
-
-  if($contact['address_os2'] && $contact['address_os2']['use_shared_address'] == 1) {
-    $master_id = $contact['address_os2']['master_id'];
-    $query = "SELECT c.id, c.display_name, c.contact_sub_type, a.street_address, a.supplemental_address_1, a.city, a.state_province_id, a.postal_code, a.country_id FROM civicrm_address AS a LEFT JOIN civicrm_contact AS c ON a.contact_id = c.id WHERE a.id = $master_id;";
-    $result = db_query($query);
-    $contact['address_os2']['shared'] = db_fetch_object($result);
-  }
-
-  if(is_array($contact['email'])) {
-    $contact['email'] = NULL;
+  else {
+    $contact['public_phone'] = '';
   }
 
   return $contact;
@@ -181,13 +142,31 @@ function _artspan_get_civi_contact_public_location_info($user, $options = array(
 
 // Get a Civi Contacts Website
 function _artspan_get_artist_websites($contact_id) {
-  $contact_id = mysql_real_escape_string($contact_id);
-  //$query = "SELECT DISTINCT w.url, w.id, t.name FROM civicrm_website AS w LEFT JOIN (SELECT name, value FROM civicrm_option_value AS v WHERE v.option_group_id = (SELECT id FROM civicrm_option_group WHERE name='website_type')) AS t ON (w.website_type_id = t.value) WHERE w.contact_id = '$contact_id';";
-  $query = "SELECT w.url, w.id, t.name FROM civicrm_website AS w LEFT JOIN (SELECT name, value FROM civicrm_option_value AS v WHERE v.option_group_id = (SELECT id FROM civicrm_option_group WHERE name='website_type')) AS t ON (w.website_type_id = t.value) WHERE w.contact_id = '$contact_id';";
-  $result = db_query($query);
-  $sites = array();
-  while($website = db_fetch_object($result)) {
-    $sites[] = $website;
+  $params = array(
+		  'version' => 3,
+		  'sequential' => 1,
+		  'contact_id' => 28083,
+		  );
+  $result = civicrm_api('Website', 'get', $params);
+
+  if ($result && !$result['is_error'] && $result['values'] && 
+      $result['values'][0]) {
+
+    $sites['facebook'] = array();
+    $sites['twitter'] = array();
+    $sites['home'] = array();
+
+    foreach( $result['values'] as $website) {
+      if ($website['website_type_id'] == ARTSPAN_WEBSITE_TYPE_FACEBOOK) {
+	$sites['facebook'][$website['id']] = $website['url']; 
+      }
+      else if ($website['website_type_id'] == ARTSPAN_WEBSITE_TYPE_TWITTER) {
+	$sites['twitter'][$website['id']] = $website['url']; 
+      }
+      else {
+	$sites['home'][$website['id']] = $website['url']; 
+      }
+    }
   }
   return $sites;
 }
@@ -242,22 +221,29 @@ function _artspan_sync_artist_role($user, $civi_contact) {
 }
 
 function artspan_custom_menu() {
-  return array (
-    'artspan/js/addwebsite' => array (
-      'title' => 'Javascript Add Website to List',
-      'page callback' => 'artspan_addwebsite_js',
-      'access arguments' => array('access content'),
-      'type' => MENU_CALLBACK,
-    ),
-  );
+   $items['admin/artspan/settings'] =
+     array(
+	   'title' => 'Artspan Settings',
+	   'description' => 'A page for setting Artspan settings',
+	   'page callback' => 'drupal_get_form',
+	   'page arguments' => array('artspan_custom_settings_form'),
+	   'access callback' => 'user_access',
+	   'access arguments' => array('administer site configuration'),
+	   'type' => MENU_NORMAL_ITEM,
+	   );
+   return $items;
 }
 
-function artspan_addwebsite_js($uid) {
-  $civi_user = _artspan_get_civi_contact($uid);
-  $form = artspan_addwebsite_form($uid, $civi_user);
-  $form[] = array('#type' => 'textfield', '#name' => 'website_new');
-  $rendered = drupal_render($form);
-  print drupal_json(array('status' => TRUE, 'data' => $rendered));
+function artspan_custom_settings_form() {
+  $form['artspan_custom_applications_open'] =
+    array(
+          '#type' => 'checkbox',
+          '#title' => 'Is Open Studios Registration Open?',
+          '#default_value' => variable_get('artspan_custom_applications_open'),
+          '#description' => 'Check this box if you would like to open up '.
+          'registration open for the current year.',
+          );
+  return system_settings_form($form);
 }
 
 function artspan_addwebsite_form($uid, $civi_user, &$twitter = NULL, &$facebook = NULL) {
@@ -269,127 +255,50 @@ function artspan_addwebsite_form($uid, $civi_user, &$twitter = NULL, &$facebook 
   );
 
   $websites = _artspan_get_artist_websites($civi_user['contact_id']);
-
-  foreach($websites as $website) {
-    if($website->name == 'Twitter') {
-      $twitter = $website;
+  foreach($websites as $type=>$type_websites) {
+    if($type == 'twitter') {
+      foreach($type_websites as $id=>$url) {
+	$twitter = array($id=>$url);
+	break;
+      }
       continue;
     }
-    else if($website->name == 'Facebook') {
-      $facebook = $website;
-      continue;
+    else if($type == 'facebook') {
+      foreach($type_websites as $id=>$url) {
+	$facebook = array($id=>$url);
+	break;
+      }
     }
     else {
-      $siteform['website_' . $website->id] = array(
-        '#type' => 'textfield',
-        '#value' => $website->url,
-        '#name' => 'website_'. $website->id
-      );
+      $counter = 0;
+      foreach($type_websites as $id=>$url) {
+	$counter ++;
+	$siteform['website_' . $id] = 
+	  array(
+		'#type' => 'textfield',
+		'#value' => $url,
+		'#name' => 'website_'. $id
+		);
+      }
     }
   }
-
-  $siteform['website_new_1'] = array(
-    '#type' => 'textfield',
-    '#name' => 'website_new_1'
-    );
+  $create_one_empty = TRUE;
+  while ($create_one_empty || $counter < 3) {
+    $siteform['website_new_'.$counter] = 
+      array(
+	    '#type' => 'textfield',
+	    '#name' => 'website_new_'.$counter
+	    );
+    $counter++;
+    $create_one_empty = FALSE;
+  }
 
   return $siteform;
 }
 
-// Adds form fields to the Profile Edit form - margot@rd 
-function artspan_custom_form_artist_node_form_alter(&$form) {
-  $uid = $form['uid']['#value'];
-  $civi_user = _artspan_get_civi_contact_public_location_info($uid, array('return_custom_45' => 1, 'return_custom_3' => 1, 'return_custom_4' => 1));
-  $civi_user_event = _artspan_get_openstudios_information($civi_user['contact_id']);
-  _artspan_sync_artist_role(user_load($form['#node']->uid), $civi_user);
-  $form['_civi_contact'] = array(
-    '#type' => 'value',
-    '#value' => $civi_user
-  );
-
-  $form['phone'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Public Phone Number',
-    '#value' => $civi_user['phone'],
-  );
-
-  $form['email'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Public Email Address',
-    '#value' => $civi_user['email'],
-  ); 
-  
-  $form['websites'] = array(
-    '#title' => 'Web Site',
-    '#type' => 'fieldset',
-    'field_websites_add_more' => array(
-      '#type' => 'submit',
-      '#name' => 'field_websites_add_more',
-      '#value' => 'Add another item',
-      '#submit' => array('content_add_more_submit_proxy'),
-      '#ahah' => array(
-        'path' => 'artspan/js/addwebsite/'. $uid,
-        'wrapper' => 'field-website-items',
-        'method' => 'replace',
-        'effect' => 'fade',
-        'event' => 'mousedown',
-        'keypress' => TRUE
-      ),
-      '#button_type' => 'submit'
-    )
-  );
-
-  $form['websites']['list'] = artspan_addwebsite_form($uid, $civi_user, $twitter, $facebook);
-
-  if(isset($twitter)) {
-    $twitter_url = $twitter->url;
-    $twitter_name = 'website_' . $twitter->id;
-  }
-  else {
-    $twitter_name = 'website_Twitter';
-  }
-
-  $form['twitter'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Twitter URL',
-    '#value' => $twitter_url,
-    '#name' => $twitter_name,
-    '#size' => 60
-  );
-
-  if(isset($facebook)) {
-    $facebook_url = $facebook->url;
-    $facebook_name = 'website_' . $facebook->id;
-  }
-  else {
-    $facebook_name = 'website_Facebook';
-  }
-  
-  $form['facebook'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Facebook URL',
-    '#value' => $facebook_url,
-    '#name' => $facebook_name,
-    '#size' => 60
-  );
-
-  $group_studios = array(0=>'- Select A Studio -');
-  foreach(_artspan_load_civi_group_studios() as $studio) {
-    $group_studios[$studio['contact_id']] = $studio['display_name'];
-  }
-  $states = _artspan_load_state_options();
-  drupal_add_js(drupal_get_path('module', 'artspan_custom') . '/studio.js');
-  $group_studio = isset($civi_user['address']['shared']) && $civi_user['address']['shared']->contact_sub_type == 'Group_Studio_Site';
-
-  $form['#validate'] = array('_artspan_artist_profile_validate');
-  $form['#submit'] = array('_artspan_artist_profile_submit');
-  $form['buttons']['submit']['#submit'][] = '_artspan_artist_profile_redirect';
-}
-
 
 function artspan_custom_civicrm_buildForm( $formName, &$form ) {
-  //dsm($formName);
-  //dsm($form);
+
 }
 
 
@@ -549,121 +458,253 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
 }
 
 
+// Adds form fields to the Profile Edit form - margot@rd 
+function artspan_custom_form_artist_node_form_alter(&$form) {
+  $uid = $form['uid']['#value'];
+  $civi_user = _artspan_get_civi_contact_public_location_info($uid);
+  
+  _artspan_sync_artist_role(user_load($form['#node']->uid), $civi_user);
+
+  $form['_civi_contact'] = array(
+    '#type' => 'value',
+    '#value' => $civi_user
+  );
+
+  $form['phone'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Public Phone Number',
+    '#value' => $civi_user['public_phone'],
+  );
+
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Public Email Address',
+    '#value' => $civi_user['public_email'],
+  ); 
+  
+  $form['websites'] = array(
+    '#title' => 'Web Sites',
+    '#type' => 'fieldset',
+  );
+
+  $form['websites']['list'] = artspan_addwebsite_form($uid, $civi_user, $twitter, $facebook);
+
+  if(isset($twitter)) {
+    foreach($twitter as $id=>$url) {
+      $twitter_url = $url;
+      $twitter_name = 'website_twitter_' . $id;
+      break;
+    }
+  }
+  else {
+    $twitter_name = 'website_twitter';
+  }
+
+  $form['twitter'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Twitter URL',
+    '#value' => $twitter_url,
+    '#name' => $twitter_name,
+    '#size' => 60
+  );
+
+  if(isset($facebook)) {
+    foreach($facebook as $id=>$url) {
+      $facebook_url = $url;
+      $facebook_name = 'website_facebook_' . $id;
+      break;
+    }
+  }
+  else {
+    $facebook_name = 'website_facebook';
+  }
+  
+  $form['facebook'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Facebook URL',
+    '#value' => $facebook_url,
+    '#name' => $facebook_name,
+    '#size' => 60
+  );
+ 
+  $form['#validate'] = array('_artspan_artist_profile_validate');
+  $form['#submit'] = array('_artspan_artist_profile_submit');
+  $form['buttons']['submit']['#submit'][] = '_artspan_artist_profile_redirect';
+}
+
 function _artspan_artist_profile_validate($form, &$form_state) {
   drupal_add_js(drupal_get_path('module', 'artspan') . '/studio.js');
   foreach($form['#post'] as $field => $value) {
     if(strstr($field, 'website')) {
       if($value && (!valid_url($value) || !valid_url($value, TRUE))) {
-        form_set_error($field, "One of the urls below is not valid.");
+	$value = "http://".$value;
+	if($value && (!valid_url($value) || !valid_url($value, TRUE))) {
+	  form_set_error($field, "One of the urls below is not valid.");
+	}
       }
     }
   }
-
-  /*if($form['#post']['groupsite_question'] == 1) {
-    if(!array_key_exists($form['#post']['group_location_reference'], _artspan_load_civi_group_studios())) {
-      form_set_error('group_location_reference', "Please choose a group location.");
-    }
-  }*/
 }
 
 function _artspan_artist_profile_redirect($form, &$form_state) {
-  $form_state['redirect'] = 'user/'.$form['uid']['#value'].'/edit/artwork';
+  //$form_state['redirect'] = 'user/'.$form['uid']['#value'].'/edit/artwork';
+  //FIXME ONLY HERE FOR TESTING
+  $form_state['redirect'] = 'user/me/edit/artist';
 }
 
 // updated Civi when the profile is submitted margot@rd
 function _artspan_artist_profile_submit($form, &$form_state) {
-  $PUBLIC_LOCATION_ID = 7;
-  $STUDIO_LOCATION_ID = 6;
-  
   $post = $form['#post'];
-  $user = _artspan_get_civi_contact($form['#node']->uid);
-  $contact_id = $user['contact_id'];
+
+  $uid = $form['uid']['#value'];
+  $contact = _artspan_get_civi_contact_public_location_info($uid);
+  
+  $contact_id = $contact['contact_id'];
 
   _artspan_sync_artist_role(user_load($form['#node']->uid), $user);
 
-  $email = $post['email'];
-  $phone = $post['phone'];
+  $submitted_email = $post['email'];
+  $submitted_phone = $post['phone'];
 
-  // Is a public/studio location already set?
-  $public = FALSE;
-  $studio = FALSE;
-  foreach(array_merge($user['phone'], $user['email']) as $i) {
-    if($i['location_type_id'] == $PUBLIC_LOCATION_ID) {
-      $public = TRUE;
-    }
-    if($i['location_type_id'] == $STUDIO_LOCATION_ID) {
-      $studio = TRUE;
-    }
+  $existing_email = $contact['public_email'];
+  $existing_phone = $contact['public_phone'];
+
+  //DELETE OLD EMAIL SINCE IT IS BEING REMOVED/REPLACED
+  if ($existing_email &&
+      (!$submitted_email || ($submitted_email != $existing_email))) {
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'id' => $contact['public_email_id'],
+		    );
+    $result = civicrm_api('Email', 'delete', $params);
+   
+  }
+  //SUBMIT NEW EMAIL OR REPLACE OLD ONE
+  if ($submitted_email && ($submitted_email != $existing_email)) {
+    //add new public email
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'contact_id' => $contact_id,
+		    'email' => $submitted_email,
+		    'location_type_id' => ARTSPAN_PUBLIC_LOCATION_ID,
+		    );
+    $result = civicrm_api('Email', 'create', $params);
   }
 
-  // Civicrm Update
-  $params = array(
-    'version' => '3.0',
-    'contact_id' => $contact_id,
-    'phone' => array(
-      array(
-        'phone' => $post['phone'],
-        'phone_type_id' => 1,
-        'location_type_id' => $PUBLIC_LOCATION_ID
-      )
-    ),
-    'email' => array(
-      array(
-        'email' => $post['email'],
-        'location_type_id' => $PUBLIC_LOCATION_ID
-      )
-    )
-  );
-
-  if($public) {
-    $response =& civicrm_location_update($params);
+  //DELETE OLD PHONE SINCE IT IS BEING REMOVED/REPLACED
+  if ($existing_phone &&
+      (!$submitted_phone || ($submitted_phone != $existing_phone))) {
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'id' => $contact['public_phone_id'],
+		    );
+    $result = civicrm_api('Phone', 'delete', $params);
+   
   }
-  else {
-    $response =& civicrm_location_add($params);
+  //SUBMIT NEW PHONE OR REPLACE OLD ONE
+  if ($submitted_phone && ($submitted_phone != $existing_phone)) {
+    //add new public phone
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'contact_id' => $contact_id,
+		    'phone' => $submitted_phone,
+		    'location_type_id' => ARTSPAN_PUBLIC_LOCATION_ID,
+		    );
+    $result = civicrm_api('Phone', 'create', $params);
   }
-
-  // Prepare contact params for studio
-  $contact_params = array(
-      'contact_id' => $contact_id,
-      'contact_type' => 'Individual',
-      'custom_45' => $post['studio_title'],
-      );
-
+  
   // Update the web sites
+  $websites = _artspan_get_artist_websites($civi_user['contact_id']);
+
+  $new_home_websites = array();
+  $new_twitter = array();
+  $new_facebook = array();
+  $new_index = 0;
   foreach($post as $key => $value) {
     $args = explode('_', $key);
-    if($args[0] == 'website') {
+    if($args[0] == 'website' && $value) {
       $value = mysql_real_escape_string($value);
+      if (strpos($value, 'http') === FALSE) {
+	$value = "http://".$value;
+      }
       if(is_numeric($args[1])) {
-        $id = $args[1];
-        if($value == '') {
-          $query = "DELETE FROM civicrm_website WHERE contact_id='$contact_id' AND id='$id'";
-        }
-        else {
-          $query = "UPDATE civicrm_website SET url='$value' WHERE contact_id='$contact_id' AND id='$id'";
-        }
-        $result = db_query($query);
+	$new_home_websites[$args[1]] = $value;
+      }
+      else if ($args[1] == "twitter") { 
+	if(is_numeric($args[2])) {
+	  $new_twitter[$args[2]] = $value;
+	}
+	else {
+	  $new_twitter[0] = $value;
+	}
+      }
+      else if ($args[1] == "facebook") { 
+	if(is_numeric($args[2])) {
+	  $new_facebook[$args[2]] = $value;
+	}
+	else {
+	  $new_facebook[0] = $value;
+	}
       }
       else {
-        if($args[1] == "Twitter") {
-          $website_type = 4;
-        }
-        elseif($args[1] == "Facebook") {
-          $website_type = 3;
-        }
-        else {
-          $website_type = 1;
-        }
-        
-        if($value != '')
-        {
-          $query = "INSERT INTO civicrm_website (contact_id, url, website_type_id) VALUES ('$contact_id', '$value', '$website_type');";
-          $result = db_query($query);
-        }
+	$new_home_websites[$new_index] = $value;
+	$new_index++;
       }
     }
   }
+  artspan_custom_website_update($contact_id, $new_twitter,
+				$websites['twitter'],
+				ARTSPAN_WEBSITE_TYPE_TWITTER);
+  artspan_custom_website_update($contact_id, $new_facebook,
+				$websites['facebook'],
+				ARTSPAN_WEBSITE_TYPE_FACEBOOK);
+  artspan_custom_website_update($contact_id, $new_home_websites,
+				$websites['home'],
+				ARTSPAN_WEBSITE_TYPE_HOME);
+  
 }
+
+function artspan_custom_website_update($contact_id, $new, $old,$type) {
+  $create_sites = array();
+  $delete_sites = array();
+
+  foreach($old as $id=>$url) {
+    if ($id && ($new[$id] != $old[$id])) {
+      $delete_sites[$id] = $url;
+      unset($old[$id]);
+    }
+  }
+  foreach($new as $id=>$url) {
+    if (!$old[$id] && $url) {
+      $create_sites[] = $url;
+    }
+  }
+
+  foreach($delete_sites as $id=>$url) {
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'id' => $id,
+		    );
+    $result = civicrm_api('Website', 'delete', $params);
+  }
+
+  foreach($create_sites as $url) {
+    $params = array(
+		    'version' => 3,
+		    'sequential' => 1,
+		    'contact_id' => $contact_id,
+		    'url' => $url,
+		    'website_type_id' => $type,
+		    );
+    $result = civicrm_api('Website', 'create', $params);
+  }
+}
+
 
 function artspan_custom_form_user_profile_form_alter(&$form) {
   // Turn off autocomplete.
@@ -707,7 +748,6 @@ function artspan_custom_form_user_profile_form_alter(&$form) {
     '#type' => 'value',
     '#value' => $civi_user
   );
-  //dsm("hi mom");
   
   $form['personal'] = 
     array(

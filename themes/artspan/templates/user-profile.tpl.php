@@ -37,9 +37,9 @@
   } else { 
     $title = $contact['display_name'];
   }
-  $phone = $contact['phone'];
+  $phone = $contact['public_phone'];
   //$email = $openstudios['custom_29'];
-  $email = $contact['email'];
+  $email = $contact['public_email'];
   $statement = content_format('field_artist_statement', $node->field_artist_statement[0],'default', $node) ;
 	$image = $node->field_image[0];
 
