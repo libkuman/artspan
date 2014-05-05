@@ -22,7 +22,6 @@
   //-- see artspan_custom.module margot@rd
   // Get their Event info from civi 
   $openstudios = _artspan_get_openstudios_information($contact['contact_id']);
-
   // Check to see if they are attending margot@rd  
   //** SFOSUPDATE ** change this id to be the event id
   if($openstudios['event_id'] == ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID) {
@@ -140,7 +139,7 @@
           }
           
           $parent1 = array_pop(taxonomy_get_parents($tname1));
-          
+
           if ($openstudios['custom_83']) {
 	    $gn = $openstudios['custom_83'];
 	    $groupLocation = _artspan_get_group_studio_site_contact($gn);
@@ -153,15 +152,23 @@
             if ($openstudios['custom_74']) {
               $studio1 .= ' Studio: ' . $openstudios['custom_74'] . '<br />';
             }
-            $studio1 .= $groupLocation['city'] . ', ' . 
-	      $groupLocation['state_province'] . ' '  . 
+            $studio1 .= $groupLocation['city'] . ', CA ' .
 	      $groupLocation['postal_code']   .   '<br />';
           } 
 	  else {
-	    $studio1 = $openstudios['custom_25'] . ', CA. ' . 
-	    $openstudios['custom_28'];
+	    $studio1 = $openstudios['custom_25'] . '<br />';
+	    if ($openstudios['custom_73']) {
+              $studio1 .= 'Building: ' . $openstudios['custom_73'];
+            }
+            if ($openstudios['custom_74']) {
+              $studio1 .= ' Studio: ' . $openstudios['custom_74'] . '<br />';
+            }
+	    
+	    $studio1 .= $openstudios['custom_71'] .', CA. ' . 
+  	      $openstudios['custom_28'];
 
           }
+
           $weekend1 = intval(array_pop(explode(' ', trim(array_shift(explode('-', $parent1->name))))));
           
           // Check what Neighborhood they in for Second Weekend and then show it here ** SFOSUPDATE ** change this to be the custom feild for the new neighborhood select
@@ -181,10 +188,10 @@
 	      $studio2 = $groupLocation['display_name'] . '<br />' . 
 		$groupLocation['street_address'] . '<br />';
 
-              if ($openstudios['custom_73']) {
+              if ($openstudios['custom_79']) {
                 $studio2 .= 'Building: ' . $openstudios['custom_79'];
               }
-              if ($openstudios['custom_73']) {
+              if ($openstudios['custom_80']) {
                 $studio2 .= ' Studio: ' . $openstudios['custom_80'] . '<br />';
               }
               $studio2 .= $groupLocation['city'] . ', ' . 
@@ -192,8 +199,14 @@
 		$groupLocation['postal_code']   . '<br />';
             } 
 	    else {
-	      $studio2 = $openstudios['custom_81'] . '<br />' . 
-		$openstudios['custom_77'] . ', CA. ' . 
+	      $studio2 = $openstudios['custom_81'] . '<br />';
+	      if ($openstudios['custom_79']) {
+		$studio2 .= 'Building: ' . $openstudios['custom_79'];
+	      }
+	      if ($openstudios['custom_80']) {
+		$studio2 .= ' Studio: ' . $openstudios['custom_80'] . '<br />';
+	      }
+	      $studio2 .= $openstudios['custom_77'].', CA. ' . 
 		$openstudios['custom_82'];
             }
             $weekend2 = intval(array_pop(explode(' ', 

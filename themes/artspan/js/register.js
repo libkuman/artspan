@@ -87,8 +87,6 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
           if ( $('[name=custom_70]:checked').val() == 0) {
           $('.editrow_custom_83-section').hide(); 
           $('.helprow-custom_83-section').hide(); 
-          $('.editrow_custom_73-section').hide(); 
-          $('.editrow_custom_74-section').hide(); 
           } else if ( $('[name=custom_70]:checked').val() == 1) {
           $('.editrow_custom_24-section').hide(); 
           $('.editrow_custom_25-section').hide(); 
@@ -130,8 +128,8 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
           $('.editrow_custom_83-section').hide(); 
 	  $('.helprow-custom_83-section').hide(); 
 
-          $('.editrow_custom_73-section').hide(); 
-          $('.editrow_custom_74-section').hide(); 
+          $('.editrow_custom_73-section').show(); 
+          $('.editrow_custom_74-section').show(); 
           $('#custom_83').val('');
           $('#custom_73').val('');
           $('#custom_74').val('');
@@ -183,9 +181,9 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
 	  $('.helprow-custom_84-section').show(); 
         } else if ($(this).val() == '0') { 
           $('.editrow_custom_84-section').hide(); 
-          $('.editrow_custom_79-section').hide(); 
-          $('.editrow_custom_80-section').hide();
-	  $('.helprow-custom_84-section').hide();  
+	  $('.helprow-custom_84-section').hide(); 
+          $('.editrow_custom_79-section').show(); 
+          $('.editrow_custom_80-section').show();  
           $('.editrow_custom_81-section').show(); 
           $('.editrow_custom_77-section').show(); 
           $('.editrow_custom_78-section').show(); 

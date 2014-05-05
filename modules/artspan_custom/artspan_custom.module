@@ -367,33 +367,42 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
     $profile_node->field_content_title[0]['value'] = 
       trim($form_data['custom_10']);
 
+    $medium_tid = artspan_custom_get_medium_tid($form_data['custom_21']);
+    if ($medium_tid) {
+      $profile_node->field_primary_medium[0]['value'] =$medium_tid;
+    }
+
     // Then save the Node out with the new data - margot@rd
     node_save($profile_node);
     _node_index_node($profile_node);
     
     // Save .tiffs to a custom directory
     $tiff_dest = 
-      '/web/artspan.org/www/sites/default/files/openstudios_tiffs_2013/';
+      '/web/artspan.org/www/sites/default/files/openstudios_tiffs_2014/';
 
     $firstname = urlencode($form_data['first_name']);
     $lastname = urlencode($form_data['last_name']);
-		// save weekend one's tiff
+
+    // save weekend one's tiff
     if(isset($form_data['custom_16']['name'])) {
       $neighborhood = urlencode($form_data[ARTSPAN_FIRST_CHOICE_WEEKEND_CF]);
-      $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_w1.tif';
+      $filename = $tiff_dest . $lastname . '_' . $firstname . '_' . 
+	$neighborhood . '_w1.tif';
       while (file_exists($filename)) {
         $next_number = (is_int($next_number)) ? $next_number + 1 : 0;
-        $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_' . $next_number . '_weekend1.tiff';
+        $filename = $tiff_dest . $lastname . '_' . $firstname . '_' . $neighborhood . '_' . $next_number . '_w1.tif';
       }
       copy($form_data['custom_16']['name'], $filename);
-   	}
-		// save weekend two's tiff
-		if(isset($form_data['custom_56']['name'])) {
+    }
+    // save weekend two's tiff
+    if(isset($form_data['custom_56']['name'])) {
       $neighborhood = urlencode($form_data[ARTSPAN_SECOND_CHOICE_WEEKEND_CF]);
-      $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_w2.tif';
+      $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . 
+	$neighborhood . '_w2.tif';
       while (file_exists($filename)) {
         $next_number = (is_int($next_number)) ? $next_number + 1 : 0;
-        $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . $neighborhood . '_' . $next_number . '_weekend2.tiff';
+        $filename = $tiff_dest . $firstname . '_' . $lastname . '_' . 
+	  $neighborhood . '_' . $next_number . '_w2.tif';
       }
       copy($form_data['custom_56']['name'], $filename);
     }
@@ -412,7 +421,6 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $result = db_query($query);
 
       $groupsite = db_fetch_object($result);      
-
       // we need this participant id so that we can use it to update the participant record
       $contact_params['custom_25'] = $groupsite->street_address;
       $contact_params['custom_71'] = $groupsite->city;
@@ -420,13 +428,13 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       if($groupsite->postal_code != '') {
       	$contact_params['custom_28'] = $groupsite->postal_code;
       }
-      $contact_params['custom_72'] = 'California';
+      $contact_params['custom_72'] = 1004;
       $contact_params['version'] = 3;
       $contact_params['event_id'] = ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID;
       $contact_params['id'] = $participant_id;
       
       // Ok now that we have what we need lets actually use the api to update (arrg create?) the participant - margot@rd
-      $response = civicrm_api('Participant', 'create', $params);
+      $response = civicrm_api('Participant', 'create', $contact_params);
     } 
 
      // Is a group site set for weekend 2?
@@ -442,7 +450,7 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
 			
       $contact_params['custom_81'] = $groupsite->street_address;
       $contact_params['custom_77'] = $groupsite->city;
-      $contact_params['custom_78'] = 'California';
+      $contact_params['custom_78'] = 1004;
       $contact_params['custom_75'] = $form_data['custom_84']; 
       if($groupsite->postal_code != '') {
       	$contact_params['custom_82'] = $groupsite->postal_code;
@@ -451,13 +459,20 @@ function artspan_custom_civicrm_postProcess( $formName, &$form ) {
       $contact_params['event_id'] = ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID;
       $contact_params['id'] = $participant_id;
 
-      $response = civicrm_api('Participant', 'create', $params);
+      $response = civicrm_api('Participant', 'create', $contact_params);
      }
-     //FIXME
-     //SET PUBLISHIABLE PHONE NUMBER 
   }
 }
 
+function artspan_custom_get_medium_tid($name) {
+  $sql = 
+    "SELECT tid 
+     FROM term_data 
+     WHERE LOWER(REPLACE(name, ' ', '-')) = LOWER('$name')
+     AND vid=2";
+  $result = db_fetch_object(db_query($sql));
+  return $result ? $result->tid : NULL;
+}
 
 // Adds form fields to the Profile Edit form - margot@rd 
 function artspan_custom_form_artist_node_form_alter(&$form) {
