@@ -142,10 +142,11 @@ function _artspan_get_civi_contact_public_location_info($user) {
 
 // Get a Civi Contacts Website
 function _artspan_get_artist_websites($contact_id) {
+  dsm($contact_id);
   $params = array(
 		  'version' => 3,
 		  'sequential' => 1,
-		  'contact_id' => 28083,
+		  'contact_id' => $contact_id,
 		  );
   $result = civicrm_api('Website', 'get', $params);
 
