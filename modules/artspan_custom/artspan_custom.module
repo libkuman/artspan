@@ -142,7 +142,6 @@ function _artspan_get_civi_contact_public_location_info($user) {
 
 // Get a Civi Contacts Website
 function _artspan_get_artist_websites($contact_id) {
-  dsm($contact_id);
   $params = array(
 		  'version' => 3,
 		  'sequential' => 1,
@@ -633,8 +632,7 @@ function _artspan_artist_profile_submit($form, &$form_state) {
   }
   
   // Update the web sites
-  $websites = _artspan_get_artist_websites($civi_user['contact_id']);
-
+  $websites = _artspan_get_artist_websites($contact_id);
   $new_home_websites = array();
   $new_twitter = array();
   $new_facebook = array();
