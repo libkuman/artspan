@@ -16,7 +16,7 @@ define ('ARTSPAN_STUDIO_LOCATION_ID', 6);
 define ('ARTSPAN_STUDIO_LOCATION_ID_OS1', 8);
 define ('ARTSPAN_STUDIO_LOCATION_ID_OS2', 9);
 
-define ('ARTSPAN_WEBSITE_TYPE_HOME', 1);
+define ('ARTSPAN_WEBSITE_TYPE_MAIN', 6);
 define ('ARTSPAN_WEBSITE_TYPE_FACEBOOK', 3);
 define ('ARTSPAN_WEBSITE_TYPE_TWITTER', 4);
 
@@ -154,7 +154,7 @@ function _artspan_get_artist_websites($contact_id) {
 
     $sites['facebook'] = array();
     $sites['twitter'] = array();
-    $sites['home'] = array();
+    $sites['main'] = array();
 
     foreach( $result['values'] as $website) {
       if ($website['website_type_id'] == ARTSPAN_WEBSITE_TYPE_FACEBOOK) {
@@ -164,7 +164,7 @@ function _artspan_get_artist_websites($contact_id) {
 	$sites['twitter'][$website['id']] = $website['url']; 
       }
       else {
-	$sites['home'][$website['id']] = $website['url']; 
+	$sites['main'][$website['id']] = $website['url']; 
       }
     }
   }
@@ -627,13 +627,14 @@ function _artspan_artist_profile_submit($form, &$form_state) {
 		    'contact_id' => $contact_id,
 		    'phone' => $submitted_phone,
 		    'location_type_id' => ARTSPAN_PUBLIC_LOCATION_ID,
+		    'phone_type_id' => 1,
 		    );
     $result = civicrm_api('Phone', 'create', $params);
   }
   
   // Update the web sites
   $websites = _artspan_get_artist_websites($contact_id);
-  $new_home_websites = array();
+  $new_main_websites = array();
   $new_twitter = array();
   $new_facebook = array();
   $new_index = 0;
@@ -645,7 +646,7 @@ function _artspan_artist_profile_submit($form, &$form_state) {
 	$value = "http://".$value;
       }
       if(is_numeric($args[1])) {
-	$new_home_websites[$args[1]] = $value;
+	$new_main_websites[$args[1]] = $value;
       }
       else if ($args[1] == "twitter") { 
 	if(is_numeric($args[2])) {
@@ -664,7 +665,7 @@ function _artspan_artist_profile_submit($form, &$form_state) {
 	}
       }
       else {
-	$new_home_websites[$new_index] = $value;
+	$new_main_websites[$new_index] = $value;
 	$new_index++;
       }
     }
@@ -675,9 +676,9 @@ function _artspan_artist_profile_submit($form, &$form_state) {
   artspan_custom_website_update($contact_id, $new_facebook,
 				$websites['facebook'],
 				ARTSPAN_WEBSITE_TYPE_FACEBOOK);
-  artspan_custom_website_update($contact_id, $new_home_websites,
-				$websites['home'],
-				ARTSPAN_WEBSITE_TYPE_HOME);
+  artspan_custom_website_update($contact_id, $new_main_websites,
+				$websites['main'],
+				ARTSPAN_WEBSITE_TYPE_MAIN);
   
 }
 
