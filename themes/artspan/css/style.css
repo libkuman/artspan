@@ -1201,3 +1201,8 @@ display: none;
 ._qf_Register_upload_express-section {
 display: none;
 }
+
+/* ADDED 5/5/2014 BY MARK LIBKUMAN TO REMOVING CRM CLEAR LINK */
+.crm-clear-link {
+  display: none;
+}

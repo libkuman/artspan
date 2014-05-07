@@ -11,6 +11,7 @@ $(document).ready(function(){
   $('.editrow_custom_71-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_72-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_28-section label').append(' <span class="marker">*</span>');
+  $('.editrow_custom_76-section div.label').append(' <span class="marker">*</span>');
   $('.editrow_custom_81-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_77-section label').append(' <span class="marker">*</span>');
   $('.editrow_custom_78-section label').append(' <span class="marker">*</span>');
