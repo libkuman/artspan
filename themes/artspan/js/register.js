@@ -1,6 +1,10 @@
 // **** SFOSUPDATE **** Change this custom field id to reflect the new neighborhood select. In 2013 these are custom_96 and custom_94
 
 $(document).ready(function(){
+
+//setting a global variable so that some junky jquery can run on the first scroll event
+window.scrollFireCount = 1;
+
   var twoWeekends = false;
   var groupStudio1 = false;
   var groupStudio2 = false;
@@ -28,6 +32,11 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
   cj(".price-set-row input").click(function (event) {
     handleMultipleWeekends();
   });
+
+  cj(window).scroll(function (event) {
+    handleMultipleWeekends();
+  });
+
   function handleMultipleWeekends() {
     var clicked_id = $(".price_set-section input[type='radio']:checked").attr('id');
     var label = $("label[for=" + clicked_id + "]").text();
@@ -94,7 +103,6 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
           $('.editrow_custom_71-section').hide(); 
           $('.editrow_custom_72-section').hide(); 
           $('.editrow_custom_28-section').hide(); 
-	  $('.helprow-custom_84-section').hide(); 
           } else {
           $('.editrow_custom_83-section').hide(); 
           $('.helprow-custom_83-section').hide(); 
@@ -105,8 +113,6 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
           $('.editrow_custom_71-section').hide(); 
           $('.editrow_custom_72-section').hide(); 
           $('.editrow_custom_28-section').hide(); 
-          $('.helprow-custom_84-section').hide(); 
-
           }
       $("input:radio[name='custom_70']").click(function(){
         if ($(this).val() == '1') {
@@ -152,6 +158,9 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
       });
     };
     
+  cj(window).scroll(function (event) {
+    handleGroupSite1(); 
+  });
 
     $('.editrow_custom_70-section input').click(handleGroupSite1);
     handleGroupSite1();
@@ -159,7 +168,7 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
 
 
   (function() {
-    var handleGroupSite2 = function() {
+  var handleGroupSite2 = function() {
           groupStudio2 = true; 
           $('.editrow_custom_81-section').hide(); 
           $('.editrow_custom_77-section').hide(); 
@@ -192,10 +201,28 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
         }
       });
     };
-
+      var handleGroupSiteScroll2 = function() {
+	  if (window.scrollFireCount == 1) {
+              $('.editrow_custom_84-section').show(); 
+	      $('.helprow-custom_84-section').show(); 
+              $('.editrow_custom_79-section').show(); 
+              $('.editrow_custom_80-section').show(); 
+              $('.editrow_custom_81-section').show(); 
+              $('.editrow_custom_77-section').show(); 
+              $('.editrow_custom_78-section').show(); 
+              $('.editrow_custom_82-section').show();
+	  }
+	  window.scrollFireCount = window.scrollFireCount + 1;
+      };  
+  cj(window).scroll(function (event) {
+    handleGroupSiteScroll2(); 
+  });
     $('.editrow_custom_76-section input').click(handleGroupSite2);
     handleGroupSite2();
-  })();
+  }
+
+
+  )();
 
   // Studios
   // This code checks weekend location settings **** SFOSUPDATE **** Change this custom field id to reflect the new neighborhood select.
@@ -244,7 +271,6 @@ $('.editrow_custom_14-section label').append(' <span class="marker">*</span>');
 
   // Validation & next/prev buttons.
   (function() {
-
     var validate = function (element, message, f, element_section) {
       var jElement = $(element);
       var test;
