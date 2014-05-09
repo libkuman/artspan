@@ -1150,6 +1150,9 @@ line-height: 1.5em; }
 .crm-event-register-form-block .editrow_phone-7-1-section { width: 100%; float: left; clear: both;}
 .crm-event-register-form-block .helprow-phone-7-1-section { width: 100%; float: left; clear: both;}
 
+.crm-event-register-form-block .editrow_email-7-section { width: 100%; float: left; clear: both;}
+.crm-event-register-form-block .helprow-email-7-section { width: 100%; float: left; clear: both;}
+
 
 .crm-event-register-form-block .editrow_custom_46-section { width: 160px; float: left; }
 .crm-event-register-form-block .editrow_custom_21-section { width: 100%; float: left; clear: both; }
