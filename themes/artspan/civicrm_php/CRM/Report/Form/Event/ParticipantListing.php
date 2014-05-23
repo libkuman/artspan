@@ -472,43 +472,20 @@ GROUP BY  cv.label
         }
       }
     }
-
+    dsm($select);
     /////////////////////////////////////////////////////////////////
     //OVERRIDE BY MARK LIBKUMAN OPENFLOWS ARTSPAN 5/23/2014
     //PUTTING MULTIPLE VALUES IN THE EMAIL AND PHONE COLUMNS
-    $select[2] = '
-                   CASE
-                   WHEN (public_email.email is NULL AND email_civireport.email is NULL) 
-                   THEN ""
-                   WHEN (public_email.email is NULL AND email_civireport.email IS NOT NULL) 
-                   THEN email_civireport.email
-                   WHEN (public_email.email IS NOT NULL AND email_civireport.email IS NULL) 
-                   then public_email.email
-                   WHEN (public_email.email IS NOT NULL AND email_civireport.email IS NOT NULL) 
-                   THEN concat(email_civireport.email, " - ", public_email.email) 
-                   ELSE "g"
-                   END as civicrm_email_email';
-    $this->_columnHeaders['civicrm_email_email']['title'] = "Contact Email/Public Email";
+    $select[1] = 'public_phone.phone as civicrm_contact_first_name';
+    $this->_columnHeaders['civicrm_contact_first_name']['title'] = "Public Phone";
+    $this->_columnHeaders['civicrm_phone_phone']['title'] = "Private Phone";
 
-    /*
-     */
-    $select[11] = '
-                   CASE
-                   WHEN (public_phone.phone is NULL AND phone_civireport.phone is NULL) 
-                   THEN ""
-                   WHEN (public_phone.phone is NULL AND phone_civireport.phone IS NOT NULL) 
-                   THEN phone_civireport.phone
-                   WHEN (public_phone.phone IS NOT NULL AND phone_civireport.phone IS NULL) 
-                   then public_phone.phone
-                   WHEN (public_phone.phone IS NOT NULL AND phone_civireport.phone IS NOT NULL) 
-                   THEN concat(phone_civireport.phone, " - ", public_phone.phone) 
-                   ELSE "email_civireport.email as civicrm_email_email"
-                   END as civicrm_phone_phone';
+    $select[2] = 'public_email.email as civicrm_contact_last_name';
+    $this->_columnHeaders['civicrm_contact_last_name']['title'] = "Public Email";
+    $this->_columnHeaders['civicrm_email_email']['title'] = "Private Phone";
 
-    $this->_columnHeaders['civicrm_phone_phone']['title'] = "Contact Phone/Public Phone";
-
-    $select[14] = '
-                   GROUP_CONCAT(CONCAT(website_civireport.url, 
+    $select[16] = '
+                   GROUP_CONCAT(DISTINCT CONCAT(website_civireport.url, 
                                        CASE
                                          WHEN website_type_id = 2 THEN " (Work)"
                                          WHEN website_type_id = 7 THEN " (Article)"
