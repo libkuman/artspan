@@ -147,7 +147,7 @@
 	      '<br />' .$groupLocation['street_address'] . '<br />';
 	    
             if ($openstudios['custom_73']) {
-              $studio1 .= 'Building: ' . $openstudios['custom_73'];
+              $studio1 .= 'Building: ' . $openstudios['custom_73'] . '<br />';
             }
             if ($openstudios['custom_74']) {
               $studio1 .= ' Studio: ' . $openstudios['custom_74'] . '<br />';
@@ -158,7 +158,7 @@
 	  else {
 	    $studio1 = $openstudios['custom_25'] . '<br />';
 	    if ($openstudios['custom_73']) {
-              $studio1 .= 'Building: ' . $openstudios['custom_73'];
+              $studio1 .= 'Building: ' . $openstudios['custom_73'] . '<br />';
             }
             if ($openstudios['custom_74']) {
               $studio1 .= ' Studio: ' . $openstudios['custom_74'] . '<br />';
@@ -189,7 +189,7 @@
 		$groupLocation['street_address'] . '<br />';
 
               if ($openstudios['custom_79']) {
-                $studio2 .= 'Building: ' . $openstudios['custom_79'];
+                $studio2 .= 'Building: ' . $openstudios['custom_79'] . '<br />';
               }
               if ($openstudios['custom_80']) {
                 $studio2 .= ' Studio: ' . $openstudios['custom_80'] . '<br />';
@@ -201,7 +201,7 @@
 	    else {
 	      $studio2 = $openstudios['custom_81'] . '<br />';
 	      if ($openstudios['custom_79']) {
-		$studio2 .= 'Building: ' . $openstudios['custom_79'];
+		$studio2 .= 'Building: ' . $openstudios['custom_79'] . '<br />';
 	      }
 	      if ($openstudios['custom_80']) {
 		$studio2 .= ' Studio: ' . $openstudios['custom_80'] . '<br />';
