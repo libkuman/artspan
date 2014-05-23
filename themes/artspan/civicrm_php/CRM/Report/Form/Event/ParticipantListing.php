@@ -482,8 +482,9 @@ GROUP BY  cv.label
 
     $select[2] = 'public_email.email as civicrm_contact_last_name';
     $this->_columnHeaders['civicrm_contact_last_name']['title'] = "Public Email";
-    $this->_columnHeaders['civicrm_email_email']['title'] = "Private Phone";
+    $this->_columnHeaders['civicrm_email_email']['title'] = "Private Email";
 
+    /*
     $select[16] = '
                    GROUP_CONCAT(DISTINCT CONCAT(website_civireport.url, 
                                        CASE
@@ -499,6 +500,7 @@ GROUP BY  cv.label
                     ORDER BY website_type_id ASC SEPARATOR " - ")
                    as civicrm_website_url
                   ';
+    */
 
     //END OVERRIDE BY MARK LIBKUMAN OPENFLOWS ARTSPAN 5/23/2014
     /////////////////////////////////////////////////////////////////
@@ -544,6 +546,7 @@ GROUP BY  cv.label
     $this->_from .= "
              LEFT  JOIN civicrm_website website_civireport
                      ON {$this->_aliases['civicrm_contact']}.id = website_civireport.contact_id
+                     AND website_civireport.website_type_id=6
              LEFT JOIN  civicrm_email public_email
                     ON ({$this->_aliases['civicrm_contact']}.id = public_email.contact_id AND
                        public_email.location_type_id = 7)
