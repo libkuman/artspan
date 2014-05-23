@@ -472,7 +472,7 @@ GROUP BY  cv.label
         }
       }
     }
-    dsm($select);
+
     /////////////////////////////////////////////////////////////////
     //OVERRIDE BY MARK LIBKUMAN OPENFLOWS ARTSPAN 5/23/2014
     //PUTTING MULTIPLE VALUES IN THE EMAIL AND PHONE COLUMNS
