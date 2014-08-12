@@ -22,12 +22,12 @@
   //-- see artspan_custom.module margot@rd
   // Get their Event info from civi 
   $openstudios = _artspan_get_openstudios_information($contact['contact_id']);
+
   // Check to see if they are attending margot@rd  
   //** SFOSUPDATE ** change this id to be the event id
   if($openstudios['event_id'] == ARTSPAN_NEXT_OPENSTUDIOS_CIVICRM_EVENT_ID) {
     $participant = true;
   }
-
   // Load up some variables for display 
   
   // if the profile node has a title use it, if not then use the record from civi 
@@ -37,6 +37,7 @@
     $title = $contact['display_name'];
   }
   $phone = $contact['public_phone'];
+
   //$email = $openstudios['custom_29'];
   $email = $contact['public_email'];
   $statement = content_format('field_artist_statement', $node->field_artist_statement[0],'default', $node) ;
@@ -93,7 +94,7 @@
 </div>
 
 <?php // if any of these items exists create the left hand profile block margot@rd 
-	if($image || $websites || $phone || $email || $statement || $twitter || $facebook): ?>
+	if($participant || $image || $websites || $phone || $email || $statement || $twitter || $facebook): ?>
   <div class="profile">
     <?php if($image): ?>
       <div class="avatar">

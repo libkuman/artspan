@@ -546,7 +546,7 @@ GROUP BY  cv.label
     $this->_from .= "
              LEFT  JOIN civicrm_website website_civireport
                      ON {$this->_aliases['civicrm_contact']}.id = website_civireport.contact_id
-                     AND website_civireport.website_type_id=6
+                     AND (website_civireport.website_type_id=6 OR website_civireport.website_type_id=1)
              LEFT JOIN  civicrm_email public_email
                     ON ({$this->_aliases['civicrm_contact']}.id = public_email.contact_id AND
                        public_email.location_type_id = 7)
